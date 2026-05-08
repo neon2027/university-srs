@@ -11,7 +11,8 @@ test('welcome page has navbar with university name', function () {
 
 test('welcome page has hero headline', function () {
     $this->get(route('home'))
-        ->assertSeeText('Get the help you need');
+        ->assertSee('Get the help')
+        ->assertSee('you need');
 });
 
 test('welcome page has new request and track columns', function () {

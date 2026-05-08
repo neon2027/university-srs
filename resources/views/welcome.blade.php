@@ -25,8 +25,8 @@
     <nav class="bg-[#0089CB] px-6 lg:px-10 py-3 flex items-center justify-between">
         <span class="text-white font-bold text-xs uppercase tracking-widest">BICOL UNIVERSITY — SERVICE REQUEST SYSTEM</span>
         <div class="flex items-center gap-6">
-            <a href="{{ route(‘login’) }}" class="text-white/80 text-xs hover:text-white transition-colors">Log in</a>
-            <a href="{{ route(‘register’) }}" class="text-white/80 text-xs hover:text-white transition-colors border-l border-white/30 pl-6">Register</a>
+            <a href="{{ route('login') }}" class="text-white/80 text-xs hover:text-white transition-colors">Log in</a>
+            <a href="{{ route('register') }}" class="text-white/80 text-xs hover:text-white transition-colors border-l border-white/30 pl-6">Register</a>
         </div>
     </nav>
 
