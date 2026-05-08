@@ -73,7 +73,45 @@
             <span class="text-xs text-[#555555]">Avg. response: <strong class="text-[#111111] font-bold">24 hrs</strong></span>
         </div>
 
-        {{-- SECTIONS 5–6 WILL BE ADDED IN THE NEXT TASKS --}}
+        {{-- 5. HOW IT WORKS --}}
+        <div class="px-6 lg:px-10 py-10 border-b border-gray-200">
+            <h2 class="text-xs font-extrabold uppercase tracking-widest text-[#111111] border-l-4 border-[#0089CB] pl-3 mb-8">
+                How It Works
+            </h2>
+            <div>
+                <div class="flex gap-6 items-start pb-6">
+                    <span class="text-[#0089CB] font-black text-xl w-8 shrink-0 leading-none">01</span>
+                    <div>
+                        <p class="font-bold text-sm text-[#111111] mb-1">Submit your request online</p>
+                        <p class="text-xs text-[#666666] leading-relaxed">
+                            Fill out a short form describing your concern. Select the department and service type. No sign-up required for basic requests.
+                        </p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-100 ml-14 mb-6"></div>
+                <div class="flex gap-6 items-start pb-6">
+                    <span class="text-[#0089CB] font-black text-xl w-8 shrink-0 leading-none">02</span>
+                    <div>
+                        <p class="font-bold text-sm text-[#111111] mb-1">Your ticket is routed automatically</p>
+                        <p class="text-xs text-[#666666] leading-relaxed">
+                            The system forwards your request to the right department immediately. You receive a reference number to track progress.
+                        </p>
+                    </div>
+                </div>
+                <div class="border-t border-gray-100 ml-14 mb-6"></div>
+                <div class="flex gap-6 items-start">
+                    <span class="text-[#FE8926] font-black text-xl w-8 shrink-0 leading-none">03</span>
+                    <div>
+                        <p class="font-bold text-sm text-[#111111] mb-1">Get resolved and notified</p>
+                        <p class="text-xs text-[#666666] leading-relaxed">
+                            The assigned staff handles your request and updates the status. You are notified once your concern is resolved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- SECTION 6 WILL BE ADDED IN THE NEXT TASK --}}
 
     </main>
 
