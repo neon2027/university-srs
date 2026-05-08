@@ -42,7 +42,38 @@
             </p>
         </div>
 
-        {{-- SECTIONS 3–6 WILL BE ADDED IN THE NEXT TASKS --}}
+        {{-- 3. TWO ACTION COLUMNS --}}
+        <div class="flex flex-col md:flex-row border-b border-gray-200">
+            <div class="flex-1 px-6 lg:px-10 py-6 md:border-r border-gray-200">
+                <p class="text-[#0089CB] text-xs font-extrabold uppercase tracking-widest mb-2">New Request</p>
+                <p class="text-sm text-[#555555] leading-relaxed mb-5">
+                    Submit a ticket for IT support, maintenance, administrative concerns, or any university service.
+                </p>
+                <a href="{{ route('login') }}" class="inline-block bg-[#0089CB] text-white px-5 py-2 text-xs font-bold hover:bg-[#007ab5] transition-colors">
+                    Submit Now
+                </a>
+            </div>
+            <div class="flex-1 px-6 lg:px-10 py-6">
+                <p class="text-[#555555] text-xs font-extrabold uppercase tracking-widest mb-2">Track a Ticket</p>
+                <p class="text-sm text-[#555555] leading-relaxed mb-5">
+                    Already submitted? Enter your reference number to view real-time status and updates.
+                </p>
+                <a href="{{ route('login') }}" class="inline-block border-2 border-[#0089CB] text-[#0089CB] px-5 py-2 text-xs font-semibold hover:bg-[#0089CB] hover:text-white transition-colors">
+                    Track Now
+                </a>
+            </div>
+        </div>
+
+        {{-- 4. STAT LINE --}}
+        <div class="bg-[#F5FBFF] border-b border-[#E0F0FA] px-6 lg:px-10 py-3 flex flex-wrap items-center gap-3">
+            <span class="text-xs text-[#555555]">Serving <strong class="text-[#111111] font-bold">10+ departments</strong> across Bicol University</span>
+            <span class="w-1 h-1 rounded-full bg-gray-300 inline-block shrink-0"></span>
+            <span class="text-xs text-[#555555]"><strong class="text-[#111111] font-bold">500+</strong> requests resolved</span>
+            <span class="w-1 h-1 rounded-full bg-gray-300 inline-block shrink-0"></span>
+            <span class="text-xs text-[#555555]">Avg. response: <strong class="text-[#111111] font-bold">24 hrs</strong></span>
+        </div>
+
+        {{-- SECTIONS 5–6 WILL BE ADDED IN THE NEXT TASKS --}}
 
     </main>
 
