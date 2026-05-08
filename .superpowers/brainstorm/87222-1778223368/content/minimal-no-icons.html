@@ -1,0 +1,154 @@
+<h2>Minimal — no icons, typography-driven</h2>
+<p class="subtitle">Which of these feels most natural and human to you?</p>
+
+<div class="cards">
+
+  <!-- Option A: Editorial / University Press feel -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:0;overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;font-family:Georgia,serif;">
+      <!-- Thin top accent bar -->
+      <div style="height:3px;background:#8B0000;"></div>
+      <!-- Navbar -->
+      <div style="padding:8px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee;font-family:'Helvetica Neue',sans-serif;">
+        <div>
+          <div style="font-size:9px;font-weight:800;color:#111;letter-spacing:.5px;text-transform:uppercase;">Bicol University</div>
+          <div style="font-size:6.5px;color:#888;letter-spacing:.3px;">Service Request System</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span style="font-size:8px;color:#555;">Help</span>
+          <span style="font-size:8px;color:#8B0000;font-weight:600;">Log in</span>
+        </div>
+      </div>
+      <!-- Hero: left text + right maroon block -->
+      <div style="display:flex;min-height:90px;">
+        <div style="flex:1.2;padding:16px;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:7px;color:#8B0000;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-family:'Helvetica Neue',sans-serif;">Official Portal</div>
+          <div style="font-size:17px;font-weight:400;color:#111;line-height:1.2;margin-bottom:8px;">Submit and track<br>your service requests.</div>
+          <div style="font-size:7.5px;color:#555;line-height:1.5;margin-bottom:12px;font-family:'Helvetica Neue',sans-serif;">A centralized system for all Bicol University departments — no paperwork, no follow-up calls.</div>
+          <div style="display:flex;gap:6px;font-family:'Helvetica Neue',sans-serif;">
+            <div style="background:#8B0000;color:#fff;padding:5px 12px;font-size:8px;font-weight:600;">Request a Ticket</div>
+            <div style="border:1px solid #ccc;color:#333;padding:5px 10px;font-size:8px;">Track your Ticket</div>
+          </div>
+        </div>
+        <div style="width:60px;background:#8B0000;display:flex;align-items:center;justify-content:center;">
+          <div style="color:#D4AF37;font-size:24px;font-weight:900;font-family:Georgia,serif;transform:rotate(-90deg);white-space:nowrap;letter-spacing:-1px;">BU</div>
+        </div>
+      </div>
+      <!-- Bottom info strip -->
+      <div style="background:#fafafa;border-top:1px solid #eee;padding:8px 16px;display:flex;gap:0;font-family:'Helvetica Neue',sans-serif;">
+        <div style="flex:1;border-right:1px solid #eee;padding-right:10px;">
+          <div style="font-size:7px;font-weight:700;color:#111;margin-bottom:1px;">Submit a Request</div>
+          <div style="font-size:6.5px;color:#888;">IT support, maintenance, facilities</div>
+        </div>
+        <div style="flex:1;border-right:1px solid #eee;padding:0 10px;">
+          <div style="font-size:7px;font-weight:700;color:#111;margin-bottom:1px;">Track Progress</div>
+          <div style="font-size:6.5px;color:#888;">Real-time status updates</div>
+        </div>
+        <div style="flex:1;padding-left:10px;">
+          <div style="font-size:7px;font-weight:700;color:#111;margin-bottom:1px;">Get Resolved</div>
+          <div style="font-size:6.5px;color:#888;">Timely and efficient service</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Editorial</h3>
+      <p>Serif headline, maroon vertical sidebar block, horizontal feature strip. No icons. Feels institutional and intentional — like a university press or official government portal.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Newspaper / Structured columns -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:0;overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;font-family:'Helvetica Neue',Arial,sans-serif;">
+      <!-- Navbar -->
+      <div style="background:#8B0000;padding:6px 14px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:10px;font-weight:700;color:#fff;letter-spacing:.5px;">BICOL UNIVERSITY — SERVICE REQUEST SYSTEM</span>
+        <div style="display:flex;gap:8px;">
+          <span style="font-size:7.5px;color:#ffd9d9;">Log in</span>
+          <span style="font-size:7.5px;color:#ffd9d9;">Register</span>
+        </div>
+      </div>
+      <!-- Full width headline -->
+      <div style="padding:18px 14px 12px;border-bottom:2px solid #111;">
+        <div style="font-size:19px;font-weight:900;color:#111;line-height:1.1;margin-bottom:6px;letter-spacing:-0.5px;">Get the help<br>you need — fast.</div>
+        <div style="font-size:7.5px;color:#555;line-height:1.5;max-width:200px;">Submit service requests to any BU department online. No queues. No paperwork. Just results.</div>
+      </div>
+      <!-- Two column section -->
+      <div style="display:flex;border-bottom:1px solid #eee;">
+        <div style="flex:1;padding:10px 14px;border-right:1px solid #eee;">
+          <div style="font-size:8px;font-weight:800;color:#8B0000;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">New Request</div>
+          <div style="font-size:7px;color:#555;line-height:1.5;margin-bottom:8px;">Submit a ticket for IT support, maintenance, administrative concerns, or any university service.</div>
+          <div style="background:#8B0000;color:#fff;padding:4px 10px;display:inline-block;font-size:7.5px;font-weight:700;">Submit Now</div>
+        </div>
+        <div style="flex:1;padding:10px 14px;">
+          <div style="font-size:8px;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Track a Ticket</div>
+          <div style="font-size:7px;color:#555;line-height:1.5;margin-bottom:8px;">Already submitted? Enter your reference number to view real-time status and updates.</div>
+          <div style="border:1px solid #ccc;color:#333;padding:4px 10px;display:inline-block;font-size:7.5px;font-weight:600;">Track Now</div>
+        </div>
+      </div>
+      <!-- Footer stat line -->
+      <div style="padding:6px 14px;background:#fafafa;display:flex;gap:12px;align-items:center;">
+        <span style="font-size:7px;color:#888;">Serving <strong style="color:#111;">10+ departments</strong> across Bicol University</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:#ccc;display:inline-block;"></span>
+        <span style="font-size:7px;color:#888;"><strong style="color:#111;">500+</strong> requests resolved</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Structured Columns</h3>
+      <p>Bold headline, maroon nav bar, two clear action columns below. No icons anywhere. Reads like a well-designed government or university service page.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Clean white with maroon left border accent -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:0;overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;font-family:'Helvetica Neue',Arial,sans-serif;">
+      <!-- Minimal white navbar -->
+      <div style="padding:8px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:3px;height:18px;background:#8B0000;border-radius:1px;"></div>
+          <span style="font-size:10px;font-weight:700;color:#111;">Bicol University SRS</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span style="font-size:8px;color:#666;">About</span>
+          <span style="font-size:8px;color:#666;">Help</span>
+          <span style="background:#8B0000;color:#fff;font-size:7.5px;padding:2px 8px;font-weight:600;">Log in</span>
+        </div>
+      </div>
+      <!-- Hero: large left-aligned text -->
+      <div style="padding:20px 16px 16px;">
+        <div style="border-left:3px solid #8B0000;padding-left:10px;margin-bottom:14px;">
+          <div style="font-size:16px;font-weight:800;color:#111;line-height:1.2;margin-bottom:4px;">Bicol University<br>Service Request System</div>
+          <div style="font-size:7.5px;color:#666;line-height:1.5;">The official platform for submitting, tracking, and resolving service requests across all university departments.</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <div style="background:#8B0000;color:#fff;padding:5px 13px;font-size:8px;font-weight:700;">Request a Ticket</div>
+          <div style="border:1.5px solid #8B0000;color:#8B0000;padding:5px 11px;font-size:8px;font-weight:600;">Track your Ticket</div>
+        </div>
+      </div>
+      <!-- Divider line -->
+      <div style="margin:0 16px;border-top:1px solid #f0f0f0;"></div>
+      <!-- Plain text list — no icons -->
+      <div style="padding:10px 16px 12px;">
+        <div style="font-size:8px;font-weight:700;color:#111;margin-bottom:8px;">What you can do</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;align-items:baseline;gap:6px;">
+            <div style="width:4px;height:4px;border-radius:50%;background:#8B0000;flex-shrink:0;margin-top:2px;"></div>
+            <div><span style="font-size:7.5px;font-weight:700;color:#111;">Submit requests</span><span style="font-size:7px;color:#888;"> — IT support, maintenance, administrative services</span></div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px;">
+            <div style="width:4px;height:4px;border-radius:50%;background:#8B0000;flex-shrink:0;margin-top:2px;"></div>
+            <div><span style="font-size:7.5px;font-weight:700;color:#111;">Track in real time</span><span style="font-size:7px;color:#888;"> — check status anytime with your reference number</span></div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px;">
+            <div style="width:4px;height:4px;border-radius:50%;background:#D4AF37;flex-shrink:0;margin-top:2px;"></div>
+            <div><span style="font-size:7.5px;font-weight:700;color:#111;">Get resolved fast</span><span style="font-size:7px;color:#888;"> — routed directly to the right department</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Left Border Accent</h3>
+      <p>Maroon left-border on the hero text block, bullet list instead of icon cards. No icons at all. Quiet and structured — feels like a well-designed intranet or internal tool.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,211 @@
+<h2>Minimal design variations — which feels right?</h2>
+<p class="subtitle">All use Bicol University's maroon + gold palette with a clean, modern approach.</p>
+
+<div class="cards">
+
+  <!-- Option A: Hero with gradient mesh background -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:0;overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;">
+      <!-- Navbar -->
+      <div style="background:#fff;border-bottom:1px solid #f0f0f0;padding:7px 14px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:7px;">
+          <div style="width:24px;height:24px;border-radius:5px;background:#8B0000;display:flex;align-items:center;justify-content:center;font-size:9px;color:#D4AF37;font-weight:900;">BU</div>
+          <span style="font-size:10px;font-weight:600;color:#111;">BU Service Request</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span style="font-size:8px;color:#555;">About</span>
+          <span style="font-size:8px;color:#555;">Help</span>
+          <span style="background:#8B0000;color:#fff;font-size:8px;padding:2px 8px;border-radius:4px;font-weight:600;">Login</span>
+        </div>
+      </div>
+      <!-- Hero: mesh gradient bg -->
+      <div style="background:radial-gradient(ellipse at 80% 20%,#fff0f0 0%,#fff 50%,#fffff5 100%);padding:22px 14px 18px;position:relative;">
+        <div style="position:absolute;top:10px;right:14px;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#D4AF3730,transparent);"></div>
+        <div style="display:inline-block;background:#8B000015;color:#8B0000;font-size:7px;padding:2px 8px;border-radius:20px;margin-bottom:8px;font-weight:600;letter-spacing:.5px;">Bicol University · Official Portal</div>
+        <div style="font-size:15px;font-weight:800;color:#111;line-height:1.25;margin-bottom:5px;">University Services,<br><span style="color:#8B0000;">Simplified.</span></div>
+        <div style="font-size:8px;color:#666;line-height:1.5;margin-bottom:12px;max-width:190px;">Submit and track service requests across all BU departments — fast, transparent, and paperless.</div>
+        <div style="display:flex;gap:6px;margin-bottom:14px;">
+          <div style="background:#8B0000;color:#fff;padding:5px 12px;border-radius:5px;font-size:8px;font-weight:600;">Request a Ticket</div>
+          <div style="color:#8B0000;padding:5px 10px;border-radius:5px;font-size:8px;font-weight:600;border:1.5px solid #8B0000;">Track →</div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <div><span style="font-size:11px;font-weight:800;color:#8B0000;">500+</span><div style="font-size:6px;color:#888;">Requests resolved</div></div>
+          <div style="width:1px;background:#eee;"></div>
+          <div><span style="font-size:11px;font-weight:800;color:#8B0000;">10+</span><div style="font-size:6px;color:#888;">Departments</div></div>
+          <div style="width:1px;background:#eee;"></div>
+          <div><span style="font-size:11px;font-weight:800;color:#8B0000;">24h</span><div style="font-size:6px;color:#888;">Response time</div></div>
+        </div>
+      </div>
+      <!-- Steps row -->
+      <div style="background:#fafafa;border-top:1px solid #f0f0f0;padding:10px 14px;display:flex;gap:6px;">
+        <div style="flex:1;display:flex;align-items:flex-start;gap:6px;">
+          <div style="width:18px;height:18px;border-radius:4px;background:#8B0000;color:#fff;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;">1</div>
+          <div><div style="font-size:8px;font-weight:700;color:#111;">Submit</div><div style="font-size:6.5px;color:#666;">Fill a simple form</div></div>
+        </div>
+        <div style="flex:1;display:flex;align-items:flex-start;gap:6px;">
+          <div style="width:18px;height:18px;border-radius:4px;background:#D4AF37;color:#fff;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;">2</div>
+          <div><div style="font-size:8px;font-weight:700;color:#111;">Track</div><div style="font-size:6.5px;color:#666;">Live status updates</div></div>
+        </div>
+        <div style="flex:1;display:flex;align-items:flex-start;gap:6px;">
+          <div style="width:18px;height:18px;border-radius:4px;background:#8B0000;color:#fff;font-size:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;">3</div>
+          <div><div style="font-size:8px;font-weight:700;color:#111;">Resolved</div><div style="font-size:6.5px;color:#666;">Fast & efficient</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Soft Gradient Hero</h3>
+      <p>Subtle red-tinted gradient background on hero. Inline stats, numbered steps in a footer strip. Light and airy — feels like a modern gov/edu portal.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Full-bleed dark hero, white content below -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:0;overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;">
+      <!-- Dark hero block -->
+      <div style="background:#111;padding:14px 14px 20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div style="width:22px;height:22px;border-radius:4px;background:#8B0000;display:flex;align-items:center;justify-content:center;font-size:8px;color:#D4AF37;font-weight:900;">BU</div>
+            <span style="font-size:10px;font-weight:600;color:#fff;">BU SRS</span>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <span style="font-size:8px;color:#aaa;">Login</span>
+            <span style="background:#8B0000;color:#fff;font-size:7px;padding:2px 7px;border-radius:3px;">Register</span>
+          </div>
+        </div>
+        <div style="font-size:7px;color:#D4AF37;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Bicol University</div>
+        <div style="font-size:16px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:6px;">Service Request<br>System</div>
+        <div style="font-size:7.5px;color:#aaa;line-height:1.5;margin-bottom:12px;">The official platform for submitting and managing university service requests.</div>
+        <div style="display:flex;gap:6px;">
+          <div style="background:#8B0000;color:#fff;padding:5px 11px;border-radius:4px;font-size:8px;font-weight:600;">Request a Ticket</div>
+          <div style="border:1px solid #444;color:#ccc;padding:5px 11px;border-radius:4px;font-size:8px;">Track Ticket</div>
+        </div>
+      </div>
+      <!-- White section below -->
+      <div style="padding:12px 14px;background:#fff;">
+        <div style="font-size:9px;font-weight:700;color:#111;margin-bottom:8px;text-align:center;">How it works</div>
+        <div style="display:flex;gap:6px;">
+          <div style="flex:1;background:#fafafa;border:1px solid #f0f0f0;border-radius:5px;padding:7px 6px;text-align:center;">
+            <div style="font-size:12px;margin-bottom:3px;">📋</div>
+            <div style="font-size:7px;font-weight:700;color:#111;">Submit</div>
+            <div style="font-size:6.5px;color:#888;margin-top:1px;">Easy form</div>
+          </div>
+          <div style="flex:1;background:#fafafa;border:1px solid #f0f0f0;border-radius:5px;padding:7px 6px;text-align:center;">
+            <div style="font-size:12px;margin-bottom:3px;">🔄</div>
+            <div style="font-size:7px;font-weight:700;color:#111;">Track</div>
+            <div style="font-size:6.5px;color:#888;margin-top:1px;">Real-time</div>
+          </div>
+          <div style="flex:1;background:#fafafa;border:1px solid #f0f0f0;border-radius:5px;padding:7px 6px;text-align:center;">
+            <div style="font-size:12px;margin-bottom:3px;">✅</div>
+            <div style="font-size:7px;font-weight:700;color:#111;">Resolved</div>
+            <div style="font-size:6.5px;color:#888;margin-top:1px;">Efficient</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Dark Hero + White Body</h3>
+      <p>Dark/black hero with white section below. High contrast, editorial look. Feels bold and modern without being heavy — popular in gov and fintech portals.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Large typography, minimal decoration -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:0;overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;">
+      <!-- Thin navbar -->
+      <div style="border-bottom:1px solid #e5e7eb;padding:6px 14px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:#8B0000;"></div>
+          <span style="font-size:9px;font-weight:700;color:#111;letter-spacing:.5px;">BICOL UNIVERSITY SRS</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span style="font-size:8px;color:#666;">Help</span>
+          <span style="font-size:8px;color:#8B0000;font-weight:600;">Login →</span>
+        </div>
+      </div>
+      <!-- Big type hero -->
+      <div style="padding:18px 14px 14px;border-bottom:1px solid #f0f0f0;">
+        <div style="font-size:18px;font-weight:900;color:#111;line-height:1.1;margin-bottom:8px;">Submit.<br>Track.<br><span style="color:#8B0000;">Resolved.</span></div>
+        <div style="font-size:7.5px;color:#666;line-height:1.5;margin-bottom:12px;max-width:180px;">Bicol University's official system for service requests — from IT to maintenance and beyond.</div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="background:#8B0000;color:#fff;padding:5px 12px;border-radius:4px;font-size:8px;font-weight:700;">Request a Ticket</div>
+          <span style="font-size:7px;color:#888;">or</span>
+          <span style="font-size:8px;color:#8B0000;font-weight:600;text-decoration:underline;text-underline-offset:2px;">track yours →</span>
+        </div>
+      </div>
+      <!-- Horizontal feature strip -->
+      <div style="padding:10px 14px;background:#fff;">
+        <div style="display:flex;gap:0;">
+          <div style="flex:1;padding-right:10px;border-right:1px solid #f0f0f0;">
+            <div style="font-size:7px;font-weight:800;color:#111;margin-bottom:2px;">📋 Submit a Request</div>
+            <div style="font-size:6.5px;color:#888;">Any department, any service type</div>
+          </div>
+          <div style="flex:1;padding:0 10px;border-right:1px solid #f0f0f0;">
+            <div style="font-size:7px;font-weight:800;color:#111;margin-bottom:2px;">🔍 Track Progress</div>
+            <div style="font-size:6.5px;color:#888;">Live status & notifications</div>
+          </div>
+          <div style="flex:1;padding-left:10px;">
+            <div style="font-size:7px;font-weight:800;color:#111;margin-bottom:2px;">✅ Get Resolved</div>
+            <div style="font-size:6.5px;color:#888;">Fast, efficient service</div>
+          </div>
+        </div>
+      </div>
+      <!-- Tag badges -->
+      <div style="padding:0 14px 10px;display:flex;gap:4px;flex-wrap:wrap;">
+        <span style="background:#f5f5f5;color:#555;font-size:6.5px;padding:2px 7px;border-radius:20px;">IT Support</span>
+        <span style="background:#f5f5f5;color:#555;font-size:6.5px;padding:2px 7px;border-radius:20px;">Maintenance</span>
+        <span style="background:#f5f5f5;color:#555;font-size:6.5px;padding:2px 7px;border-radius:20px;">Facilities</span>
+        <span style="background:#8B000015;color:#8B0000;font-size:6.5px;padding:2px 7px;border-radius:20px;">+ more</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Large Typography</h3>
+      <p>Oversized stacked text as the hero, minimal decoration. Inspired by modern editorial sites. Clean, confident, and distinct — feels less like a form portal, more like a product.</p>
+    </div>
+  </div>
+
+  <!-- Option D: Card-centered with soft maroon banner -->
+  <div class="card" data-choice="d" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#8B0000;padding:0;overflow:hidden;border-radius:6px;border:1px solid #e5e7eb;">
+      <!-- Maroon top bar -->
+      <div style="background:#8B0000;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div style="width:24px;height:24px;border-radius:50%;background:#D4AF37;display:flex;align-items:center;justify-content:center;font-size:9px;color:#8B0000;font-weight:900;">BU</div>
+          <div>
+            <div style="font-size:9px;font-weight:700;color:#fff;">Bicol University</div>
+            <div style="font-size:6px;color:#ffd9d9;">Service Request System</div>
+          </div>
+        </div>
+        <span style="background:rgba(255,255,255,0.15);color:#fff;font-size:7px;padding:2px 8px;border-radius:3px;">Login</span>
+      </div>
+      <!-- Centered card on maroon -->
+      <div style="background:#8B0000;padding:10px 14px 14px;text-align:center;">
+        <div style="background:#fff;border-radius:8px;padding:16px 14px;box-shadow:0 8px 24px rgba(0,0,0,0.2);">
+          <div style="font-size:13px;font-weight:800;color:#111;margin-bottom:4px;">How can we help you?</div>
+          <div style="font-size:7px;color:#666;margin-bottom:12px;">Submit or track a service request at Bicol University</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px;">
+            <div style="flex:1;background:#8B0000;color:#fff;padding:7px 8px;border-radius:5px;font-size:8px;font-weight:700;">📋 Request a Ticket</div>
+            <div style="flex:1;background:#fff;border:1.5px solid #8B0000;color:#8B0000;padding:7px 8px;border-radius:5px;font-size:8px;font-weight:700;">🔍 Track Ticket</div>
+          </div>
+          <div style="border-top:1px solid #f0f0f0;padding-top:8px;display:flex;gap:8px;justify-content:center;">
+            <div style="text-align:center;"><div style="font-size:11px;font-weight:800;color:#8B0000;">500+</div><div style="font-size:6.5px;color:#888;">Requests</div></div>
+            <div style="width:1px;background:#eee;"></div>
+            <div style="text-align:center;"><div style="font-size:11px;font-weight:800;color:#8B0000;">10+</div><div style="font-size:6.5px;color:#888;">Departments</div></div>
+            <div style="width:1px;background:#eee;"></div>
+            <div style="text-align:center;"><div style="font-size:11px;font-weight:800;color:#8B0000;">24h</div><div style="font-size:6.5px;color:#888;">Response</div></div>
+          </div>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px;justify-content:center;">
+          <span style="background:rgba(255,255,255,0.15);color:#fff;font-size:6.5px;padding:2px 8px;border-radius:20px;">IT Support</span>
+          <span style="background:rgba(255,255,255,0.15);color:#fff;font-size:6.5px;padding:2px 8px;border-radius:20px;">Maintenance</span>
+          <span style="background:rgba(255,255,255,0.15);color:#fff;font-size:6.5px;padding:2px 7px;border-radius:20px;">Facilities</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>D — Card on Maroon</h3>
+      <p>Full maroon background with a centered white action card. Focused and direct — no fluff, just the two key actions. Feels like a login portal but cleaner.</p>
+    </div>
+  </div>
+
+</div>
