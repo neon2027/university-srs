@@ -163,7 +163,35 @@
 
     </main>
 
-    {{-- FOOTER WILL BE ADDED IN TASK 6 --}}
+    {{-- 7. FOOTER --}}
+    <footer class="bg-[#111111] px-6 lg:px-10 py-8">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between gap-6 mb-6">
+                <div>
+                    <p class="font-bold text-sm text-white mb-1">Bicol University</p>
+                    <p class="text-xs text-[#888888] leading-relaxed">
+                        Service Request System<br>
+                        Legazpi City, Albay, Philippines
+                    </p>
+                </div>
+                <div class="md:text-right">
+                    <p class="font-bold text-sm text-[#FE8926] mb-2">Technical Support</p>
+                    <p class="text-xs text-[#AAAAAA] leading-relaxed">
+                        itsupport@bicol-u.edu.ph<br>
+                        (052) 820-0000 loc. 101<br>
+                        Mon – Fri, 8:00 AM – 5:00 PM
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-[#333333] pt-4 flex flex-col md:flex-row justify-between items-center gap-2">
+                <p class="text-xs text-[#555555]">© 2025 Bicol University. All rights reserved.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="text-xs text-[#555555] hover:text-[#888888] transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-xs text-[#555555] hover:text-[#888888] transition-colors">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
