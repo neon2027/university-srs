@@ -111,7 +111,55 @@
             </div>
         </div>
 
-        {{-- SECTION 6 WILL BE ADDED IN THE NEXT TASK --}}
+        {{-- 6. DEPARTMENTS & SERVICES --}}
+        <div class="bg-[#FAFAFA] px-6 lg:px-10 py-10 border-b border-gray-200">
+            <h2 class="text-xs font-extrabold uppercase tracking-widest text-[#111111] border-l-4 border-[#FE8926] pl-3 mb-6">
+                Departments & Services
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="bg-white border border-gray-200 overflow-hidden">
+                    <div class="h-0.5 bg-[#0089CB]"></div>
+                    <div class="px-4 py-3">
+                        <p class="font-bold text-sm text-[#111111] mb-1">Information Technology Office</p>
+                        <p class="text-xs text-[#888888]">Systems, networks, hardware, software</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 overflow-hidden">
+                    <div class="h-0.5 bg-[#0089CB]"></div>
+                    <div class="px-4 py-3">
+                        <p class="font-bold text-sm text-[#111111] mb-1">Physical Plant Office</p>
+                        <p class="text-xs text-[#888888]">Maintenance, repairs, facilities</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 overflow-hidden">
+                    <div class="h-0.5 bg-[#0089CB]"></div>
+                    <div class="px-4 py-3">
+                        <p class="font-bold text-sm text-[#111111] mb-1">Registrar's Office</p>
+                        <p class="text-xs text-[#888888]">Documents, certifications, records</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 overflow-hidden">
+                    <div class="h-0.5 bg-[#0089CB]"></div>
+                    <div class="px-4 py-3">
+                        <p class="font-bold text-sm text-[#111111] mb-1">Library Services</p>
+                        <p class="text-xs text-[#888888]">Resources, access, research support</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 overflow-hidden">
+                    <div class="h-0.5 bg-[#0089CB]"></div>
+                    <div class="px-4 py-3">
+                        <p class="font-bold text-sm text-[#111111] mb-1">Finance Office</p>
+                        <p class="text-xs text-[#888888]">Payments, billing, scholarships</p>
+                    </div>
+                </div>
+                <div class="bg-white border border-gray-200 overflow-hidden">
+                    <div class="h-0.5 bg-[#FE8926]"></div>
+                    <div class="px-4 py-3 flex items-center">
+                        <a href="#" class="text-xs font-bold text-[#0089CB] hover:underline">+ View all departments →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
 
