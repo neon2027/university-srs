@@ -19,54 +19,34 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="bg-[#FDFDFC]">
-        <main class="max-w-7xl mx-auto px-4 py-16">
-            <div class="space-y-6">
-                <div>
-                    <h1 class="text-5xl flex flex-col">
-                        <span class="font-bold">Bicol University</span><span>Service Request System</span>
-                    </h1>
-                    <p class="text-lg max-w-2xl">
-                        Bicol University’s centralized platform for submitting, tracking, and managing service requests.
-                    </p>
-                </div>
-                <div class="*:border *:py-1 *:px-2.5 *:rounded-full space-x-2">
-                    <flux:badge color="blue">Faster communication</flux:badge>
-                    <flux:badge color="blue">Better efficiency</flux:badge>
-                    <flux:badge color="blue">All in one place</flux:badge>
-                </div>
-                <div class="flex gap-2">
-                    <flux:button variant="primary" color="blue">Request a Ticket</flux:button>
-                    <flux:button>Track your Ticket</flux:button>
-                </div>
-            </div>
+    <body class="bg-white">
 
-            <div class="mt-16">
-                <div class="text-center">
-                    <h1 class="text-3xl font-bold">How Does It Work?</h1>
-                    <p class=" max-w-2xl mt-4 mx-auto">
-                        Bicol University’s Service Request System is designed to streamline the process of submitting and managing service requests across the university. Whether you need IT support, maintenance services, or any other assistance, our platform makes it easy to get the help you need.
-                    </p>
-                </div>
+    {{-- 1. NAVBAR --}}
+    <nav class="bg-[#0089CB] px-6 lg:px-10 py-3 flex items-center justify-between">
+        <span class="text-white font-bold text-xs uppercase tracking-widest">BICOL UNIVERSITY — SERVICE REQUEST SYSTEM</span>
+        <div class="flex items-center gap-6">
+            <a href="{{ route(‘login’) }}" class="text-white/80 text-xs hover:text-white transition-colors">Log in</a>
+            <a href="{{ route(‘register’) }}" class="text-white/80 text-xs hover:text-white transition-colors border-l border-white/30 pl-6">Register</a>
+        </div>
+    </nav>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-                    <div class="flex flex-col items-center text-center">
-                        <flux:icon name="document" size="4xl" color="blue" />
-                        <h2 class="text-xl font-bold mt-4">Submit a Request</h2>
-                        <p class="mt-2">Easily submit your service request through our user-friendly interface.</p>
-                    </div>
-                    <div class="flex flex-col items-center text-center">
-                        <flux:icon name="clock" size="4xl" color="blue" />
-                        <h2 class="text-xl font-bold mt-4">Track Progress</h2>
-                        <p class="mt-2">Stay informed about the status of your request with real-time updates.</p>
-                    </div>  
-                    <div class="flex flex-col items-center text-center">
-                        <flux:icon name="check" size="4xl" color="blue" />
-                        <h2 class="text-xl font-bold mt-4">Get Resolved</h2>
-                        <p class="mt-2">Receive timely assistance and have your issues resolved efficiently.</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </body>
+    <main class="max-w-5xl mx-auto">
+
+        {{-- 2. HERO HEADLINE --}}
+        <div class="px-6 lg:px-10 py-12 border-b-2 border-black">
+            <h1 class="text-5xl lg:text-6xl font-black text-[#111111] leading-tight tracking-tight mb-4">
+                Get the help<br>you need — fast.
+            </h1>
+            <p class="text-sm text-[#555555] leading-relaxed max-w-lg">
+                Submit service requests to any Bicol University department online. No queues. No paperwork. Just results.
+            </p>
+        </div>
+
+        {{-- SECTIONS 3–6 WILL BE ADDED IN THE NEXT TASKS --}}
+
+    </main>
+
+    {{-- FOOTER WILL BE ADDED IN TASK 6 --}}
+
+</body>
 </html>
