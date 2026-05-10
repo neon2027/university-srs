@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
+use App\Enums\OnboardingStatus;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'google_id', 'avatar'])]
+#[Fillable(['name', 'email', 'google_id', 'avatar', 'onboarding_status', 'pending_office_id', 'onboarding_completed_at'])]
 #[Hidden(['remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
@@ -34,6 +36,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
+            'onboarding_completed_at' => 'datetime',
+            'onboarding_status' => OnboardingStatus::class,
         ];
     }
 
@@ -42,6 +46,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsToMany(Office::class)
             ->withPivot('is_primary')
             ->withTimestamps();
+    }
+
+    public function pendingOffice(): BelongsTo
+    {
+        return $this->belongsTo(Office::class, 'pending_office_id');
     }
 
     public function primaryOffice(): ?Office
