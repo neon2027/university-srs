@@ -33,7 +33,16 @@ test('student cannot access admin panel', function () {
 
     $this->actingAs($user)
         ->get('/admin')
-        ->assertRedirect();
+        ->assertForbidden();
+});
+
+test('office_admin can access admin panel', function () {
+    $user = User::factory()->create();
+    $user->assignRole('office_admin');
+
+    $this->actingAs($user)
+        ->get('/admin')
+        ->assertSuccessful();
 });
 
 test('unauthenticated user is redirected from admin panel', function () {
