@@ -14,6 +14,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -173,6 +174,12 @@ class TicketResource extends Resource
                             ->label('Resolved')
                             ->since()
                             ->placeholder('Not yet resolved'),
+                    ]),
+                Section::make('Messages')
+                    ->schema([
+                        ViewEntry::make('messaging')
+                            ->label('')
+                            ->view('livewire.admin.ticket-messaging-wrapper'),
                     ]),
             ]);
     }
