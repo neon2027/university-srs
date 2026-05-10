@@ -21,3 +21,17 @@ test('stats widget shows pending ticket count', function () {
     Livewire::test(TicketStatsOverview::class)
         ->assertSeeText('3');
 });
+
+test('stats widget shows resolved today count', function () {
+    // Resolved today (should be counted)
+    Ticket::factory()->count(2)->resolved()->create();
+
+    // Resolved yesterday (should NOT be counted)
+    Ticket::factory()->count(1)->create([
+        'status' => TicketStatus::Resolved,
+        'resolved_at' => now()->subDay(),
+    ]);
+
+    Livewire::test(TicketStatsOverview::class)
+        ->assertSeeText('2');
+});
