@@ -5,7 +5,7 @@
 
 ## Overview
 
-After a new user signs in with Google for the first time, they are shown a one-time onboarding screen asking whether they are a student or an employee. Students proceed directly to the portal. Employees select their office and are blocked pending verification by their office admin.
+After a new user signs in with Google for the first time, they are shown a one-time onboarding screen asking whether they are a student or an employee. Students proceed directly to the portal. Employees select their office and can immediately use the portal as a student while their verification is pending. A notice banner appears in the portal until the request is resolved.
 
 ---
 
@@ -36,7 +36,7 @@ User picks "Employee" + selects office
   → onboarding_status = pending_employee
   → pending_office_id = <selected>
   → onboarding_completed_at = now()
-  → redirect to /portal/pending (blocked screen)
+  → redirect to /portal/tickets (portal is accessible, notice banner shown)
 
 Admin approves
   → onboarding_status = null, pending_office_id = null
@@ -45,11 +45,11 @@ Admin approves
 
 Admin rejects
   → onboarding_status = rejected, pending_office_id = null
-  → rejection email sent to user
+  → rejection email sent to user (notice banner shown in portal)
 
-User re-applies (from rejected screen)
+User re-applies (from rejected banner)
   → onboarding_status = pending_employee, pending_office_id = <new office>
-  → back to blocked/pending screen
+  → notification sent to new office's admins, banner updated to pending
 ```
 
 **Migration note:** Existing users must have `onboarding_completed_at` backfilled to their `created_at` so they are not shown the onboarding screen again.
@@ -63,18 +63,18 @@ User re-applies (from rejected screen)
 | Route | Component | Guard |
 |---|---|---|
 | `GET /portal/onboarding` | `Livewire\Portal\Onboarding` | auth, `onboarding_completed_at = null` |
-| `GET /portal/pending` | `Livewire\Portal\PendingVerification` | auth, `onboarding_status = pending_employee` |
-| `GET /portal/rejected` | `Livewire\Portal\RejectedVerification` | auth, `onboarding_status = rejected` |
+
+All other `/portal/*` routes remain accessible regardless of `onboarding_status`.
 
 ### Middleware
 
-A new `EnsureOnboardingComplete` middleware, applied to all `/portal/*` routes except `/portal/onboarding`, `/portal/pending`, and `/portal/rejected`:
+The existing portal middleware is extended with one rule only:
 
 ```
 if onboarding_completed_at = null → redirect /portal/onboarding
-if onboarding_status = pending_employee → redirect /portal/pending
-if onboarding_status = rejected → redirect /portal/rejected
 ```
+
+Pending and rejected employees are NOT redirected — they use the portal normally as students.
 
 ### Screen 1 — Role Selection (`/portal/onboarding`)
 
@@ -88,17 +88,24 @@ Two cards: **Student** and **Employee**. User picks one.
 Searchable select of all active offices. Submit button calls `submitEmployeeRequest(officeId)`:
 - Sets `onboarding_status = pending_employee`, `pending_office_id`, `onboarding_completed_at`
 - Dispatches `EmployeeVerificationRequestedNotification` to all office admins of the selected office
-- Redirects to `/portal/pending`
+- Redirects to `/portal/tickets`
 
-### Screen 3a — Pending (`/portal/pending`)
+### Notice Banner (portal layout)
 
-Shows office name and a "waiting for approval" message. Sign out link only. No portal access.
+A persistent notice banner is rendered in the portal layout (`layouts/portal.blade.php`) when `onboarding_status` is not null. It sits above the main content area.
 
-### Screen 3b — Rejected (`/portal/rejected`)
+**Pending state banner:**
+> ⏳ Your request to join **Registrar's Office** is pending verification. You can submit tickets while you wait.
 
-Shows rejection message. Two actions:
-- **Apply to a Different Office** → reveals an inline office picker on the same page. User selects a new office and submits, which sets `onboarding_status = pending_employee` with the new `pending_office_id`, sends the notification to the new office's admins, and redirects to `/portal/pending`.
-- **Continue as Student** → clears `onboarding_status` (sets to null), keeps `student` role, redirects to `/portal/tickets`.
+**Rejected state banner:**
+> ✗ Your request to join **Registrar's Office** was not approved.
+> [Apply to a Different Office] [Continue as Student]
+
+**Apply to a Different Office** — reveals an inline office picker in the banner. User selects a new office and submits, which sets `onboarding_status = pending_employee` with the new `pending_office_id` and sends the notification to the new office's admins.
+
+**Continue as Student** — clears `onboarding_status` (sets to null), keeps `student` role, dismisses the banner.
+
+The banner is a Livewire component (`Livewire\Portal\OnboardingNotice`) included in the portal layout.
 
 ---
 
@@ -147,8 +154,8 @@ Shows rejection message. Two actions:
 
 - **Recipient:** the employee who applied
 - **Trigger:** admin approves or rejects
-- **Content (approved):** "Your affiliation with Registrar's Office has been verified. You can now access the portal. [Go to Portal →]"
-- **Content (rejected):** "Your request to join Registrar's Office was not approved. You may apply to a different office or continue as a student. [Try Again →]"
+- **Content (approved):** "Your affiliation with Registrar's Office has been verified. You now have staff access. [Go to Portal →]"
+- **Content (rejected):** "Your request to join Registrar's Office was not approved. Sign in and check your portal for next steps."
 - **Channel:** `mail`
 
 Both notifications use Laravel's `Notification` facade with the `Mail` channel. No queue needed.
@@ -162,14 +169,14 @@ Both notifications use Laravel's `Notification` facade with the `Mail` channel. 
 1. `OnboardingStatus` enum
 2. Migration: add `onboarding_status`, `pending_office_id`, `onboarding_completed_at` to users; backfill existing rows
 3. Update `User` model: casts, `pendingOffice` relation
-4. `EnsureOnboardingComplete` middleware + register on portal route group
+4. Extend portal middleware: redirect to `/portal/onboarding` when `onboarding_completed_at = null`
 5. `Livewire\Portal\Onboarding` component (two-step: role picker → office picker)
-6. `Livewire\Portal\PendingVerification` component
-7. `Livewire\Portal\RejectedVerification` component (with re-apply + continue as student)
+6. `Livewire\Portal\OnboardingNotice` banner component (pending + rejected states, re-apply flow)
+7. Include `OnboardingNotice` in portal layout blade
 8. `EmployeeRequestResource` with RBAC scope
 9. `ApproveEmployeeAction` Filament action
 10. `RejectEmployeeAction` Filament action
 11. `EmployeeVerificationRequestedNotification` (mail)
 12. `EmployeeVerificationResultNotification` (mail)
-13. Update `GoogleAuthController` callback: do not set `onboarding_completed_at` for new users (leave null to trigger onboarding)
-14. Tests: onboarding flow, middleware redirects, approve/reject actions, notifications
+13. Update `GoogleAuthController` callback: leave `onboarding_completed_at` null for new users
+14. Tests: onboarding flow, middleware redirect, approve/reject actions, banner states, notifications
