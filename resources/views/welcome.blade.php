@@ -18,51 +18,300 @@
         </style>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="bg-white">
 
     {{-- 1. NAVBAR --}}
-    <nav class="bg-[#0089CB] px-6 lg:px-10 py-3 flex items-center justify-between">
-        <span class="text-white font-bold text-xs uppercase tracking-widest">BICOL UNIVERSITY — SERVICE REQUEST SYSTEM</span>
-        <div class="flex items-center gap-6">
-            <a href="{{ route('login') }}" class="text-white/80 text-xs hover:text-white transition-colors">Log in</a>
-            <a href="{{ route('register') }}" class="text-white/80 text-xs hover:text-white transition-colors border-l border-white/30 pl-6">Register</a>
+    <header
+        x-data="{
+            scrolled: false,
+            mobileOpen: false,
+            init() {
+                this.scrolled = window.scrollY > 10;
+                window.addEventListener('scroll', () => { this.scrolled = window.scrollY > 10; }, { passive: true });
+            }
+        }"
+        x-effect="mobileOpen ? document.body.style.overflow = 'hidden' : document.body.style.overflow = ''"
+        :class="scrolled ? 'border-gray-200 bg-white/95 shadow-sm backdrop-blur-lg' : 'border-transparent'"
+        class="sticky top-0 z-50 w-full border-b transition-all duration-300"
+    >
+        <nav class="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
+            {{-- Left: Logo + Desktop Nav --}}
+            <div class="flex items-center gap-4">
+                {{-- Logo --}}
+                <a href="{{ route('home') }}" class="flex flex-col rounded-md px-2 py-1 leading-none hover:bg-black/5 transition-colors">
+                    <span class="text-[10px] font-extrabold tracking-widest text-[#0089CB]">BICOL UNIVERSITY</span>
+                    <span class="text-[9px] font-medium tracking-widest text-gray-500">SERVICE REQUEST SYSTEM</span>
+                </a>
+
+                {{-- Desktop: Offices Dropdown --}}
+                <div class="relative hidden md:block" x-data="{ open: false }" @click.away="open = false">
+                    <button
+                        @click="open = !open"
+                        :class="open ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'"
+                        class="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium transition-colors"
+                    >
+                        Offices
+                        <svg
+                            :class="open ? 'rotate-180' : ''"
+                            class="size-3.5 transition-transform duration-200"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div
+                        x-show="open"
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="opacity-0 scale-95"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-95"
+                        class="absolute left-0 top-full z-50 mt-1.5 w-72 origin-top-left rounded-md border border-gray-200 bg-white shadow-lg"
+                    >
+                        <ul class="space-y-px p-1.5">
+                            @foreach ($offices as $office)
+                            <li>
+                                <a
+                                    href="{{ route('login') }}"
+                                    class="flex items-center gap-3 rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
+                                >
+                                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm font-medium">{{ $office->name }}</span>
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                        <div class="border-t border-gray-100 px-4 py-2.5">
+                            <a href="{{ route('login') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-[#0089CB] hover:underline">
+                                View all offices
+                                <svg xmlns="http://www.w3.org/2000/svg" class="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Right: Auth buttons (desktop) --}}
+            <div class="hidden items-center gap-2 md:flex">
+                <a href="{{ route('login') }}" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
+                    Log In
+                </a>
+                <a href="{{ route('auth.google') }}" class="rounded-md bg-[#0089CB] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#0077b3]">
+                    Sign In with Google
+                </a>
+            </div>
+
+            {{-- Mobile: Hamburger button --}}
+            <button
+                @click="mobileOpen = !mobileOpen"
+                :aria-expanded="mobileOpen.toString()"
+                aria-controls="mobile-menu"
+                aria-label="Toggle menu"
+                class="rounded-md border border-gray-200 p-2 text-gray-600 transition-colors hover:bg-gray-50 md:hidden"
+            >
+                <svg x-show="!mobileOpen" xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <svg x-show="mobileOpen" style="display: none;" xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </nav>
+
+        {{-- Mobile Menu Overlay --}}
+        <div
+            id="mobile-menu"
+            x-show="mobileOpen"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            style="display: none;"
+            class="fixed inset-0 top-14 z-40 flex flex-col overflow-y-auto border-t border-gray-200 bg-white/95 backdrop-blur-lg md:hidden"
+        >
+            <div class="flex min-h-full flex-col justify-between gap-4 p-4">
+                <div class="flex flex-col gap-1">
+                    <p class="mb-1 px-3 text-xs font-semibold uppercase tracking-widest text-gray-400">Offices</p>
+                    @foreach ($offices as $office)
+                    <a
+                        href="{{ route('login') }}"
+                        class="flex items-center gap-3 rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-50"
+                    >
+                        <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">{{ $office->name }}</span>
+                    </a>
+                    @endforeach
+                    <a href="{{ route('login') }}" class="inline-flex items-center gap-1 px-3 py-2 text-xs font-semibold text-[#0089CB] hover:underline">
+                        View all offices
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="flex flex-col gap-2 border-t border-gray-100 pt-4">
+                    <a href="{{ route('login') }}" class="w-full rounded-md border border-gray-300 bg-transparent px-4 py-2.5 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
+                        Log In
+                    </a>
+                    <a href="{{ route('auth.google') }}" class="w-full rounded-md bg-[#0089CB] px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-[#0077b3]">
+                        Sign In with Google
+                    </a>
+                </div>
+            </div>
         </div>
-    </nav>
+    </header>
 
-    <main class="max-w-5xl mx-auto">
+    {{-- 2. HERO SECTION --}}
+    <style>
+    @keyframes busrs-fade-up {
+        from { opacity: 0; transform: translateY(16px); filter: blur(8px); }
+        to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+    }
+    .busrs-anim      { animation: busrs-fade-up 0.8s ease forwards; opacity: 0; }
+    .busrs-anim-d1   { animation-delay: 0.05s; }
+    .busrs-anim-d2   { animation-delay: 0.2s;  }
+    .busrs-anim-d3   { animation-delay: 0.4s;  }
+    .busrs-anim-d4   { animation-delay: 0.6s;  }
+    .busrs-anim-d5   { animation-delay: 0.85s; }
+    </style>
+    <section class="relative overflow-hidden pb-0 pt-24 md:pt-32">
+        {{-- Radial gradient: transparent at top, white at bottom --}}
+        <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 size-full" style="background:radial-gradient(125% 125% at 50% 100%,transparent 0%,white 75%)"></div>
 
-        {{-- 2. HERO HEADLINE --}}
-        <div class="px-6 lg:px-10 py-12 border-b-2 border-black">
-            <h1 class="text-5xl lg:text-6xl font-black text-[#111111] leading-tight tracking-tight mb-4">
+        {{-- Decorative blue blobs (desktop only) --}}
+        <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-20 hidden overflow-hidden lg:block">
+            <div class="absolute left-0 top-0 rounded-full" style="width:35rem;height:70rem;transform:translateY(-300px) rotate(-45deg);background:radial-gradient(68.54% 68.72% at 55.02% 31.46%,rgba(0,137,203,.07) 0,rgba(0,137,203,.01) 50%,transparent 80%)"></div>
+            <div class="absolute left-0 top-0 rounded-full" style="width:14rem;height:70rem;transform:translate(5%,-45%) rotate(-45deg);background:radial-gradient(50% 50% at 50% 50%,rgba(0,137,203,.04) 0,transparent 80%)"></div>
+        </div>
+
+        {{-- Centered content --}}
+        <div class="mx-auto max-w-4xl px-6 text-center">
+            {{-- Pill badge --}}
+            <div class="busrs-anim busrs-anim-d1 mb-8 flex justify-center">
+                <a href="{{ route('login') }}" class="group inline-flex items-center gap-3 rounded-full border border-gray-200 bg-gray-50 px-4 py-1.5 shadow-sm transition-all duration-300 hover:bg-white hover:shadow-md">
+                    <span class="text-sm text-gray-600">Now serving 10+ departments at Bicol University</span>
+                    <span class="h-4 w-px shrink-0 bg-gray-300"></span>
+                    <div class="flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm transition-all duration-300 group-hover:bg-[#0089CB]">
+                        <svg class="size-3 text-gray-500 transition-colors group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            {{-- Headline --}}
+            <h1 class="busrs-anim busrs-anim-d2 text-balance text-5xl font-black tracking-tight text-[#111111] md:text-6xl lg:text-[5rem]">
                 Get the help<br>you need — fast.
             </h1>
-            <p class="text-sm text-[#555555] leading-relaxed max-w-lg">
+
+            {{-- Subtitle --}}
+            <p class="busrs-anim busrs-anim-d3 mx-auto mt-6 max-w-xl text-balance text-lg text-gray-500">
                 Submit service requests to any Bicol University department online. No queues. No paperwork. Just results.
             </p>
+
+            {{-- CTAs --}}
+            <div class="busrs-anim busrs-anim-d4 mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <div class="flex flex-col items-center gap-1.5">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#0089CB]">New Request</span>
+                    <div class="rounded-[14px] border border-gray-200/80 bg-black/5 p-0.5">
+                        <a href="{{ route('login') }}" class="inline-flex items-center rounded-xl bg-[#0089CB] px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#0077b3]">
+                            Submit Now
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-gray-400">Track a Ticket</span>
+                    <a href="{{ route('login') }}" class="inline-flex items-center rounded-xl border border-gray-300 px-6 py-[11px] text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50">
+                        Track Now
+                    </a>
+                </div>
+            </div>
         </div>
 
-        {{-- 3. TWO ACTION COLUMNS --}}
-        <div class="flex flex-col md:flex-row border-b border-gray-200">
-            <div class="flex-1 px-6 lg:px-10 py-6 md:border-r border-gray-200">
-                <p class="text-[#0089CB] text-xs font-extrabold uppercase tracking-widest mb-2">New Request</p>
-                <p class="text-sm text-[#555555] leading-relaxed mb-5">
-                    Submit a ticket for IT support, maintenance, administrative concerns, or any university service.
-                </p>
-                <a href="{{ route('login') }}" class="inline-block bg-[#0089CB] text-white px-5 py-2 text-xs font-bold hover:bg-[#007ab5] transition-colors">
-                    Submit Now
-                </a>
-            </div>
-            <div class="flex-1 px-6 lg:px-10 py-6">
-                <p class="text-[#555555] text-xs font-extrabold uppercase tracking-widest mb-2">Track a Ticket</p>
-                <p class="text-sm text-[#555555] leading-relaxed mb-5">
-                    Already submitted? Enter your reference number to view real-time status and updates.
-                </p>
-                <a href="{{ route('login') }}" class="inline-block border-2 border-[#0089CB] text-[#0089CB] px-5 py-2 text-xs font-semibold hover:bg-[#0089CB] hover:text-white transition-colors">
-                    Track Now
-                </a>
+        {{-- Portal preview mockup --}}
+        <div class="busrs-anim busrs-anim-d5 relative mt-16 overflow-hidden px-4 sm:mt-20 md:mt-24">
+            {{-- Fade-to-white gradient overlay --}}
+            <div aria-hidden="true" class="pointer-events-none absolute inset-0 z-10" style="background:linear-gradient(to bottom,transparent 40%,white 100%)"></div>
+            <div class="mx-auto max-w-5xl">
+                <div class="overflow-hidden rounded-2xl border border-gray-200 shadow-2xl ring-1 ring-gray-100">
+                    {{-- Browser chrome bar --}}
+                    <div class="flex items-center justify-between border-b border-zinc-800 bg-zinc-900 px-4 py-3">
+                        <div class="flex items-center gap-3">
+                            <div class="flex gap-1.5">
+                                <div class="h-2.5 w-2.5 rounded-full bg-red-400/80"></div>
+                                <div class="h-2.5 w-2.5 rounded-full bg-yellow-400/80"></div>
+                                <div class="h-2.5 w-2.5 rounded-full bg-green-400/80"></div>
+                            </div>
+                            <span class="text-sm font-bold tracking-tight text-white">BUSRS</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-zinc-400">My Requests</span>
+                            <span class="rounded-lg bg-[#0089CB] px-3 py-1 text-xs font-semibold text-white">+ New Request</span>
+                        </div>
+                    </div>
+                    {{-- Ticket list --}}
+                    <div class="bg-zinc-950 p-4 sm:p-6">
+                        <div class="mb-4 flex items-center justify-between">
+                            <span class="text-xs font-semibold uppercase tracking-widest text-zinc-400">My Tickets</span>
+                            <span class="text-xs text-zinc-500">3 open</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3">
+                                <span class="shrink-0 rounded-md bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-400">Open</span>
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate text-sm font-medium text-zinc-100">WiFi access issue in Engineering Building</p>
+                                    <p class="text-xs text-zinc-500">IT Office · 2 hours ago</p>
+                                </div>
+                                <span class="hidden shrink-0 font-mono text-xs text-zinc-500 sm:block">BU-2026-001</span>
+                            </div>
+                            <div class="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3">
+                                <span class="shrink-0 rounded-md bg-blue-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-blue-400">In Progress</span>
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate text-sm font-medium text-zinc-100">Request for certified true copy of TOR</p>
+                                    <p class="text-xs text-zinc-500">Registrar · 1 day ago</p>
+                                </div>
+                                <span class="hidden shrink-0 font-mono text-xs text-zinc-500 sm:block">BU-2026-002</span>
+                            </div>
+                            <div class="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3">
+                                <span class="shrink-0 rounded-md bg-green-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-green-400">Resolved</span>
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate text-sm font-medium text-zinc-400">Broken air conditioning unit, Room 301</p>
+                                    <p class="text-xs text-zinc-600">Physical Plant · 3 days ago</p>
+                                </div>
+                                <span class="hidden shrink-0 font-mono text-xs text-zinc-600 sm:block">BU-2026-003</span>
+                            </div>
+                            <div class="flex items-center gap-3 rounded-lg border border-zinc-800/50 bg-zinc-900/50 px-4 py-3 opacity-60">
+                                <span class="shrink-0 rounded-md bg-zinc-700/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-500">Resolved</span>
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate text-sm font-medium text-zinc-500">Lost ID replacement request</p>
+                                    <p class="text-xs text-zinc-600">Student Affairs · 1 week ago</p>
+                                </div>
+                                <span class="hidden shrink-0 font-mono text-xs text-zinc-600 sm:block">BU-2026-004</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
+
+    <main class="max-w-5xl mx-auto">
 
         {{-- 4. STAT LINE --}}
         <div class="bg-[#F5FBFF] border-b border-[#E0F0FA] px-6 lg:px-10 py-3 flex flex-wrap items-center gap-3">
@@ -74,121 +323,395 @@
         </div>
 
         {{-- 5. HOW IT WORKS --}}
-        <div class="px-6 lg:px-10 py-10 border-b border-gray-200">
-            <h2 class="text-xs font-extrabold uppercase tracking-widest text-[#111111] border-l-4 border-[#0089CB] pl-3 mb-8">
+        <div class="border-b border-gray-200 px-6 py-20 text-center lg:px-10">
+            <span class="inline-flex items-center rounded-full bg-[#0089CB] px-2.5 py-0.5 text-xs font-semibold text-white">
                 How It Works
-            </h2>
-            <div>
-                <div class="flex gap-6 items-start pb-6">
-                    <span class="text-[#0089CB] font-black text-xl w-8 shrink-0 leading-none">01</span>
+            </span>
+            <h2 class="mt-4 text-4xl font-semibold text-[#111111]">Submit. Track. Resolved.</h2>
+            <p class="mt-6 font-medium text-gray-500">
+                Getting help from any Bicol University department is simple — just three steps.
+            </p>
+            <div class="mx-auto mt-14 max-w-lg text-left">
+                <div class="mb-8 flex gap-4">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-gray-100 font-mono text-xs font-semibold text-[#0089CB]">1</span>
                     <div>
-                        <p class="font-bold text-sm text-[#111111] mb-1">Submit your request online</p>
-                        <p class="text-xs text-[#666666] leading-relaxed">
-                            Fill out a short form describing your concern. Select the department and service type. No sign-up required for basic requests.
-                        </p>
+                        <h3 class="font-medium text-[#111111]">Submit your request online</h3>
+                        <p class="mt-1 text-sm text-gray-500">Fill out a short form describing your concern. Select the department and service type. No sign-up required for basic requests.</p>
                     </div>
                 </div>
-                <div class="border-t border-gray-100 ml-14 mb-6"></div>
-                <div class="flex gap-6 items-start pb-6">
-                    <span class="text-[#0089CB] font-black text-xl w-8 shrink-0 leading-none">02</span>
+                <div class="mb-8 flex gap-4">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-gray-100 font-mono text-xs font-semibold text-[#0089CB]">2</span>
                     <div>
-                        <p class="font-bold text-sm text-[#111111] mb-1">Your ticket is routed automatically</p>
-                        <p class="text-xs text-[#666666] leading-relaxed">
-                            The system forwards your request to the right department immediately. You receive a reference number to track progress.
-                        </p>
+                        <h3 class="font-medium text-[#111111]">Your ticket is routed automatically</h3>
+                        <p class="mt-1 text-sm text-gray-500">The system forwards your request to the right department immediately. You receive a reference number to track progress.</p>
                     </div>
                 </div>
-                <div class="border-t border-gray-100 ml-14 mb-6"></div>
-                <div class="flex gap-6 items-start">
-                    <span class="text-[#FE8926] font-black text-xl w-8 shrink-0 leading-none">03</span>
+                <div class="flex gap-4">
+                    <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-[#0089CB] font-mono text-xs font-semibold text-white">3</span>
                     <div>
-                        <p class="font-bold text-sm text-[#111111] mb-1">Get resolved and notified</p>
-                        <p class="text-xs text-[#666666] leading-relaxed">
-                            The assigned staff handles your request and updates the status. You are notified once your concern is resolved.
-                        </p>
+                        <h3 class="font-medium text-[#111111]">Get resolved and notified</h3>
+                        <p class="mt-1 text-sm text-gray-500">The assigned staff handles your request and updates the status. You are notified once your concern is resolved.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- 6. DEPARTMENTS & SERVICES --}}
-        <div class="bg-[#FAFAFA] px-6 lg:px-10 py-10 border-b border-gray-200">
-            <h2 class="text-xs font-extrabold uppercase tracking-widest text-[#111111] border-l-4 border-[#FE8926] pl-3 mb-6">
-                Departments & Services
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div class="bg-white border border-gray-200 overflow-hidden">
-                    <div class="h-0.5 bg-[#0089CB]"></div>
-                    <div class="px-4 py-3">
-                        <p class="font-bold text-sm text-[#111111] mb-1">Information Technology Office</p>
-                        <p class="text-xs text-[#888888]">Systems, networks, hardware, software</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 overflow-hidden">
-                    <div class="h-0.5 bg-[#0089CB]"></div>
-                    <div class="px-4 py-3">
-                        <p class="font-bold text-sm text-[#111111] mb-1">Physical Plant Office</p>
-                        <p class="text-xs text-[#888888]">Maintenance, repairs, facilities</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 overflow-hidden">
-                    <div class="h-0.5 bg-[#0089CB]"></div>
-                    <div class="px-4 py-3">
-                        <p class="font-bold text-sm text-[#111111] mb-1">Registrar's Office</p>
-                        <p class="text-xs text-[#888888]">Documents, certifications, records</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 overflow-hidden">
-                    <div class="h-0.5 bg-[#0089CB]"></div>
-                    <div class="px-4 py-3">
-                        <p class="font-bold text-sm text-[#111111] mb-1">Library Services</p>
-                        <p class="text-xs text-[#888888]">Resources, access, research support</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 overflow-hidden">
-                    <div class="h-0.5 bg-[#0089CB]"></div>
-                    <div class="px-4 py-3">
-                        <p class="font-bold text-sm text-[#111111] mb-1">Finance Office</p>
-                        <p class="text-xs text-[#888888]">Payments, billing, scholarships</p>
-                    </div>
-                </div>
-                <div class="bg-white border border-gray-200 overflow-hidden">
-                    <div class="h-0.5 bg-[#FE8926]"></div>
-                    <div class="px-4 py-3 flex items-center">
-                        <a href="#" class="text-xs font-bold text-[#0089CB] hover:underline">+ View all departments →</a>
-                    </div>
-                </div>
+        {{-- 6. FEATURE SHOWCASE --}}
+        <section class="py-20" aria-labelledby="features-heading">
+            <div class="mx-auto flex max-w-2xl flex-col gap-4 text-center">
+                <h2 id="features-heading" class="text-4xl font-semibold text-[#111111] md:text-5xl">
+                    Built for every student at Bicol University
+                </h2>
+                <p class="text-gray-500">
+                    From filing a request to getting it resolved — BUSRS handles the entire service lifecycle so offices and students never miss a step.
+                </p>
             </div>
-        </div>
+
+            <div class="mt-20 flex flex-col">
+
+                {{-- Feature 1: Guided Submission --}}
+                <div class="grid items-center gap-12 border-b border-gray-200 pb-16 mb-16 lg:grid-cols-3 xl:gap-20">
+                    <div class="flex flex-col gap-8 text-left sm:flex-row lg:col-span-2 lg:border-r lg:pr-12 border-gray-200">
+                        <div class="aspect-[29/35] w-full max-w-[200px] shrink-0 overflow-hidden rounded-2xl bg-zinc-900 ring-1 ring-zinc-700 transition-all duration-300 hover:scale-105 p-4 flex flex-col">
+                            <div class="flex items-center gap-1 mb-4">
+                                <div class="h-1 flex-1 rounded-full bg-[#0089CB]"></div>
+                                <div class="h-1 flex-1 rounded-full bg-[#0089CB]"></div>
+                                <div class="h-1 flex-1 rounded-full bg-zinc-700"></div>
+                                <div class="h-1 flex-1 rounded-full bg-zinc-700"></div>
+                                <div class="h-1 flex-1 rounded-full bg-zinc-700"></div>
+                            </div>
+                            <p class="text-[9px] text-zinc-500 mb-0.5">STEP 2 OF 5</p>
+                            <p class="text-xs font-semibold text-white mb-3">Select a Service</p>
+                            <div class="mb-1.5 flex items-center gap-2 rounded-md border border-zinc-700 bg-zinc-800/50 px-2.5 py-2">
+                                <div class="h-3 w-3 rounded-full border border-zinc-600"></div>
+                                <span class="text-[9px] text-zinc-400">Document Request</span>
+                            </div>
+                            <div class="mb-1.5 flex items-center gap-2 rounded-md border border-[#0089CB] bg-[#0089CB]/10 px-2.5 py-2">
+                                <div class="h-3 w-3 rounded-full bg-[#0089CB]"></div>
+                                <span class="text-[9px] text-zinc-200">Certificate of Registration</span>
+                            </div>
+                            <div class="mb-1.5 flex items-center gap-2 rounded-md border border-zinc-700 bg-zinc-800/50 px-2.5 py-2">
+                                <div class="h-3 w-3 rounded-full border border-zinc-600"></div>
+                                <span class="text-[9px] text-zinc-400">Transcript of Records</span>
+                            </div>
+                            <div class="mt-auto pt-4">
+                                <div class="w-full rounded-md bg-[#0089CB] py-1.5 text-center text-[9px] font-semibold text-white">Continue →</div>
+                            </div>
+                        </div>
+                        <figure class="flex flex-col justify-between gap-6 text-left">
+                            <blockquote>
+                                <h3 class="text-lg font-normal leading-relaxed text-gray-900 sm:text-xl">
+                                    Guided 5-Step Submission Wizard
+                                    <span class="mt-2 block text-base leading-relaxed text-gray-500">
+                                        Students follow a structured wizard — select an office, choose a service category, pick a service type, complete dynamic custom fields, then review before submitting. File attachments (PDF, JPG, PNG up to 10 MB) are supported at every step.
+                                    </span>
+                                </h3>
+                            </blockquote>
+                            <figcaption class="flex items-center gap-3">
+                                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#0089CB]">
+                                    <svg class="size-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Student Portal</p>
+                                    <p class="text-xs text-gray-500">Multi-step request submission</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6 self-center">
+                        <div class="flex flex-col gap-2 p-6"
+                             x-data="{ displayed: 0 }"
+                             x-init="
+                                 let obs = new IntersectionObserver(([e]) => {
+                                     if (!e.isIntersecting) return;
+                                     let n = 0;
+                                     let t = setInterval(() => { displayed = ++n; if (n >= 5) clearInterval(t); }, 100);
+                                     obs.disconnect();
+                                 }, { threshold: 0.4 });
+                                 obs.observe($el);
+                             ">
+                            <p class="text-4xl font-medium text-gray-900"><span x-text="displayed">0</span>-step</p>
+                            <p class="font-medium text-gray-900">Guided Wizard</p>
+                            <p class="text-gray-600">Office → Category → Service → Fields → Submit</p>
+                        </div>
+                        <div class="flex flex-col gap-2 p-6">
+                            <p class="text-4xl font-medium text-gray-900">10 MB</p>
+                            <p class="font-medium text-gray-900">File Attachments</p>
+                            <p class="text-gray-600">PDF, JPG, and PNG uploads per request</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Feature 2: Real-Time Tracking (reversed) --}}
+                <div class="grid items-center gap-12 border-b border-gray-200 pb-16 mb-16 lg:grid-cols-3 xl:gap-20">
+                    <div class="grid grid-cols-1 gap-6 self-center lg:order-1">
+                        <div class="flex flex-col gap-2 p-6"
+                             x-data="{ displayed: 0 }"
+                             x-init="
+                                 let obs = new IntersectionObserver(([e]) => {
+                                     if (!e.isIntersecting) return;
+                                     let n = 0;
+                                     let t = setInterval(() => { displayed = ++n; if (n >= 8) clearInterval(t); }, 90);
+                                     obs.disconnect();
+                                 }, { threshold: 0.4 });
+                                 obs.observe($el);
+                             ">
+                            <p class="text-4xl font-medium text-gray-900"><span x-text="displayed">0</span> statuses</p>
+                            <p class="font-medium text-gray-900">Full Lifecycle Tracking</p>
+                            <p class="text-gray-600">Pending → In Progress → Forwarded → Resolved</p>
+                        </div>
+                        <div class="flex flex-col gap-2 p-6">
+                            <p class="text-4xl font-medium text-gray-900">100%</p>
+                            <p class="font-medium text-gray-900">Audit Trail</p>
+                            <p class="text-gray-600">Every action timestamped and logged per ticket</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-8 text-left sm:flex-row lg:order-2 lg:col-span-2 lg:border-l lg:pl-12 border-gray-200">
+                        <div class="aspect-[29/35] w-full max-w-[200px] shrink-0 overflow-hidden rounded-2xl bg-zinc-900 ring-1 ring-zinc-700 transition-all duration-300 hover:scale-105 p-4 flex flex-col">
+                            <p class="text-[9px] font-semibold uppercase tracking-wider text-zinc-500 mb-3">My Requests</p>
+                            <div class="mb-2 rounded-md bg-zinc-800 p-2.5">
+                                <div class="mb-1 flex items-center justify-between">
+                                    <span class="font-mono text-[8px] text-zinc-500">BU-8A1F</span>
+                                    <span class="rounded-full bg-blue-400/10 px-1.5 py-0.5 text-[7px] font-semibold text-blue-400">In Progress</span>
+                                </div>
+                                <div class="h-1 w-full rounded-full bg-zinc-700"><div class="h-1 w-3/5 rounded-full bg-[#0089CB]"></div></div>
+                            </div>
+                            <div class="mb-2 rounded-md bg-zinc-800 p-2.5">
+                                <div class="mb-1 flex items-center justify-between">
+                                    <span class="font-mono text-[8px] text-zinc-500">BU-7D3C</span>
+                                    <span class="rounded-full bg-yellow-400/10 px-1.5 py-0.5 text-[7px] font-semibold text-yellow-400">Pending</span>
+                                </div>
+                                <div class="h-1 w-full rounded-full bg-zinc-700"><div class="h-1 w-1/5 rounded-full bg-[#0089CB]"></div></div>
+                            </div>
+                            <div class="mb-2 rounded-md bg-zinc-800 p-2.5">
+                                <div class="mb-1 flex items-center justify-between">
+                                    <span class="font-mono text-[8px] text-zinc-500">BU-4A9D</span>
+                                    <span class="rounded-full bg-green-400/10 px-1.5 py-0.5 text-[7px] font-semibold text-green-400">Resolved</span>
+                                </div>
+                                <div class="h-1 w-full rounded-full bg-zinc-700"><div class="h-1 w-full rounded-full bg-green-400"></div></div>
+                            </div>
+                            <div class="mt-auto border-t border-zinc-800 pt-3">
+                                <p class="mb-1.5 text-[8px] text-zinc-500">Timeline</p>
+                                <div class="flex gap-1">
+                                    <div class="flex-1 rounded bg-[#0089CB]/20 p-1 text-center text-[7px] text-[#0089CB]">Created</div>
+                                    <div class="flex-1 rounded bg-zinc-800 p-1 text-center text-[7px] text-zinc-500">Assigned</div>
+                                    <div class="flex-1 rounded bg-zinc-800 p-1 text-center text-[7px] text-zinc-500">Resolved</div>
+                                </div>
+                            </div>
+                        </div>
+                        <figure class="flex flex-col justify-between gap-6 text-left">
+                            <blockquote>
+                                <h3 class="text-lg font-normal leading-relaxed text-gray-900 sm:text-xl">
+                                    Real-Time Status Tracking & Messaging
+                                    <span class="mt-2 block text-base leading-relaxed text-gray-500">
+                                        Students track every ticket across 8 lifecycle statuses. A threaded message panel lets staff and students communicate with internal notes, canned responses, and read receipts — all recorded in a timestamped audit trail.
+                                    </span>
+                                </h3>
+                            </blockquote>
+                            <figcaption class="flex items-center gap-3">
+                                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#0089CB]">
+                                    <svg class="size-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Ticket Tracking</p>
+                                    <p class="text-xs text-gray-500">Real-time status & messaging</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                {{-- Feature 3: Smart Routing --}}
+                <div class="grid items-center gap-12 lg:grid-cols-3 xl:gap-20">
+                    <div class="flex flex-col gap-8 text-left sm:flex-row lg:col-span-2 lg:border-r lg:pr-12 border-gray-200">
+                        <div class="aspect-[29/35] w-full max-w-[200px] shrink-0 overflow-hidden rounded-2xl bg-zinc-900 ring-1 ring-zinc-700 transition-all duration-300 hover:scale-105 p-4 flex flex-col">
+                            <p class="text-[9px] font-semibold uppercase tracking-wider text-zinc-500 mb-3">Ticket Routing</p>
+                            <div class="mb-3">
+                                <p class="text-[8px] text-zinc-500 mb-1">PRIORITY</p>
+                                <div class="flex flex-wrap gap-1">
+                                    <span class="rounded-full bg-red-400/10 px-1.5 py-0.5 text-[7px] font-semibold text-red-400">Urgent</span>
+                                    <span class="rounded-full bg-orange-400/10 px-1.5 py-0.5 text-[7px] font-semibold text-orange-400">High</span>
+                                    <span class="rounded-full bg-blue-400/10 px-1.5 py-0.5 text-[7px] font-semibold text-blue-400 ring-1 ring-blue-400/30">Normal</span>
+                                    <span class="rounded-full bg-zinc-700 px-1.5 py-0.5 text-[7px] font-semibold text-zinc-400">Low</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-[8px] text-zinc-500 mb-1">FORWARD TO</p>
+                                <div class="flex items-center gap-1.5 rounded-md bg-zinc-800 px-2 py-1.5">
+                                    <div class="h-2 w-2 rounded-full bg-[#0089CB]"></div>
+                                    <span class="text-[8px] text-zinc-300">Physical Plant Office</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-[8px] text-zinc-500 mb-1">CREDIT TYPE</p>
+                                <div class="flex gap-1">
+                                    <span class="rounded bg-[#0089CB]/20 px-1.5 py-0.5 text-[7px] text-[#0089CB] ring-1 ring-[#0089CB]/30">Accept Credit</span>
+                                    <span class="rounded bg-zinc-800 px-1.5 py-0.5 text-[7px] text-zinc-500">Reference Only</span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <p class="text-[8px] text-zinc-500 mb-1">SLA TARGET</p>
+                                <div class="flex items-center gap-2">
+                                    <div class="h-1 flex-1 rounded-full bg-zinc-700"><div class="h-1 w-2/3 rounded-full bg-[#FE8926]"></div></div>
+                                    <span class="text-[8px] text-zinc-400">2d left</span>
+                                </div>
+                            </div>
+                            <div class="mt-auto">
+                                <div class="w-full rounded-md bg-[#0089CB] py-1.5 text-center text-[9px] font-semibold text-white">Forward Ticket →</div>
+                            </div>
+                        </div>
+                        <figure class="flex flex-col justify-between gap-6 text-left">
+                            <blockquote>
+                                <h3 class="text-lg font-normal leading-relaxed text-gray-900 sm:text-xl">
+                                    Smart Inter-Office Routing & Prioritization
+                                    <span class="mt-2 block text-base leading-relaxed text-gray-500">
+                                        Staff forward tickets between offices with Accept Credit or Reference Only attribution. Service types carry configurable SLA day targets, tickets range from Low to Urgent priority, and office-scoped canned responses speed up resolution.
+                                    </span>
+                                </h3>
+                            </blockquote>
+                            <figcaption class="flex items-center gap-3">
+                                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#FE8926]">
+                                    <svg class="size-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Office Administration</p>
+                                    <p class="text-xs text-gray-500">Routing, priority & SLA management</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6 self-center">
+                        <div class="flex flex-col gap-2 p-6"
+                             x-data="{ displayed: 0 }"
+                             x-init="
+                                 let obs = new IntersectionObserver(([e]) => {
+                                     if (!e.isIntersecting) return;
+                                     let n = 0;
+                                     let t = setInterval(() => { displayed = ++n; if (n >= 4) clearInterval(t); }, 150);
+                                     obs.disconnect();
+                                 }, { threshold: 0.4 });
+                                 obs.observe($el);
+                             ">
+                            <p class="text-4xl font-medium text-gray-900"><span x-text="displayed">0</span> levels</p>
+                            <p class="font-medium text-gray-900">Priority Tiers</p>
+                            <p class="text-gray-600">Low, Normal, High, and Urgent per ticket</p>
+                        </div>
+                        <div class="flex flex-col gap-2 p-6">
+                            <p class="text-4xl font-medium text-gray-900">SLA</p>
+                            <p class="font-medium text-gray-900">Day Targets</p>
+                            <p class="text-gray-600">Configurable resolution deadlines per service type</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
 
     </main>
 
     {{-- 7. FOOTER --}}
-    <footer class="bg-[#111111] px-6 lg:px-10 py-8">
-        <div class="max-w-5xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between gap-6 mb-6">
+    <footer class="border-t bg-gray-50/60">
+        <div class="mx-auto max-w-6xl px-4 lg:px-6">
+            {{-- 4-column link grid --}}
+            <div class="grid grid-cols-2 gap-8 py-8 md:grid-cols-4">
                 <div>
-                    <p class="font-bold text-sm text-white mb-1">Bicol University</p>
-                    <p class="text-xs text-[#888888] leading-relaxed">
-                        Service Request System<br>
-                        Legazpi City, Albay, Philippines
-                    </p>
+                    <h3 class="mb-4 text-xs font-semibold text-gray-900">University</h3>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="#" class="transition-colors hover:text-gray-900">About Bicol University</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">University Website</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">BU Portal</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Announcements</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Academic Calendar</a></li>
+                    </ul>
                 </div>
-                <div class="md:text-right">
-                    <p class="font-bold text-sm text-[#FE8926] mb-2">Technical Support</p>
-                    <p class="text-xs text-[#AAAAAA] leading-relaxed">
-                        itsupport@bicol-u.edu.ph<br>
-                        (052) 820-0000 loc. 101<br>
-                        Mon – Fri, 8:00 AM – 5:00 PM
-                    </p>
+                <div>
+                    <h3 class="mb-4 text-xs font-semibold text-gray-900">Departments</h3>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="{{ route('login') }}" class="transition-colors hover:text-gray-900">Information Technology Office</a></li>
+                        <li><a href="{{ route('login') }}" class="transition-colors hover:text-gray-900">Registrar's Office</a></li>
+                        <li><a href="{{ route('login') }}" class="transition-colors hover:text-gray-900">Physical Plant Office</a></li>
+                        <li><a href="{{ route('login') }}" class="transition-colors hover:text-gray-900">Student Affairs Office</a></li>
+                        <li><a href="{{ route('login') }}" class="transition-colors hover:text-gray-900">Finance Office</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="mb-4 text-xs font-semibold text-gray-900">Support</h3>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="mailto:itsupport@bicol-u.edu.ph" class="transition-colors hover:text-gray-900">Technical Support</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Help Center</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Getting Started</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">FAQs</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Report an Issue</a></li>
+                    </ul>
+                    <div class="mt-3 space-y-0.5">
+                        <p class="text-[11px] text-gray-400">itsupport@bicol-u.edu.ph</p>
+                        <p class="text-[11px] text-gray-400">(052) 820-0000 loc. 101</p>
+                        <p class="text-[11px] text-gray-400">Mon–Fri, 8:00 AM – 5:00 PM</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="mb-4 text-xs font-semibold text-gray-900">Legal</h3>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Privacy Policy</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Terms of Use</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Cookie Policy</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Data Protection</a></li>
+                        <li><a href="#" class="transition-colors hover:text-gray-900">Transparency Report</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="border-t border-[#333333] pt-4 flex flex-col md:flex-row justify-between items-center gap-2">
-                <p class="text-xs text-[#555555]">© 2025 Bicol University. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#" class="text-xs text-[#555555] hover:text-[#888888] transition-colors">Privacy Policy</a>
-                    <a href="#" class="text-xs text-[#555555] hover:text-[#888888] transition-colors">Terms of Use</a>
+
+            <div class="h-px bg-gray-200"></div>
+
+            {{-- Social icons + Coming Soon app buttons --}}
+            <div class="flex flex-wrap items-center justify-between gap-4 py-5">
+                {{-- Social icons --}}
+                <div class="flex items-center gap-2">
+                    <a href="#" aria-label="Facebook" class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-700">
+                        <svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="#" aria-label="X / Twitter" class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-700">
+                        <svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.745l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="#" aria-label="LinkedIn" class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-50 hover:text-gray-700">
+                        <svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
                 </div>
+
+                {{-- Coming Soon app buttons --}}
+                <div class="flex gap-3">
+                    <div class="flex flex-col items-center gap-1">
+                        <button disabled class="inline-flex h-11 cursor-not-allowed items-center gap-2 rounded-md bg-gray-800 px-4 py-2 opacity-40">
+                            <svg class="size-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M18.546 12.763c.024-1.87 1.004-3.597 2.597-4.576-1.009-1.442-2.64-2.323-4.399-2.378-1.851-.194-3.645 1.107-4.588 1.107-.961 0-2.413-1.088-3.977-1.056C6.122 5.927 4.25 7.068 3.249 8.867c-2.131 3.69-.542 9.114 1.5 12.097 1.022 1.461 2.215 3.092 3.778 3.035 1.529-.063 2.1-.975 3.945-.975 1.828 0 2.364.975 3.958.938 1.64-.027 2.674-1.467 3.66-2.942.734-1.041 1.299-2.191 1.673-3.408-1.949-.824-3.216-2.733-3.217-4.849z"/>
+                                <path d="M15.535 3.847C16.429 2.773 16.87 1.393 16.763 0c-1.366.144-2.629.797-3.535 1.829-.895 1.019-1.349 2.351-1.261 3.705 1.385.013 2.7-.609 3.568-1.687z"/>
+                            </svg>
+                            <div class="flex flex-col items-start pr-1 text-left text-white">
+                                <span class="text-[10px] leading-none tracking-tighter">Download on the</span>
+                                <span class="text-sm font-bold leading-none">App Store</span>
+                            </div>
+                        </button>
+                        <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Coming Soon</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <button disabled class="inline-flex h-11 cursor-not-allowed items-center gap-2 rounded-md bg-gray-800 px-4 py-2 opacity-40">
+                            <svg class="size-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="m21.762 9.942-17.092-9.564c-.721-.466-1.635-.504-2.393-.099C1.509.7 1.031 1.497 1.031 2.369v19.282c0 .872.477 1.668 1.246 2.079.755.404 1.668.37 2.393-.098l17.092-9.564c.756-.423 1.207-1.192 1.207-2.058s-.451-1.635-1.207-2.068zm-5.746-1.413-2.36 2.36-8.354-8.355 10.714 5.995zM2.604 21.906V2.094l9.941 9.906-9.941 9.906zm2.698-.439 8.355-8.355 2.36 2.36-10.715 5.995zm15.692-8.78-3.552 1.987-2.674-2.674 2.674-2.674 3.552 1.987c.363.203.402.548.402.686s-.039.483-.402.686z"/>
+                            </svg>
+                            <div class="flex flex-col items-start pr-1 text-left text-white">
+                                <span class="text-[10px] font-light leading-none tracking-tighter">GET IT ON</span>
+                                <span class="text-sm font-bold leading-none">Google Play</span>
+                            </div>
+                        </button>
+                        <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-400">Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-px bg-gray-200"></div>
+
+            <div class="py-4 text-center text-xs text-gray-400">
+                <p>© {{ date('Y') }} Bicol University — Service Request System. All rights reserved.</p>
             </div>
         </div>
     </footer>
