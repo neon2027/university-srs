@@ -50,6 +50,27 @@ class ForwardTicketAction extends Action
                     ->rows(3),
             ])
             ->action(function (Ticket $record, array $data): void {
+                if (in_array($record->status, [
+                    TicketStatus::Resolved,
+                    TicketStatus::Closed,
+                    TicketStatus::Cancelled,
+                    TicketStatus::Forwarded,
+                ])) {
+                    $this->halt();
+
+                    return;
+                }
+
+                $validOfficeIds = Office::where('is_active', true)
+                    ->where('id', '!=', $record->office_id)
+                    ->pluck('id');
+
+                if (! $validOfficeIds->contains($data['to_office_id'])) {
+                    $this->halt();
+
+                    return;
+                }
+
                 DB::transaction(function () use ($record, $data): void {
                     $fromOfficeId = $record->office_id;
                     $previousStatus = $record->status;
@@ -80,6 +101,7 @@ class ForwardTicketAction extends Action
                             'from_office_id' => $fromOfficeId,
                             'to_office_id' => $data['to_office_id'],
                             'credit_type' => $data['credit_type'],
+                            'note' => $data['note'] ?? null,
                         ],
                     ]);
                 });
