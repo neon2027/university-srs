@@ -37,12 +37,26 @@ class AssignTicketAction extends Action
                                 ->pluck('name', 'id');
                         }
 
-                        return $user->offices->flatMap->staff->pluck('name', 'id');
+                        return User::whereHas('offices', fn ($q) => $q->whereIn(
+                            'offices.id', $user->offices()->pluck('offices.id')
+                        ))->pluck('name', 'id');
                     })
                     ->searchable()
                     ->required(),
             ])
             ->action(function (Ticket $record, array $data): void {
+                $user = auth()->user();
+
+                $allowedIds = $user->hasRole('super_admin')
+                    ? User::whereHas('roles', fn ($q) => $q->whereIn('name', ['staff', 'office_admin']))->pluck('id')
+                    : User::whereHas('offices', fn ($q) => $q->whereIn('offices.id', $user->offices()->pluck('offices.id')))->pluck('id');
+
+                if (! $allowedIds->contains($data['assignee_id'])) {
+                    $this->halt();
+
+                    return;
+                }
+
                 DB::transaction(function () use ($record, $data): void {
                     $previousStatus = $record->status;
 
@@ -57,7 +71,6 @@ class AssignTicketAction extends Action
                         'event_type' => EventType::Assigned,
                         'from_status' => $previousStatus,
                         'to_status' => TicketStatus::Assigned,
-                        'note' => null,
                         'meta' => ['assignee_id' => $data['assignee_id']],
                     ]);
                 });

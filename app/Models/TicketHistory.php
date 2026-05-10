@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EventType;
+use App\Enums\TicketStatus;
 use Database\Factories\TicketHistoryFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,8 @@ class TicketHistory extends Model
     {
         return [
             'event_type' => EventType::class,
+            'from_status' => TicketStatus::class,
+            'to_status' => TicketStatus::class,
             'meta' => 'array',
         ];
     }
