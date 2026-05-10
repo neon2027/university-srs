@@ -58,6 +58,7 @@ class AssignTicketAction extends Action
                         'from_status' => $previousStatus,
                         'to_status' => TicketStatus::Assigned,
                         'note' => null,
+                        'meta' => ['assignee_id' => $data['assignee_id']],
                     ]);
                 });
             })
