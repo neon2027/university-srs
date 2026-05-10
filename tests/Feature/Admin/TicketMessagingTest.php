@@ -15,6 +15,7 @@ test('admin can send a message to student', function () {
     $admin = User::factory()->create();
     $admin->assignRole('staff');
     $ticket = Ticket::factory()->create();
+    $admin->offices()->attach($ticket->office_id);
 
     $this->actingAs($admin);
 
@@ -34,6 +35,7 @@ test('admin can send an internal note invisible to student', function () {
     $admin = User::factory()->create();
     $admin->assignRole('staff');
     $ticket = Ticket::factory()->create();
+    $admin->offices()->attach($ticket->office_id);
 
     $this->actingAs($admin);
 

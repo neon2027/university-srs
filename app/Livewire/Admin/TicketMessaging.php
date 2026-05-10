@@ -24,6 +24,19 @@ class TicketMessaging extends Component
 
     public function send(): void
     {
+        $user = auth()->user();
+
+        if (! $user->hasRole('super_admin') && $user->hasAnyRole(['staff', 'office_admin'])) {
+            $officeIds = $user->offices()->pluck('offices.id');
+            if (! $officeIds->contains($this->ticket->office_id)) {
+                return;
+            }
+        }
+
+        if ($this->isInternalNote && ! $user->hasAnyRole(['staff', 'office_admin', 'super_admin'])) {
+            $this->isInternalNote = false;
+        }
+
         $this->validate([
             'body' => 'required|string|max:5000',
         ]);
