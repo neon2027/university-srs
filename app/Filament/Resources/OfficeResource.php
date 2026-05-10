@@ -29,6 +29,11 @@ class OfficeResource extends Resource
 
     protected static ?int $navigationSort = 10;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('super_admin') ?? false;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
