@@ -10,15 +10,6 @@ use Livewire\Livewire;
 
 beforeEach(fn () => $this->seed(RoleSeeder::class));
 
-function makeStaff(Office $office): User
-{
-    $user = User::factory()->create();
-    $user->assignRole('staff');
-    $user->offices()->attach($office, ['is_primary' => true]);
-
-    return $user;
-}
-
 test('super_admin sees all tickets', function () {
     $admin = User::factory()->create();
     $admin->assignRole('super_admin');
@@ -30,19 +21,22 @@ test('super_admin sees all tickets', function () {
         ->assertCountTableRecords(5);
 });
 
-test('staff only sees their office tickets', function () {
+test('scoped roles only see their office tickets', function (string $role) {
     $office = Office::factory()->create();
     $otherOffice = Office::factory()->create();
-    $staff = makeStaff($office);
+
+    $user = User::factory()->create();
+    $user->assignRole($role);
+    $user->offices()->attach($office, ['is_primary' => true]);
 
     Ticket::factory()->count(3)->create(['office_id' => $office->id]);
     Ticket::factory()->count(2)->create(['office_id' => $otherOffice->id]);
 
-    $this->actingAs($staff);
+    $this->actingAs($user);
 
     Livewire::test(ListTickets::class)
         ->assertCountTableRecords(3);
-});
+})->with(['staff', 'office_admin']);
 
 test('ticket table shows status badge', function () {
     $admin = User::factory()->create();

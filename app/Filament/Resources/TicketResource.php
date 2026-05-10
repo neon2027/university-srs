@@ -33,18 +33,27 @@ class TicketResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $recordRouteKeyName = 'ulid';
+
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery()->with(['office', 'serviceType', 'requester', 'assignee']);
 
         $user = auth()->user();
 
-        if ($user->hasAnyRole(['staff', 'office_admin'])) {
-            $officeIds = $user->offices()->pluck('offices.id');
-            $query->whereIn('office_id', $officeIds);
+        if ($user === null) {
+            return $query->whereRaw('1 = 0');
         }
 
-        return $query;
+        if ($user->hasRole('super_admin')) {
+            return $query;
+        }
+
+        if ($user->hasAnyRole(['staff', 'office_admin'])) {
+            return $query->whereIn('office_id', $user->offices()->pluck('offices.id'));
+        }
+
+        return $query->whereRaw('1 = 0');
     }
 
     public static function table(Table $table): Table
@@ -69,24 +78,12 @@ class TicketResource extends Resource
                     ->searchable(),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (TicketStatus $state) => match ($state) {
-                        TicketStatus::Pending => 'warning',
-                        TicketStatus::Assigned, TicketStatus::InProgress => 'info',
-                        TicketStatus::Forwarded => 'primary',
-                        TicketStatus::Resolved, TicketStatus::Closed => 'success',
-                        TicketStatus::OnHold => 'gray',
-                        TicketStatus::Cancelled => 'danger',
-                    })
+                    ->color(fn (TicketStatus $state) => $state->color())
                     ->formatStateUsing(fn (TicketStatus $state) => $state->label()),
                 TextColumn::make('priority')
                     ->badge()
-                    ->color(fn (TicketPriority $state) => match ($state) {
-                        TicketPriority::Urgent => 'danger',
-                        TicketPriority::High => 'warning',
-                        TicketPriority::Normal => 'info',
-                        TicketPriority::Low => 'gray',
-                    })
-                    ->formatStateUsing(fn (TicketPriority $state) => ucfirst($state->value)),
+                    ->color(fn (TicketPriority $state) => $state->color())
+                    ->formatStateUsing(fn (TicketPriority $state) => $state->label()),
                 TextColumn::make('assignee.name')
                     ->label('Assigned To')
                     ->default('—')
@@ -97,13 +94,9 @@ class TicketResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->options(collect(TicketStatus::cases())->mapWithKeys(
-                        fn (TicketStatus $s) => [$s->value => $s->label()]
-                    )),
+                    ->options(collect(TicketStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->label()])),
                 SelectFilter::make('priority')
-                    ->options(collect(TicketPriority::cases())->mapWithKeys(
-                        fn (TicketPriority $p) => [$p->value => ucfirst($p->value)]
-                    )),
+                    ->options(collect(TicketPriority::cases())->mapWithKeys(fn ($p) => [$p->value => $p->label()])),
                 SelectFilter::make('office')
                     ->relationship('office', 'name')
                     ->visible(fn () => auth()->user()->hasRole('super_admin')),
@@ -127,14 +120,10 @@ class TicketResource extends Resource
         return $schema
             ->components([
                 Select::make('status')
-                    ->options(collect(TicketStatus::cases())->mapWithKeys(
-                        fn (TicketStatus $s) => [$s->value => $s->label()]
-                    ))
+                    ->options(collect(TicketStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->label()]))
                     ->required(),
                 Select::make('priority')
-                    ->options(collect(TicketPriority::cases())->mapWithKeys(
-                        fn (TicketPriority $p) => [$p->value => ucfirst($p->value)]
-                    ))
+                    ->options(collect(TicketPriority::cases())->mapWithKeys(fn ($p) => [$p->value => $p->label()]))
                     ->required(),
                 Select::make('assigned_to')
                     ->label('Assignee')
@@ -158,14 +147,7 @@ class TicketResource extends Resource
                             ->copyable(),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn (TicketStatus $state) => match ($state) {
-                                TicketStatus::Pending => 'warning',
-                                TicketStatus::Assigned, TicketStatus::InProgress => 'info',
-                                TicketStatus::Forwarded => 'primary',
-                                TicketStatus::Resolved, TicketStatus::Closed => 'success',
-                                TicketStatus::OnHold => 'gray',
-                                TicketStatus::Cancelled => 'danger',
-                            })
+                            ->color(fn (TicketStatus $state) => $state->color())
                             ->formatStateUsing(fn (TicketStatus $state) => $state->label()),
                         TextEntry::make('requester.name')
                             ->label('Requester'),
@@ -174,14 +156,9 @@ class TicketResource extends Resource
                         TextEntry::make('serviceType.name')
                             ->label('Service Type'),
                         TextEntry::make('priority')
-                            ->formatStateUsing(fn (TicketPriority $state) => ucfirst($state->value))
+                            ->formatStateUsing(fn (TicketPriority $state) => $state->label())
                             ->badge()
-                            ->color(fn (TicketPriority $state) => match ($state) {
-                                TicketPriority::Urgent => 'danger',
-                                TicketPriority::High => 'warning',
-                                TicketPriority::Normal => 'info',
-                                TicketPriority::Low => 'gray',
-                            }),
+                            ->color(fn (TicketPriority $state) => $state->color()),
                         TextEntry::make('assignee.name')
                             ->label('Assigned To')
                             ->default('Unassigned'),
@@ -191,7 +168,7 @@ class TicketResource extends Resource
                         TextEntry::make('resolved_at')
                             ->label('Resolved')
                             ->since()
-                            ->default('Not yet resolved'),
+                            ->placeholder('Not yet resolved'),
                     ]),
             ]);
     }
