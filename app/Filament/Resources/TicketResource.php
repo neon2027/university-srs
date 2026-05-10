@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
+use App\Filament\Actions\AssignTicketAction;
 use App\Filament\Resources\TicketResource\Pages;
 use App\Models\Ticket;
 use BackedEnum;
@@ -107,6 +108,7 @@ class TicketResource extends Resource
             ])
             ->recordActions([
                 ViewAction::make(),
+                AssignTicketAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
