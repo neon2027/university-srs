@@ -44,7 +44,7 @@ class UserResource extends Resource
                 ->unique(ignoreRecord: true)
                 ->maxLength(255),
             Select::make('roles')
-                ->label('Role')
+                ->label('Roles')
                 ->options(Role::pluck('name', 'name'))
                 ->multiple()
                 ->searchable()

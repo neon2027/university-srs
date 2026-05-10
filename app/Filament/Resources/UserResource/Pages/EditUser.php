@@ -20,5 +20,10 @@ class EditUser extends EditRecord
     {
         $roles = $this->data['roles'] ?? [];
         $this->record->syncRoles($roles);
+
+        // Prevent a super_admin from removing their own super_admin role
+        if ($this->record->is(auth()->user()) && ! $this->record->hasRole('super_admin')) {
+            $this->record->assignRole('super_admin');
+        }
     }
 }
