@@ -45,6 +45,12 @@ class GoogleAuthController extends Controller
             return redirect('/admin');
         }
 
-        return redirect('/portal/tickets');
+        // New users (onboarding_completed_at is null) go to onboarding.
+        // Returning users go straight to the portal.
+        if ($user->onboarding_completed_at === null) {
+            return redirect()->route('portal.onboarding');
+        }
+
+        return redirect()->route('portal.tickets.index');
     }
 }

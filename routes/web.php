@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Livewire\Portal\CreateTicket;
+use App\Livewire\Portal\Onboarding;
 use App\Livewire\Portal\TicketDetail;
 use App\Livewire\Portal\TicketList;
 use App\Models\Office;
@@ -31,8 +32,12 @@ require __DIR__.'/settings.php';
 Route::middleware(['auth', 'verified', 'role:student'])
     ->prefix('portal')
     ->name('portal.')
-    ->group(function () {
-        Route::get('/tickets', TicketList::class)->name('tickets.index');
-        Route::get('/tickets/create', CreateTicket::class)->name('tickets.create');
-        Route::get('/tickets/{ulid}', TicketDetail::class)->name('tickets.show');
+    ->group(function (): void {
+        Route::get('/onboarding', Onboarding::class)->name('onboarding');
+
+        Route::middleware('onboarding')->group(function (): void {
+            Route::get('/tickets', TicketList::class)->name('tickets.index');
+            Route::get('/tickets/create', CreateTicket::class)->name('tickets.create');
+            Route::get('/tickets/{ulid}', TicketDetail::class)->name('tickets.show');
+        });
     });
