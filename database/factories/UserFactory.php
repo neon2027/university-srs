@@ -46,6 +46,8 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'onboarding_status' => OnboardingStatus::PendingEmployee,
             'pending_office_id' => $office->id,
+            // The user completed the onboarding screen and submitted their request;
+            // onboarding_completed_at is set so the middleware does not redirect them back.
             'onboarding_completed_at' => now(),
         ]);
     }
