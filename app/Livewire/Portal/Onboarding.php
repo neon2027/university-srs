@@ -20,7 +20,9 @@ class Onboarding extends Component
 
     public function mount(): void
     {
-        if (auth()->user()->onboarding_completed_at !== null) {
+        $user = auth()->user();
+
+        if ($user->onboarding_completed_at !== null && $user->onboarding_status !== OnboardingStatus::Rejected) {
             $this->redirect(route('portal.tickets.index'), navigate: true);
         }
     }
@@ -47,17 +49,18 @@ class Onboarding extends Component
         $this->validate(['selectedOfficeId' => ['required', 'integer', 'exists:offices,id']]);
 
         $office = Office::findOrFail($this->selectedOfficeId);
+        $user = auth()->user();
 
-        auth()->user()->update([
+        $user->update([
             'onboarding_status' => OnboardingStatus::PendingEmployee,
             'pending_office_id' => $office->id,
             'onboarding_completed_at' => now(),
         ]);
 
-        $admins = $office->users()->role('office_admin')->get();
+        $admins = $office->staff()->role('office_admin')->get();
         Notification::send(
             $admins,
-            new EmployeeVerificationRequestedNotification(auth()->user(), $office)
+            new EmployeeVerificationRequestedNotification($user, $office)
         );
 
         $this->redirect(route('portal.tickets.index'), navigate: true);
