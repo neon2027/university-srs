@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable(['name', 'slug', 'description', 'email', 'is_active', 'sort_order'])]
+#[Fillable(['name', 'slug', 'description', 'email', 'citizen_charter', 'is_active', 'sort_order'])]
 class Office extends Model
 {
     /** @use HasFactory<OfficeFactory> */
