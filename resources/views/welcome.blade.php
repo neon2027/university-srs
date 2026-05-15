@@ -620,11 +620,11 @@
                 <div>
                     <h3 class="mb-4 text-xs font-semibold text-gray-900">University</h3>
                     <ul class="space-y-2 text-sm text-gray-500">
-                        <li><a href="#" class="transition-colors hover:text-gray-900">About Bicol University</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">University Website</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">BU Portal</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Announcements</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Academic Calendar</a></li>
+                        <li><a href="https://bicol-u.edu.ph/about-us/" class="transition-colors hover:text-gray-900"   target="_blank">About Bicol University</a></li>
+                        <li><a href="https://bicol-u.edu.ph/" class="transition-colors hover:text-gray-900"  target="_blank">University Website</a></li>
+                        <li><a href="https://ibu.bicol-u.edu.ph" class="transition-colors hover:text-gray-900"  target="_blank">iBU Portal</a></li>
+                        <li><a href="https://bicol-u.edu.ph/category/news/" class="transition-colors hover:text-gray-900"  target="_blank">Announcements</a></li>
+                        <li><a href="https://bicol-u.edu.ph/wp-content/uploads/2025/08/UNIVERSITY-CALENDAR-A.Y.-2025-2026.pdf" class="transition-colors hover:text-gray-900"  target="_blank">Academic Calendar</a></li>
                     </ul>
                 </div>
                 <div>
@@ -640,16 +640,15 @@
                 <div>
                     <h3 class="mb-4 text-xs font-semibold text-gray-900">Support</h3>
                     <ul class="space-y-2 text-sm text-gray-500">
-                        <li><a href="mailto:itsupport@bicol-u.edu.ph" class="transition-colors hover:text-gray-900">Technical Support</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Help Center</a></li>
+                        <li><a href="https://icto.bicol-u.edu.ph" class="transition-colors hover:text-gray-900">Technical Support</a></li>
+                        <li><a href="https://icto.bicol-u.edu.ph" class="transition-colors hover:text-gray-900"  target="_blank">Help Center</a></li>
                         <li><a href="#" class="transition-colors hover:text-gray-900">Getting Started</a></li>
                         <li><a href="#" class="transition-colors hover:text-gray-900">FAQs</a></li>
                         <li><a href="{{ route('project.overview') }}" class="transition-colors hover:text-gray-900">Project overview</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Report an Issue</a></li>
+                        <li><a href="https://icto.bicol-u.edu.ph" class="transition-colors hover:text-gray-900">Report an Issue</a></li>
                     </ul>
                     <div class="mt-3 space-y-0.5">
-                        <p class="text-[11px] text-gray-400">itsupport@bicol-u.edu.ph</p>
-                        <p class="text-[11px] text-gray-400">(052) 820-0000 loc. 101</p>
+                        <p class="text-[11px] text-gray-400">exequielmarbella.lustan@bicol-u.edu.ph</p>
                         <p class="text-[11px] text-gray-400">Mon–Fri, 8:00 AM – 5:00 PM</p>
                     </div>
                 </div>
