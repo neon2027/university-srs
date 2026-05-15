@@ -7,6 +7,7 @@ use App\Models\TicketAttachment;
 use App\Models\TicketHistory;
 use App\Models\TicketMessage;
 use App\Models\User;
+use Illuminate\Support\Facades\Schema;
 
 test('ticket history records a status change event', function () {
     $ticket = Ticket::factory()->create();
@@ -64,4 +65,21 @@ test('ticket attachment can belong to a message', function () {
     ]);
 
     expect($attachment->message->id)->toBe($message->id);
+});
+
+test('ticket_messages sender_id is nullable', function () {
+    $columns = Schema::getColumns('ticket_messages');
+    $senderCol = collect($columns)->firstWhere('name', 'sender_id');
+    expect($senderCol['nullable'])->toBeTrue();
+});
+
+test('ticket_messages has guest_name and requests_attachment columns', function () {
+    expect(Schema::hasColumn('ticket_messages', 'guest_name'))->toBeTrue();
+    expect(Schema::hasColumn('ticket_messages', 'requests_attachment'))->toBeTrue();
+});
+
+test('ticket_attachments uploader_id is nullable', function () {
+    $columns = Schema::getColumns('ticket_attachments');
+    $uploaderCol = collect($columns)->firstWhere('name', 'uploader_id');
+    expect($uploaderCol['nullable'])->toBeTrue();
 });

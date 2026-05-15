@@ -28,4 +28,17 @@ class TicketMessageFactory extends Factory
     {
         return $this->state(fn (array $attributes) => ['is_internal_note' => true]);
     }
+
+    public function guestReply(string $guestName = 'Test User'): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'sender_id' => null,
+            'guest_name' => $guestName,
+        ]);
+    }
+
+    public function requestingAttachment(): static
+    {
+        return $this->state(fn (array $attributes) => ['requests_attachment' => true]);
+    }
 }

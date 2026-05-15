@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['ticket_id', 'sender_id', 'body', 'is_internal_note', 'is_canned_response', 'seen_at'])]
+#[Fillable(['ticket_id', 'sender_id', 'guest_name', 'body', 'is_internal_note', 'is_canned_response', 'requests_attachment', 'seen_at'])]
 class TicketMessage extends Model
 {
     /** @use HasFactory<TicketMessageFactory> */
@@ -20,6 +20,7 @@ class TicketMessage extends Model
         return [
             'is_internal_note' => 'boolean',
             'is_canned_response' => 'boolean',
+            'requests_attachment' => 'boolean',
             'seen_at' => 'datetime',
         ];
     }
