@@ -1,4 +1,5 @@
-<div class="portal-thread" wire:poll.5s>
+<div class="flex flex-col overflow-hidden h-[calc(100dvh-120px)] min-h-[640px] border border-slate-200 rounded-[18px] bg-slate-50 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,.16)] dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:shadow-[0_18px_40px_rgba(0,0,0,.35)] max-[1180px]:h-auto max-[1180px]:min-h-0 max-[820px]:h-auto max-[820px]:min-h-0"
+     wire:poll.5s>
     @php
         $initials = \Illuminate\Support\Str::of(auth()->user()->name)
             ->explode(' ')
@@ -7,755 +8,73 @@
             ->implode('');
     @endphp
 
-    <style>
-        .portal-thread,
-        .portal-thread * {
-            box-sizing: border-box;
-        }
-
-        .portal-thread {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: calc(100dvh - 120px);
-            min-height: 640px;
-            border: 1px solid #dbe3ee;
-            border-radius: 18px;
-            background: #f8fafc;
-            color: #102033;
-            box-shadow: 0 18px 40px rgba(15, 23, 42, .16);
-        }
-
-        .pt-topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 12px 16px;
-            border-bottom: 1px solid #dbe3ee;
-            background: #ffffff;
-        }
-
-        .pt-breadcrumb {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .pt-id {
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            color: #1d4ed8;
-            font-weight: 800;
-        }
-
-        .pt-action {
-            display: inline-flex;
-            align-items: center;
-            border-radius: 8px;
-            background: #f97316;
-            color: #ffffff;
-            padding: 9px 12px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .pt-grid {
-            flex: 1;
-            min-height: 0;
-            display: grid;
-            grid-template-columns: 310px minmax(0, 1fr) 310px;
-            gap: 1px;
-            background: #dbe3ee;
-            overflow: hidden;
-        }
-
-        .pt-rail,
-        .pt-center,
-        .pt-side {
-            background: #ffffff;
-        }
-
-        .pt-rail {
-            overflow-y: auto;
-        }
-
-        .pt-center {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 0;
-            background: #f8fafc;
-            padding: 18px;
-        }
-
-        .pt-side {
-            overflow-y: auto;
-            padding: 18px;
-        }
-
-        .pt-rail-head {
-            padding: 14px 16px;
-            border-bottom: 1px solid #eef2f7;
-        }
-
-        .pt-rail-title {
-            margin: 0;
-            color: #0f172a;
-            font-size: 14px;
-            font-weight: 850;
-        }
-
-        .pt-ticket-link {
-            display: block;
-            padding: 14px 16px;
-            border-bottom: 1px solid #eef2f7;
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .pt-ticket-link:hover,
-        .pt-ticket-link-active {
-            background: #f1f7ff;
-        }
-
-        .pt-ticket-title {
-            margin: 0;
-            color: #0f172a;
-            font-size: 13px;
-            font-weight: 800;
-            line-height: 1.35;
-        }
-
-        .pt-ticket-meta {
-            margin: 5px 0 0;
-            color: #64748b;
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-        .pt-status-dot {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            margin-right: 5px;
-            border-radius: 999px;
-            background: #2563eb;
-        }
-
-        .pt-card {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 0;
-            border: 1px solid #dbe3ee;
-            border-radius: 12px;
-            background: #ffffff;
-            box-shadow: 0 5px 18px rgba(15, 23, 42, .05);
-        }
-
-        .pt-card-head {
-            padding: 18px 20px;
-            border-bottom: 1px solid #dbe3ee;
-        }
-
-        .pt-title-row {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 14px;
-        }
-
-        .pt-title {
-            margin: 0;
-            color: #0f172a;
-            font-size: 22px;
-            font-weight: 850;
-            line-height: 1.25;
-        }
-
-        .pt-subtitle {
-            margin: 7px 0 0;
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .pt-badge-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 14px;
-        }
-
-        .pt-badge {
-            border-radius: 999px;
-            background: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #bfdbfe;
-            padding: 5px 10px;
-            font-size: 12px;
-            font-weight: 850;
-        }
-
-        .pt-badge-priority {
-            background: #fff7ed;
-            color: #c2410c;
-            border-color: #fed7aa;
-        }
-
-        .pt-request {
-            padding: 20px;
-            border-bottom: 1px solid #dbe3ee;
-            background: #e8f3ff;
-        }
-
-        .pt-author {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 14px;
-        }
-
-        .pt-avatar {
-            display: grid;
-            width: 42px;
-            height: 42px;
-            place-items: center;
-            border-radius: 10px;
-            background: #ddd6fe;
-            color: #5b21b6;
-            font-size: 13px;
-            font-weight: 900;
-            flex: 0 0 auto;
-        }
-
-        .pt-author-name {
-            margin: 0;
-            color: #0f172a;
-            font-size: 14px;
-            font-weight: 850;
-        }
-
-        .pt-description {
-            white-space: pre-wrap;
-            color: #1e293b;
-            font-size: 14px;
-            line-height: 1.65;
-        }
-
-        .pt-description-clamped {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .pt-see-more {
-            display: inline-block;
-            margin-top: 8px;
-            background: none;
-            border: none;
-            padding: 0;
-            color: #2563eb;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            line-height: 1.5;
-        }
-
-        .pt-messages {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 0;
-            padding: 20px;
-        }
-
-        .pt-section-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-
-        .pt-section-title {
-            margin: 0;
-            color: #0f172a;
-            font-size: 15px;
-            font-weight: 850;
-        }
-
-        .pt-count {
-            border-radius: 999px;
-            background: #f1f5f9;
-            color: #475569;
-            padding: 5px 10px;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .pt-message-list {
-            flex: 1;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            overflow-y: auto;
-            padding: 4px 8px 4px 0;
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 transparent;
-        }
-
-        .pt-message {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            max-width: 78%;
-            align-self: flex-start;
-        }
-
-        .pt-message-mine {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-
-        .pt-bubble-avatar {
-            display: grid;
-            width: 30px;
-            height: 30px;
-            place-items: center;
-            border-radius: 999px;
-            background: #e2e8f0;
-            color: #475569;
-            font-size: 11px;
-            font-weight: 900;
-            flex: 0 0 auto;
-        }
-
-        .pt-message-mine .pt-bubble-avatar {
-            background: #dbeafe;
-            color: #1d4ed8;
-        }
-
-        .pt-bubble-content {
-            min-width: 0;
-        }
-
-        .pt-bubble {
-            border-radius: 18px 18px 18px 6px;
-            background: #f1f5f9;
-            color: #0f172a;
-            padding: 10px 13px;
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-            font-size: 14px;
-            line-height: 1.5;
-            box-shadow: 0 2px 8px rgba(15, 23, 42, .04);
-        }
-
-        .pt-message-mine .pt-bubble {
-            border-radius: 18px 18px 6px 18px;
-            background: #2563eb;
-            color: #ffffff;
-        }
-
-        .pt-bubble-meta {
-            margin-top: 4px;
-            color: #64748b;
-            font-size: 11px;
-        }
-
-        .pt-message-mine .pt-bubble-meta {
-            text-align: right;
-        }
-
-        .pt-compose {
-            margin-top: 16px;
-            border: 1px solid #dbe3ee;
-            border-radius: 10px;
-            background: #ffffff;
-            padding: 14px;
-        }
-
-        .pt-compose textarea {
-            display: block;
-            width: 100%;
-            min-height: 104px;
-            resize: vertical;
-            border: 1px solid #cbd5e1;
-            border-radius: 9px;
-            background: #ffffff;
-            color: #0f172a;
-            padding: 10px 12px;
-            font-size: 14px;
-            line-height: 1.6;
-            outline: 0;
-        }
-
-        .pt-compose textarea:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
-        }
-
-        .pt-compose-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .pt-helper {
-            color: #64748b;
-            font-size: 12px;
-        }
-
-        .pt-send {
-            border: 0;
-            border-radius: 9px;
-            background: #111827;
-            color: #ffffff;
-            padding: 10px 14px;
-            font-size: 13px;
-            font-weight: 850;
-            cursor: pointer;
-        }
-
-        .pt-error {
-            margin-top: 8px;
-            color: #b91c1c;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .pt-panel {
-            padding: 18px 0;
-            border-bottom: 1px solid #dbe3ee;
-        }
-
-        .pt-panel:first-child {
-            padding-top: 0;
-        }
-
-        .pt-panel:last-child {
-            border-bottom: 0;
-        }
-
-        .pt-panel-title {
-            margin: 0 0 14px;
-            color: #475569;
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: .04em;
-            text-transform: uppercase;
-        }
-
-        .pt-detail-list {
-            display: grid;
-            gap: 14px;
-        }
-
-        .pt-detail-list dt {
-            color: #64748b;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .pt-detail-list dd {
-            margin: 4px 0 0;
-            color: #0f172a;
-            font-size: 14px;
-            font-weight: 850;
-            overflow-wrap: anywhere;
-        }
-
-        .pt-kb-item,
-        .pt-timeline-item {
-            display: flex;
-            gap: 10px;
-            padding: 11px 0;
-            border-bottom: 1px solid #eef2f7;
-        }
-
-        .pt-kb-icon,
-        .pt-timeline-dot {
-            display: grid;
-            width: 32px;
-            height: 32px;
-            place-items: center;
-            border-radius: 8px;
-            background: #e0f2fe;
-            color: #0369a1;
-            font-size: 12px;
-            font-weight: 900;
-            flex: 0 0 auto;
-        }
-
-        .pt-kb-icon svg {
-            width: 17px;
-            height: 17px;
-            stroke-width: 2;
-        }
-
-        .pt-timeline-dot {
-            width: 10px;
-            height: 10px;
-            margin-top: 5px;
-            border-radius: 999px;
-            background: #2563eb;
-        }
-
-        .pt-kb-item strong,
-        .pt-timeline-item strong {
-            display: block;
-            color: #0f172a;
-            font-size: 13px;
-        }
-
-        .pt-kb-item span,
-        .pt-timeline-item span {
-            display: block;
-            margin-top: 3px;
-            color: #64748b;
-            font-size: 12px;
-        }
-
-        .dark .portal-thread {
-            border-color: #27272a;
-            background: #18181b;
-            color: #e4e4e7;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, .35);
-        }
-
-        .dark .pt-topbar,
-        .dark .pt-rail,
-        .dark .pt-side,
-        .dark .pt-card,
-        .dark .pt-compose {
-            border-color: #27272a;
-            background: #09090b;
-        }
-
-        .dark .pt-grid {
-            background: #27272a;
-        }
-
-        .dark .pt-center {
-            background: #0f0f12;
-        }
-
-        .dark .pt-title,
-        .dark .pt-rail-title,
-        .dark .pt-ticket-title,
-        .dark .pt-section-title,
-        .dark .pt-author-name,
-        .dark .pt-detail-list dd,
-        .dark .pt-kb-item strong,
-        .dark .pt-timeline-item strong {
-            color: #f4f4f5;
-        }
-
-        .dark .pt-breadcrumb,
-        .dark .pt-subtitle,
-        .dark .pt-ticket-meta,
-        .dark .pt-helper,
-        .dark .pt-panel-title,
-        .dark .pt-detail-list dt,
-        .dark .pt-kb-item span,
-        .dark .pt-timeline-item span {
-            color: #a1a1aa;
-        }
-
-        .dark .pt-rail-head,
-        .dark .pt-ticket-link,
-        .dark .pt-card-head,
-        .dark .pt-request,
-        .dark .pt-panel,
-        .dark .pt-kb-item,
-        .dark .pt-timeline-item {
-            border-color: #27272a;
-        }
-
-        .dark .pt-ticket-link:hover,
-        .dark .pt-ticket-link-active,
-        .dark .pt-count {
-            background: #18181b;
-        }
-
-        .dark .pt-badge {
-            border-color: #1d4ed8;
-            background: rgba(37, 99, 235, .18);
-            color: #93c5fd;
-        }
-
-        .dark .pt-badge-priority {
-            border-color: #c2410c;
-            background: rgba(234, 88, 12, .14);
-            color: #fdba74;
-        }
-
-        .dark .pt-request {
-            border-color: #1d4ed8;
-            background: rgba(30, 64, 175, .22);
-        }
-
-        .dark .pt-message-list {
-            scrollbar-color: #52525b transparent;
-        }
-
-        .dark .pt-description {
-            color: #e4e4e7;
-        }
-
-        .dark .pt-see-more {
-            color: #60a5fa;
-        }
-
-        .dark .pt-bubble-avatar {
-            background: #27272a;
-            color: #d4d4d8;
-        }
-
-        .dark .pt-message-mine .pt-bubble-avatar {
-            background: rgba(37, 99, 235, .22);
-            color: #bfdbfe;
-        }
-
-        .dark .pt-bubble {
-            background: #27272a;
-            color: #f4f4f5;
-        }
-
-        .dark .pt-message-mine .pt-bubble {
-            background: #2563eb;
-            color: #ffffff;
-        }
-
-        .dark .pt-bubble-meta {
-            color: #a1a1aa;
-        }
-
-        .dark .pt-compose textarea {
-            border-color: #3f3f46;
-            background: #18181b;
-            color: #f4f4f5;
-        }
-
-        .dark .pt-send {
-            background: #2563eb;
-        }
-
-        .dark .pt-avatar {
-            background: rgba(124, 58, 237, .22);
-            color: #c4b5fd;
-        }
-
-        .dark .pt-kb-icon {
-            background: rgba(14, 165, 233, .16);
-            color: #7dd3fc;
-        }
-
-        @media (max-width: 1180px) {
-            .pt-grid {
-                grid-template-columns: 300px minmax(0, 1fr);
-            }
-
-            .pt-side {
-                grid-column: 1 / -1;
-            }
-        }
-
-        @media (max-width: 820px) {
-            .pt-topbar,
-            .pt-title-row,
-            .pt-compose-actions {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .pt-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-
-    <header class="pt-topbar">
-        <div class="pt-breadcrumb">
-            <a href="{{ route('portal.tickets.index') }}" wire:navigate>All requests</a>
+    {{-- Topbar --}}
+    <header class="flex items-center justify-between gap-4 px-4 py-3 border-b border-slate-200 bg-white shrink-0 dark:border-zinc-800 dark:bg-zinc-900 max-[820px]:flex-col max-[820px]:items-start">
+        <div class="flex flex-wrap gap-2 items-center text-slate-500 text-sm">
+            <a href="{{ route('portal.tickets.index') }}" wire:navigate class="hover:text-slate-900 dark:hover:text-zinc-100">All requests</a>
             <span>/</span>
-            <span class="pt-id">{{ $ticket->ulid }}</span>
+            <span class="font-mono text-blue-700 font-extrabold dark:text-blue-400">{{ $ticket->ulid }}</span>
         </div>
-
-        <a href="{{ route('portal.tickets.create') }}" wire:navigate class="pt-action">New Request</a>
+        <a href="{{ route('portal.tickets.create') }}" wire:navigate
+           class="inline-flex items-center rounded-lg bg-orange-500 text-white px-3 py-2 text-sm font-extrabold no-underline hover:bg-orange-600 transition-colors">
+            New Request
+        </a>
     </header>
 
-    <div class="pt-grid">
-        <aside class="pt-rail">
-            <div class="pt-rail-head">
-                <p class="pt-rail-title">Requests</p>
+    {{-- 3-column grid --}}
+    <div class="flex-1 min-h-0 grid grid-cols-[310px_minmax(0,1fr)_310px] gap-px bg-slate-200 overflow-hidden dark:bg-zinc-800 max-[1180px]:grid-cols-[300px_minmax(0,1fr)] max-[1180px]:flex-none max-[1180px]:overflow-visible max-[820px]:grid-cols-1 max-[820px]:flex max-[820px]:flex-col max-[820px]:bg-transparent">
+
+        {{-- Left Rail --}}
+        <aside class="bg-white overflow-y-auto dark:bg-zinc-900 max-[820px]:overflow-visible">
+            <div class="px-4 py-3.5 border-b border-slate-100 dark:border-zinc-800">
+                <p class="m-0 text-sm font-extrabold text-slate-900 dark:text-zinc-100">Requests</p>
             </div>
 
             @foreach ($recentTickets as $recent)
                 <a href="{{ route('portal.tickets.show', $recent->ulid) }}" wire:navigate
-                    class="pt-ticket-link {{ $recent->id === $ticket->id ? 'pt-ticket-link-active' : '' }}">
-                    <p class="pt-ticket-title">{{ $recent->subject }}</p>
-                    <p class="pt-ticket-meta">
-                        <span class="pt-status-dot"></span>{{ $recent->status->label() }}<br>
+                   class="block px-4 py-3.5 border-b border-slate-100 text-inherit no-underline transition-colors dark:border-zinc-800 {{ $recent->id === $ticket->id ? 'bg-blue-50 dark:bg-zinc-800' : 'hover:bg-blue-50/60 dark:hover:bg-zinc-800/60' }}">
+                    <p class="m-0 text-sm font-extrabold text-slate-900 leading-snug dark:text-zinc-100">{{ $recent->subject }}</p>
+                    <p class="mt-1 m-0 text-slate-500 text-xs leading-snug dark:text-zinc-400">
+                        <span class="inline-block w-[7px] h-[7px] mr-1 rounded-full bg-blue-600 align-middle"></span>{{ $recent->status->label() }}<br>
                         {{ $recent->ulid }} · {{ $recent->updated_at->diffForHumans() }}
                     </p>
                 </a>
             @endforeach
         </aside>
 
-        <main class="pt-center">
-            <section class="pt-card">
-                <div class="pt-card-head">
-                    <div class="pt-title-row">
-                        <div>
-                            <h1 class="pt-title">{{ $ticket->subject }}</h1>
-                            <p class="pt-subtitle">{{ $ticket->office->name }} · {{ $ticket->serviceType->name }}</p>
-                        </div>
-                        <span class="pt-id">{{ $ticket->ulid }}</span>
-                    </div>
+        {{-- Center --}}
+        <main class="flex flex-col bg-slate-50 p-[18px] overflow-hidden min-h-0 dark:bg-zinc-950 max-[1180px]:overflow-visible max-[820px]:block max-[820px]:overflow-visible">
+            <section class="flex-1 flex flex-col overflow-hidden min-h-0 border border-slate-200 rounded-xl bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900 max-[820px]:block max-[820px]:overflow-visible">
 
-                    <div class="pt-badge-row">
-                        <span class="pt-badge">{{ $ticket->status->label() }}</span>
-                        <span class="pt-badge pt-badge-priority">{{ $ticket->priority->label() }} priority</span>
+                {{-- Card header --}}
+                <div class="px-5 py-[18px] border-b border-slate-200 shrink-0 dark:border-zinc-800">
+                    <div class="flex items-start justify-between gap-3.5 max-[820px]:flex-col">
+                        <div>
+                            <h1 class="m-0 text-[22px] font-extrabold text-slate-900 leading-tight dark:text-zinc-100">{{ $ticket->subject }}</h1>
+                            <p class="m-0 mt-1.5 text-slate-500 text-sm dark:text-zinc-400">{{ $ticket->office->name }} · {{ $ticket->serviceType->name }}</p>
+                        </div>
+                        <span class="font-mono text-blue-700 font-extrabold text-sm shrink-0 dark:text-blue-400">{{ $ticket->ulid }}</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-3.5">
+                        <span class="rounded-full bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 text-xs font-extrabold dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800">
+                            {{ $ticket->status->label() }}
+                        </span>
+                        <span class="rounded-full bg-orange-50 text-orange-700 border border-orange-200 px-2.5 py-1 text-xs font-extrabold dark:bg-orange-950/30 dark:text-orange-300 dark:border-orange-800">
+                            {{ $ticket->priority->label() }} priority
+                        </span>
                     </div>
                 </div>
 
-                <div class="pt-request"
-                     x-data="{ expanded: false, truncated: false }"
-                     x-init="truncated = $refs.desc.scrollHeight > $refs.desc.clientHeight">
-                    <div class="pt-author">
-                        <div class="pt-avatar">{{ $initials }}</div>
-                        <div>
-                            <p class="pt-author-name">{{ auth()->user()->name }} submitted this request</p>
-                            <p class="pt-subtitle">{{ $ticket->created_at->format('M j, Y g:ia') }}</p>
-                        </div>
-                    </div>
-                    <div x-ref="desc" class="pt-description" :class="{ 'pt-description-clamped': !expanded }">{{ $ticket->description }}</div>
-                    <button type="button"
-                            x-show="truncated || expanded"
-                            x-cloak
-                            @click="expanded = !expanded"
-                            class="pt-see-more"
-                            x-text="expanded ? 'See less' : 'See more'">
-                    </button>
-                </div>
-
-                <div class="pt-messages">
-                    <div class="pt-section-head">
-                        <h2 class="pt-section-title">Conversation</h2>
-                        <span class="pt-count">{{ $messages->count() }} {{ \Illuminate\Support\Str::plural('message', $messages->count()) }}</span>
+                {{-- Messages --}}
+                <div class="flex-1 flex flex-col overflow-hidden min-h-0 p-5 max-[820px]:block max-[820px]:overflow-visible">
+                    <div class="flex items-center justify-between mb-3.5 shrink-0">
+                        <h2 class="m-0 text-[15px] font-extrabold text-slate-900 dark:text-zinc-100">Conversation</h2>
+                        <span class="rounded-full bg-slate-100 text-slate-600 px-2.5 py-1 text-xs font-extrabold dark:bg-zinc-800 dark:text-zinc-300">
+                            {{ $messages->count() }} {{ \Illuminate\Support\Str::plural('message', $messages->count()) }}
+                        </span>
                     </div>
 
-                    <div class="pt-message-list"
+                    <div class="flex-1 min-h-0 flex flex-col gap-2.5 overflow-y-auto pr-2 [scrollbar-width:thin] [scrollbar-color:theme(colors.slate.300)_transparent] dark:[scrollbar-color:theme(colors.zinc.600)_transparent] max-[820px]:flex max-[820px]:min-h-0 max-[820px]:max-h-[22rem]"
                          x-data
                          x-init="$el.scrollTop = $el.scrollHeight"
                          x-on:message-sent.window="$nextTick(() => $el.scrollTop = $el.scrollHeight)">
@@ -769,11 +88,15 @@
                                 $isMine = $message->sender_id === auth()->id();
                             @endphp
 
-                            <article class="pt-message {{ $isMine ? 'pt-message-mine' : '' }}">
-                                <div class="pt-bubble-avatar">{{ $senderInitials }}</div>
-                                <div class="pt-bubble-content">
-                                    <div class="pt-bubble">{{ $message->body }}</div>
-                                    <div class="pt-bubble-meta">
+                            <article class="flex items-end gap-2 max-w-[78%] {{ $isMine ? 'self-end flex-row-reverse' : 'self-start' }}">
+                                <div class="w-[30px] h-[30px] grid place-items-center rounded-full text-[11px] font-black shrink-0 {{ $isMine ? 'bg-blue-100 text-blue-600 dark:bg-blue-950/40 dark:text-blue-300' : 'bg-slate-200 text-slate-500 dark:bg-zinc-700 dark:text-zinc-300' }}">
+                                    {{ $senderInitials }}
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="px-3.5 py-2.5 whitespace-pre-wrap [overflow-wrap:anywhere] text-sm leading-relaxed shadow-sm {{ $isMine ? 'rounded-[18px_18px_6px_18px] bg-blue-600 text-white' : 'rounded-[18px_18px_18px_6px] bg-slate-100 text-slate-900 dark:bg-zinc-800 dark:text-zinc-100' }}">
+                                        {{ $message->body }}
+                                    </div>
+                                    <div class="mt-1 text-slate-500 text-[11px] dark:text-zinc-400 {{ $isMine ? 'text-right' : '' }}">
                                         {{ $isMine ? 'You' : $message->sender->name }} · {{ $message->created_at->format('M j, g:ia') }}
                                         @if ($isMine && $message->seen_at)
                                             · Seen
@@ -782,72 +105,131 @@
                                 </div>
                             </article>
                         @empty
-                            <p class="pt-helper">No messages yet. Send a reply below to start the conversation.</p>
+                            <p class="text-slate-500 text-sm dark:text-zinc-400">No messages yet. Send a reply below to start the conversation.</p>
                         @endforelse
                     </div>
 
-                    <form wire:submit.prevent="sendMessage" class="pt-compose">
-                        <textarea wire:model="messageBody" wire:keydown.ctrl.enter="sendMessage" placeholder="Type a reply..."></textarea>
+                    {{-- Compose --}}
+                    <form wire:submit.prevent="sendMessage"
+                          class="mt-4 shrink-0 border border-slate-200 rounded-[10px] bg-white p-3.5 dark:border-zinc-700 dark:bg-zinc-950">
+                        <textarea wire:model="messageBody"
+                                  wire:keydown.ctrl.enter="sendMessage"
+                                  placeholder="Type a reply..."
+                                  class="block w-full min-h-[104px] resize-y border border-slate-300 rounded-[9px] bg-white text-slate-900 px-3 py-2.5 text-sm leading-relaxed outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500"></textarea>
                         @error('messageBody')
-                            <p class="pt-error">{{ $message }}</p>
+                            <p class="mt-2 text-red-700 text-sm font-bold dark:text-red-400">{{ $message }}</p>
                         @enderror
-                        <div class="pt-compose-actions">
-                            <span class="pt-helper">Press Ctrl+Enter to send</span>
-                            <button type="submit" class="pt-send">Send Reply</button>
+                        <div class="flex items-center justify-between gap-3 mt-3 max-[820px]:flex-col max-[820px]:items-start">
+                            <span class="text-slate-500 text-xs dark:text-zinc-400">Press Ctrl+Enter to send</span>
+                            <button type="submit"
+                                    class="border-0 rounded-[9px] bg-gray-900 text-white px-3.5 py-2.5 text-sm font-extrabold cursor-pointer hover:bg-gray-800 transition-colors dark:bg-blue-600 dark:hover:bg-blue-500">
+                                Send Reply
+                            </button>
                         </div>
                     </form>
                 </div>
             </section>
         </main>
 
-        <aside class="pt-side">
-            <section class="pt-panel">
-                <h3 class="pt-panel-title">Request Details</h3>
-                <dl class="pt-detail-list">
-                    <div><dt>Ticket ID</dt><dd>{{ $ticket->ulid }}</dd></div>
-                    <div><dt>Status</dt><dd>{{ $ticket->status->label() }}</dd></div>
-                    <div><dt>Office</dt><dd>{{ $ticket->office->name }}</dd></div>
-                    <div><dt>Service</dt><dd>{{ $ticket->serviceType->name }}</dd></div>
-                    <div><dt>Submitted</dt><dd>{{ $ticket->created_at->format('M j, Y g:ia') }}</dd></div>
+        {{-- Right Side --}}
+        <aside class="bg-white overflow-y-auto p-[18px] dark:bg-zinc-900 max-[1180px]:col-span-2 max-[1180px]:overflow-visible max-[820px]:overflow-visible">
+
+            {{-- Description --}}
+            <section class="pb-[18px] border-b border-slate-200 dark:border-zinc-800"
+                     x-data="{ expanded: false, truncated: false }"
+                     x-init="truncated = $refs.desc.scrollHeight > $refs.desc.clientHeight">
+                <div class="flex gap-3 items-center mb-2.5">
+                    <div class="w-[42px] h-[42px] grid place-items-center rounded-[10px] bg-violet-100 text-violet-700 text-sm font-black shrink-0 dark:bg-violet-950/30 dark:text-violet-300">
+                        {{ $initials }}
+                    </div>
+                    <div>
+                        <p class="m-0 text-sm font-extrabold text-slate-900 dark:text-zinc-100">{{ auth()->user()->name }}</p>
+                        <p class="m-0 text-slate-500 text-sm dark:text-zinc-400">{{ $ticket->created_at->format('M j, Y g:ia') }}</p>
+                    </div>
+                </div>
+                <div x-ref="desc"
+                     class="whitespace-pre-wrap text-slate-700 text-sm leading-relaxed dark:text-zinc-300"
+                     :class="{ 'line-clamp-3': !expanded }">{{ $ticket->description }}</div>
+                <button type="button"
+                        x-show="truncated || expanded"
+                        x-cloak
+                        @click="expanded = !expanded"
+                        class="mt-2 bg-transparent border-0 p-0 text-blue-600 text-sm font-bold cursor-pointer leading-relaxed dark:text-blue-400 hover:underline"
+                        x-text="expanded ? 'See less' : 'See more'">
+                </button>
+            </section>
+
+            {{-- Request Details --}}
+            <section class="py-[18px] border-b border-slate-200 dark:border-zinc-800">
+                <h3 class="m-0 mb-3.5 text-xs font-black tracking-[.04em] uppercase text-slate-500 dark:text-zinc-400">Request Details</h3>
+                <dl class="grid gap-3.5">
+                    <div>
+                        <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Ticket ID</dt>
+                        <dd class="mt-1 m-0 text-sm font-extrabold text-slate-900 [overflow-wrap:anywhere] dark:text-zinc-100">{{ $ticket->ulid }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Status</dt>
+                        <dd class="mt-1 m-0 text-sm font-extrabold text-slate-900 [overflow-wrap:anywhere] dark:text-zinc-100">{{ $ticket->status->label() }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Office</dt>
+                        <dd class="mt-1 m-0 text-sm font-extrabold text-slate-900 [overflow-wrap:anywhere] dark:text-zinc-100">{{ $ticket->office->name }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Service</dt>
+                        <dd class="mt-1 m-0 text-sm font-extrabold text-slate-900 [overflow-wrap:anywhere] dark:text-zinc-100">{{ $ticket->serviceType->name }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Submitted</dt>
+                        <dd class="mt-1 m-0 text-sm font-extrabold text-slate-900 [overflow-wrap:anywhere] dark:text-zinc-100">{{ $ticket->created_at->format('M j, Y g:ia') }}</dd>
+                    </div>
                 </dl>
             </section>
 
-            <section class="pt-panel">
-                <h3 class="pt-panel-title">Status Timeline</h3>
+            {{-- Status Timeline --}}
+            <section class="py-[18px] border-b border-slate-200 dark:border-zinc-800">
+                <h3 class="m-0 mb-3.5 text-xs font-black tracking-[.04em] uppercase text-slate-500 dark:text-zinc-400">Status Timeline</h3>
                 @forelse ($ticket->history as $event)
-                    <div class="pt-timeline-item">
-                        <span class="pt-timeline-dot"></span>
+                    <div class="flex gap-2.5 py-2.5 border-b border-slate-100 last:border-0 dark:border-zinc-800">
+                        <span class="w-2.5 h-2.5 mt-[5px] rounded-full bg-blue-600 shrink-0"></span>
                         <div>
-                            <strong>{{ \Illuminate\Support\Str::headline($event->event_type->value) }}</strong>
-                            <span>{{ $event->actor?->name ?? 'System' }} · {{ $event->created_at->format('M j, g:ia') }}</span>
+                            <strong class="block text-sm text-slate-900 dark:text-zinc-100">{{ \Illuminate\Support\Str::headline($event->event_type->value) }}</strong>
+                            <span class="block mt-0.5 text-slate-500 text-xs dark:text-zinc-400">{{ $event->actor?->name ?? 'System' }} · {{ $event->created_at->format('M j, g:ia') }}</span>
                         </div>
                     </div>
                 @empty
-                    <p class="pt-helper">No events yet.</p>
+                    <p class="text-slate-500 text-sm dark:text-zinc-400">No events yet.</p>
                 @endforelse
             </section>
 
-            <section class="pt-panel">
-                <h3 class="pt-panel-title">Knowledge base</h3>
-                <div class="pt-kb-item">
-                    <div class="pt-kb-icon"><x-heroicon-o-document-text /></div>
+            {{-- Knowledge Base --}}
+            <section class="pt-[18px]">
+                <h3 class="m-0 mb-3.5 text-xs font-black tracking-[.04em] uppercase text-slate-500 dark:text-zinc-400">Knowledge base</h3>
+                <div class="flex gap-2.5 py-2.5 border-b border-slate-100 dark:border-zinc-800">
+                    <div class="w-8 h-8 grid place-items-center rounded-lg bg-sky-100 text-sky-700 shrink-0 dark:bg-sky-950/30 dark:text-sky-400">
+                        <x-heroicon-o-document-text class="w-[17px] h-[17px] stroke-2" />
+                    </div>
                     <div>
-                        <strong>Keep details complete</strong>
-                        <span>Add reference numbers, dates, and context in your replies.</span>
+                        <strong class="block text-sm text-slate-900 dark:text-zinc-100">Keep details complete</strong>
+                        <span class="block mt-0.5 text-slate-500 text-xs dark:text-zinc-400">Add reference numbers, dates, and context in your replies.</span>
                     </div>
                 </div>
-                <div class="pt-kb-item">
-                    <div class="pt-kb-icon"><x-heroicon-o-chat-bubble-left-right /></div>
+                <div class="flex gap-2.5 py-2.5 border-b border-slate-100 dark:border-zinc-800">
+                    <div class="w-8 h-8 grid place-items-center rounded-lg bg-sky-100 text-sky-700 shrink-0 dark:bg-sky-950/30 dark:text-sky-400">
+                        <x-heroicon-o-chat-bubble-left-right class="w-[17px] h-[17px] stroke-2" />
+                    </div>
                     <div>
-                        <strong>Watch for staff replies</strong>
-                        <span>Updates from the office will appear in this conversation thread.</span>
+                        <strong class="block text-sm text-slate-900 dark:text-zinc-100">Watch for staff replies</strong>
+                        <span class="block mt-0.5 text-slate-500 text-xs dark:text-zinc-400">Updates from the office will appear in this conversation thread.</span>
                     </div>
                 </div>
-                <div class="pt-kb-item">
-                    <div class="pt-kb-icon"><x-heroicon-o-ticket /></div>
+                <div class="flex gap-2.5 py-2.5">
+                    <div class="w-8 h-8 grid place-items-center rounded-lg bg-sky-100 text-sky-700 shrink-0 dark:bg-sky-950/30 dark:text-sky-400">
+                        <x-heroicon-o-ticket class="w-[17px] h-[17px] stroke-2" />
+                    </div>
                     <div>
-                        <strong>Use one ticket per concern</strong>
-                        <span>Create a separate request when the issue belongs to another service.</span>
+                        <strong class="block text-sm text-slate-900 dark:text-zinc-100">Use one ticket per concern</strong>
+                        <span class="block mt-0.5 text-slate-500 text-xs dark:text-zinc-400">Create a separate request when the issue belongs to another service.</span>
                     </div>
                 </div>
             </section>
