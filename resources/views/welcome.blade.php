@@ -42,7 +42,7 @@
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex flex-col rounded-md px-2 py-1 leading-none hover:bg-black/5 transition-colors">
                     <span class="text-[10px] font-extrabold tracking-widest text-[#0089CB]">BICOL UNIVERSITY</span>
-                    <span class="text-[9px] font-medium tracking-widest text-gray-500">SERVICE REQUEST SYSTEM</span>
+                    <span class="text-[9px] font-medium tracking-widest text-gray-500">iBUConnect</span>
                 </a>
 
                 {{-- Desktop: Offices Dropdown --}}
@@ -103,6 +103,9 @@
 
             {{-- Right: Auth buttons (desktop) --}}
             <div class="hidden items-center gap-2 md:flex">
+                <a href="{{ route('project.overview') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900">
+                    Project Overview
+                </a>
                 <a href="{{ route('auth.google') }}" class="rounded-md bg-[#0089CB] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#0077b3]">
                     Sign In with Google
                 </a>
@@ -163,6 +166,9 @@
                 </div>
 
                 <div class="flex flex-col gap-2 border-t border-gray-100 pt-4">
+                    <a href="{{ route('project.overview') }}" class="w-full rounded-md border border-gray-300 bg-transparent px-4 py-2.5 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
+                        Project Overview
+                    </a>
                     <a href="{{ route('login') }}" class="w-full rounded-md border border-gray-300 bg-transparent px-4 py-2.5 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
                         Log In
                     </a>
@@ -234,7 +240,7 @@
                 </div>
                 <div class="flex flex-col items-center gap-1.5">
                     <span class="text-[10px] font-extrabold uppercase tracking-widest text-gray-400">Track a Ticket</span>
-                    <a href="{{ route('login') }}" class="inline-flex items-center rounded-xl border border-gray-300 px-6 py-[11px] text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50">
+                    <a href="{{ route('track.ticket') }}" class="inline-flex items-center rounded-xl border border-gray-300 px-6 py-[11px] text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50">
                         Track Now
                     </a>
                 </div>
@@ -255,7 +261,7 @@
                                 <div class="h-2.5 w-2.5 rounded-full bg-yellow-400/80"></div>
                                 <div class="h-2.5 w-2.5 rounded-full bg-green-400/80"></div>
                             </div>
-                            <span class="text-sm font-bold tracking-tight text-white">BUSRS</span>
+                            <span class="text-sm font-bold tracking-tight text-white">iBUConnect</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="text-xs text-zinc-400">My Requests</span>
@@ -360,7 +366,7 @@
                     Built for every student at Bicol University
                 </h2>
                 <p class="text-gray-500">
-                    From filing a request to getting it resolved — BUSRS handles the entire service lifecycle so offices and students never miss a step.
+                    From filing a request to getting it resolved — iBUConnect handles the entire service lifecycle so offices and students never miss a step.
                 </p>
             </div>
 
@@ -638,6 +644,7 @@
                         <li><a href="#" class="transition-colors hover:text-gray-900">Help Center</a></li>
                         <li><a href="#" class="transition-colors hover:text-gray-900">Getting Started</a></li>
                         <li><a href="#" class="transition-colors hover:text-gray-900">FAQs</a></li>
+                        <li><a href="{{ route('project.overview') }}" class="transition-colors hover:text-gray-900">Project overview</a></li>
                         <li><a href="#" class="transition-colors hover:text-gray-900">Report an Issue</a></li>
                     </ul>
                     <div class="mt-3 space-y-0.5">
@@ -708,7 +715,7 @@
             <div class="h-px bg-gray-200"></div>
 
             <div class="py-4 text-center text-xs text-gray-400">
-                <p>© {{ date('Y') }} Bicol University — Service Request System. All rights reserved.</p>
+                <p>© {{ date('Y') }} Bicol University — iBUConnect. All rights reserved.</p>
             </div>
         </div>
     </footer>

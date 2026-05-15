@@ -7,6 +7,7 @@ use App\Models\ServiceCategory;
 use App\Models\ServiceType;
 use App\Models\Ticket;
 use App\Models\TicketHistory;
+use App\Models\TicketMessage;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Livewire\Livewire;
@@ -86,4 +87,25 @@ test('ticket office and service type name are shown', function () {
         ->test(TicketDetail::class, ['ulid' => $ticket->ulid])
         ->assertSee($ticket->office->name)
         ->assertSee($ticket->serviceType->name);
+});
+
+test('guest public tracker replies are shown without authenticated sender', function () {
+    $student = User::factory()->create(['name' => 'Ana Reyes']);
+    $student->assignRole('student');
+
+    $office = Office::factory()->create();
+    $category = ServiceCategory::factory()->for($office)->create();
+    $serviceType = ServiceType::factory()->for($category)->create();
+    $ticket = Ticket::factory()->for($student, 'requester')->for($office)->for($serviceType)->create();
+
+    TicketMessage::factory()->guestReply('Ana Reyes')->create([
+        'ticket_id' => $ticket->id,
+        'body' => 'This came from the public tracker.',
+        'is_internal_note' => false,
+    ]);
+
+    Livewire::actingAs($student)
+        ->test(TicketDetail::class, ['ulid' => $ticket->ulid])
+        ->assertSee('Ana Reyes')
+        ->assertSee('This came from the public tracker.');
 });

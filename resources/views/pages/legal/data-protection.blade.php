@@ -1,4 +1,4 @@
-<x-layouts.public title="Data Protection — BUSRS">
+<x-layouts.public title="Data Protection — iBUConnect">
     <div class="mx-auto max-w-3xl px-4 py-16 lg:px-6">
 
         <nav class="mb-8 flex items-center gap-2 text-sm text-gray-500">
@@ -18,7 +18,7 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">1. Legal Framework</h2>
                 <p class="mt-3 leading-relaxed">
-                    Bicol University processes personal data in compliance with the <em>Data Privacy Act of 2012</em> (Republic Act No. 10173), its Implementing Rules and Regulations, and the issuances of the National Privacy Commission (NPC). BUSRS is registered with the NPC as a personal information controller.
+                    Bicol University processes personal data in compliance with the <em>Data Privacy Act of 2012</em> (Republic Act No. 10173), its Implementing Rules and Regulations, and the issuances of the National Privacy Commission (NPC). iBUConnect is registered with the NPC as a personal information controller.
                 </p>
             </section>
 
@@ -34,7 +34,7 @@
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">3. Principles of Data Processing</h2>
-                <p class="mt-3 leading-relaxed">All personal data processed through BUSRS adheres to the following principles under RA 10173:</p>
+                <p class="mt-3 leading-relaxed">All personal data processed through iBUConnect adheres to the following principles under RA 10173:</p>
                 <ul class="mt-3 list-disc space-y-1 pl-6 leading-relaxed">
                     <li><strong>Transparency</strong> — you are informed of the purpose for which your data is collected.</li>
                     <li><strong>Legitimate Purpose</strong> — data is collected only for university service delivery.</li>
@@ -47,7 +47,7 @@
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">4. Technical Safeguards</h2>
-                <p class="mt-3 leading-relaxed">BUSRS implements the following technical measures to protect personal data:</p>
+                <p class="mt-3 leading-relaxed">iBUConnect implements the following technical measures to protect personal data:</p>
                 <ul class="mt-3 list-disc space-y-1 pl-6 leading-relaxed">
                     <li>All data is transmitted over HTTPS using TLS encryption.</li>
                     <li>Passwords are never stored — authentication is handled entirely by Google OAuth.</li>
@@ -78,7 +78,7 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">7. Cross-Border Data Transfers</h2>
                 <p class="mt-3 leading-relaxed">
-                    BUSRS uses Google OAuth for authentication, which involves transmission of limited identity data to Google's servers (which may be located outside the Philippines). This transfer is governed by Google's standard contractual clauses and their compliance with applicable data protection law.
+                    iBUConnect uses Google OAuth for authentication, which involves transmission of limited identity data to Google's servers (which may be located outside the Philippines). This transfer is governed by Google's standard contractual clauses and their compliance with applicable data protection law.
                 </p>
             </section>
 

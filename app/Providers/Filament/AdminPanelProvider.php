@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->login(GoogleLogin::class)
             ->colors(['primary' => Color::Sky])
-            ->brandName('BUSRS Admin')
+            ->brandName('iBUConnect Admin')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([Dashboard::class])

@@ -20,15 +20,25 @@
         :class="scrolled ? 'border-gray-200 bg-white/95 shadow-sm backdrop-blur-lg' : 'border-transparent'"
         class="sticky top-0 z-50 w-full border-b transition-all duration-300"
     >
-        <nav class="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
+        <nav class="mx-auto flex min-h-14 w-full max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-2">
             <a href="{{ route('home') }}" class="flex flex-col rounded-md px-2 py-1 leading-none transition-colors hover:bg-black/5">
                 <span class="text-[10px] font-extrabold tracking-widest text-[#0089CB]">BICOL UNIVERSITY</span>
-                <span class="text-[9px] font-medium tracking-widest text-gray-500">SERVICE REQUEST SYSTEM</span>
+                <span class="text-[9px] font-medium tracking-widest text-gray-500">iBUConnect</span>
             </a>
-            <a href="{{ route('auth.google') }}"
-               class="inline-flex items-center gap-2 rounded-md bg-[#0089CB] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#0077b3]">
-                Sign In
-            </a>
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <a href="{{ route('project.overview') }}"
+                   class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-black/5 hover:text-gray-900">
+                    Project Overview
+                </a>
+                <a href="{{ route('track.ticket') }}"
+                   class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-black/5 hover:text-gray-900">
+                    Track Ticket
+                </a>
+                <a href="{{ route('auth.google') }}"
+                   class="inline-flex items-center gap-2 rounded-md bg-[#0089CB] px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#0077b3]">
+                    Sign In
+                </a>
+            </div>
         </nav>
     </header>
 
@@ -57,6 +67,8 @@
                         <li><a href="mailto:itsupport@bicol-u.edu.ph" class="transition-colors hover:text-gray-900">Technical Support</a></li>
                         <li><a href="#" class="transition-colors hover:text-gray-900">Help Center</a></li>
                         <li><a href="#" class="transition-colors hover:text-gray-900">FAQs</a></li>
+                        <li><a href="{{ route('project.overview') }}" class="transition-colors hover:text-gray-900">Project overview</a></li>
+                        <li><a href="{{ route('track.ticket') }}" class="transition-colors hover:text-gray-900">Track your ticket</a></li>
                     </ul>
                     <div class="mt-3 space-y-0.5">
                         <p class="text-[11px] text-gray-400">itsupport@bicol-u.edu.ph</p>
@@ -85,7 +97,7 @@
             <div class="h-px bg-gray-200"></div>
 
             <div class="py-4 text-center text-xs text-gray-400">
-                <p>© {{ date('Y') }} Bicol University — Service Request System. All rights reserved.</p>
+                <p>© {{ date('Y') }} Bicol University — iBUConnect. All rights reserved.</p>
             </div>
         </div>
     </footer>

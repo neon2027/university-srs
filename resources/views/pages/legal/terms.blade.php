@@ -1,4 +1,4 @@
-<x-layouts.public title="Terms of Use — BUSRS">
+<x-layouts.public title="Terms of Use — iBUConnect">
     <div class="mx-auto max-w-3xl px-4 py-16 lg:px-6">
 
         {{-- Breadcrumb --}}
@@ -21,13 +21,13 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">1. Acceptance of Terms</h2>
                 <p class="mt-3 leading-relaxed">
-                    By accessing or using the Bicol University Service Request System (<strong>"BUSRS"</strong> or the <strong>"System"</strong>), you agree to be bound by these Terms of Use. If you do not agree, you must not use the System. These terms apply to all students, faculty, staff, and other users of BUSRS.
+                    By accessing or using iBUConnect (<strong>"iBUConnect"</strong> or the <strong>"System"</strong>), you agree to be bound by these Terms of Use. If you do not agree, you must not use the System. These terms apply to all students, faculty, staff, and other users of iBUConnect.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">2. Authorized Use</h2>
-                <p class="mt-3 leading-relaxed">BUSRS is provided exclusively for the purpose of submitting, tracking, and managing service requests within Bicol University. Authorized uses include:</p>
+                <p class="mt-3 leading-relaxed">iBUConnect is provided exclusively for the purpose of submitting, tracking, and managing service requests within Bicol University. Authorized uses include:</p>
                 <ul class="mt-3 list-disc space-y-1 pl-6 leading-relaxed">
                     <li>Submitting requests to university offices and departments.</li>
                     <li>Tracking the status of your submitted requests.</li>
@@ -39,7 +39,7 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">3. Account and Authentication</h2>
                 <p class="mt-3 leading-relaxed">
-                    BUSRS uses Google OAuth for authentication. By signing in, you authorize BUSRS to receive your Google account's name, email address, and profile photo. You are responsible for all activity that occurs under your account. You must not share your Google credentials or allow others to access BUSRS on your behalf.
+                    iBUConnect uses Google OAuth for authentication. By signing in, you authorize iBUConnect to receive your Google account's name, email address, and profile photo. You are responsible for all activity that occurs under your account. You must not share your Google credentials or allow others to access iBUConnect on your behalf.
                 </p>
             </section>
 
@@ -59,35 +59,35 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">5. Intellectual Property</h2>
                 <p class="mt-3 leading-relaxed">
-                    All content, trademarks, and materials within BUSRS are the property of Bicol University or its licensors. Nothing in these Terms grants you any right to use Bicol University's name, logo, or trademarks without prior written consent.
+                    All content, trademarks, and materials within iBUConnect are the property of Bicol University or its licensors. Nothing in these Terms grants you any right to use Bicol University's name, logo, or trademarks without prior written consent.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">6. Termination of Access</h2>
                 <p class="mt-3 leading-relaxed">
-                    Bicol University reserves the right to suspend or terminate your access to BUSRS at any time, with or without notice, for conduct that violates these Terms or is otherwise harmful to the System, other users, or the university.
+                    Bicol University reserves the right to suspend or terminate your access to iBUConnect at any time, with or without notice, for conduct that violates these Terms or is otherwise harmful to the System, other users, or the university.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">7. Limitation of Liability</h2>
                 <p class="mt-3 leading-relaxed">
-                    BUSRS is provided on an "as-is" basis. Bicol University makes no warranties, express or implied, regarding the availability, accuracy, or fitness of the System for any particular purpose. The university shall not be liable for any loss or damage arising from your use of or inability to use BUSRS.
+                    iBUConnect is provided on an "as-is" basis. Bicol University makes no warranties, express or implied, regarding the availability, accuracy, or fitness of the System for any particular purpose. The university shall not be liable for any loss or damage arising from your use of or inability to use iBUConnect.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">8. Changes to These Terms</h2>
                 <p class="mt-3 leading-relaxed">
-                    Bicol University may update these Terms at any time. Continued use of BUSRS after changes are posted constitutes your acceptance of the updated Terms. Significant changes will be communicated via the System or your registered email address.
+                    Bicol University may update these Terms at any time. Continued use of iBUConnect after changes are posted constitutes your acceptance of the updated Terms. Significant changes will be communicated via the System or your registered email address.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">9. Governing Law</h2>
                 <p class="mt-3 leading-relaxed">
-                    These Terms are governed by the laws of the Republic of the Philippines. Any disputes arising from the use of BUSRS shall be subject to the jurisdiction of the courts of Legazpi City, Albay.
+                    These Terms are governed by the laws of the Republic of the Philippines. Any disputes arising from the use of iBUConnect shall be subject to the jurisdiction of the courts of Legazpi City, Albay.
                 </p>
             </section>
 

@@ -1,4 +1,4 @@
-<x-layouts.public title="Privacy Policy — BUSRS">
+<x-layouts.public title="Privacy Policy — iBUConnect">
     <div class="mx-auto max-w-3xl px-4 py-16 lg:px-6">
 
         <nav class="mb-8 flex items-center gap-2 text-sm text-gray-500">
@@ -18,7 +18,7 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">1. Overview</h2>
                 <p class="mt-3 leading-relaxed">
-                    Bicol University (<strong>"we"</strong>, <strong>"us"</strong>, or <strong>"the University"</strong>) operates the Bicol University Service Request System (<strong>"BUSRS"</strong>). This Privacy Policy describes how we collect, use, store, and protect your personal information in accordance with the <em>Data Privacy Act of 2012</em> (Republic Act No. 10173) and its Implementing Rules and Regulations.
+                    Bicol University (<strong>"we"</strong>, <strong>"us"</strong>, or <strong>"the University"</strong>) operates iBUConnect. This Privacy Policy describes how we collect, use, store, and protect your personal information in accordance with the <em>Data Privacy Act of 2012</em> (Republic Act No. 10173) and its Implementing Rules and Regulations.
                 </p>
             </section>
 
@@ -38,7 +38,7 @@
                 <h2 class="text-lg font-semibold text-gray-900">3. How We Use Your Information</h2>
                 <p class="mt-3 leading-relaxed">Your information is used solely for the following purposes:</p>
                 <ul class="mt-3 list-disc space-y-1 pl-6 leading-relaxed">
-                    <li>Authenticating your identity and managing your BUSRS account.</li>
+                    <li>Authenticating your identity and managing your iBUConnect account.</li>
                     <li>Processing and routing your service requests to the appropriate university office.</li>
                     <li>Enabling office staff to respond to and resolve your requests.</li>
                     <li>Sending system-generated notifications related to your request status.</li>
@@ -98,7 +98,7 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">9. Changes to This Policy</h2>
                 <p class="mt-3 leading-relaxed">
-                    We may update this Privacy Policy periodically. We will notify you of material changes via the System or your registered email address. Your continued use of BUSRS after the effective date of changes constitutes acceptance of the updated Policy.
+                    We may update this Privacy Policy periodically. We will notify you of material changes via the System or your registered email address. Your continued use of iBUConnect after the effective date of changes constitutes acceptance of the updated Policy.
                 </p>
             </section>
 

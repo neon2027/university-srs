@@ -256,10 +256,10 @@
 <body class="portal-shell antialiased">
     <nav class="portal-nav">
         <div class="portal-nav-inner">
-            <a href="{{ route('portal.tickets.index') }}" wire:navigate class="portal-brand" aria-label="BUSRS portal home">
+            <a href="{{ route('portal.tickets.index') }}" wire:navigate class="portal-brand" aria-label="iBUConnect portal home">
                 <span class="portal-brand-mark">BU</span>
                 <span>
-                    <span class="portal-brand-title">BUSRS Portal</span>
+                    <span class="portal-brand-title">iBUConnect Portal</span>
                     <span class="portal-brand-subtitle">Requests and support</span>
                 </span>
             </a>

@@ -1,4 +1,4 @@
-<x-layouts.public title="Cookie Policy — BUSRS">
+<x-layouts.public title="Cookie Policy — iBUConnect">
     <div class="mx-auto max-w-3xl px-4 py-16 lg:px-6">
 
         <nav class="mb-8 flex items-center gap-2 text-sm text-gray-500">
@@ -23,8 +23,8 @@
             </section>
 
             <section>
-                <h2 class="text-lg font-semibold text-gray-900">2. How BUSRS Uses Cookies</h2>
-                <p class="mt-3 leading-relaxed">BUSRS uses a minimal set of cookies strictly necessary for the System to function. We do <strong>not</strong> use advertising cookies, cross-site tracking cookies, or third-party analytics cookies.</p>
+                <h2 class="text-lg font-semibold text-gray-900">2. How iBUConnect Uses Cookies</h2>
+                <p class="mt-3 leading-relaxed">iBUConnect uses a minimal set of cookies strictly necessary for the System to function. We do <strong>not</strong> use advertising cookies, cross-site tracking cookies, or third-party analytics cookies.</p>
             </section>
 
             <section>
@@ -66,14 +66,14 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">4. Third-Party Cookies</h2>
                 <p class="mt-3 leading-relaxed">
-                    When you sign in using Google OAuth, Google may set its own cookies on your device. These cookies are governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-[#0089CB] underline underline-offset-2 hover:text-[#0077b3]">Google's Privacy Policy</a>. BUSRS does not control and is not responsible for Google's cookies.
+                    When you sign in using Google OAuth, Google may set its own cookies on your device. These cookies are governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-[#0089CB] underline underline-offset-2 hover:text-[#0077b3]">Google's Privacy Policy</a>. iBUConnect does not control and is not responsible for Google's cookies.
                 </p>
             </section>
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">5. Managing Cookies</h2>
                 <p class="mt-3 leading-relaxed">
-                    You can control cookies through your browser settings. Please be aware that disabling the strictly necessary cookies listed above will prevent BUSRS from functioning correctly — you will not be able to sign in or submit requests.
+                    You can control cookies through your browser settings. Please be aware that disabling the strictly necessary cookies listed above will prevent iBUConnect from functioning correctly — you will not be able to sign in or submit requests.
                 </p>
                 <p class="mt-3 leading-relaxed">For instructions on managing cookies in your browser, refer to your browser's help documentation.</p>
             </section>

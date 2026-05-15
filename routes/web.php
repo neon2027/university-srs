@@ -8,6 +8,7 @@ use App\Livewire\Portal\TicketDetail;
 use App\Livewire\Portal\TicketList;
 use App\Livewire\Public\OfficeDetail;
 use App\Livewire\Public\OfficeList;
+use App\Livewire\Public\TicketTracker;
 use App\Models\Office;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,8 @@ Route::get('/', function () {
 
 Route::get('/offices', OfficeList::class)->name('offices.index');
 Route::get('/offices/{slug}', OfficeDetail::class)->name('offices.show');
+Route::get('/track', TicketTracker::class)->name('track.ticket');
+Route::view('/project-overview', 'pages.project-overview')->name('project.overview');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {

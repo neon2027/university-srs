@@ -2,7 +2,7 @@
     <div class="w-full max-w-md">
         @if ($step === 1)
             <div class="text-center mb-8">
-                <h1 class="text-2xl font-bold text-white">Welcome to BUSRS</h1>
+                <h1 class="text-2xl font-bold text-white">Welcome to iBUConnect</h1>
                 <p class="mt-2 text-sm text-zinc-400">How are you affiliated with Bicol University?</p>
             </div>
 

@@ -1,4 +1,4 @@
-<x-layouts.public title="Transparency Report — BUSRS">
+<x-layouts.public title="Transparency Report — iBUConnect">
     <div class="mx-auto max-w-3xl px-4 py-16 lg:px-6">
 
         <nav class="mb-8 flex items-center gap-2 text-sm text-gray-500">
@@ -18,7 +18,7 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">About This Report</h2>
                 <p class="mt-3 leading-relaxed">
-                    Bicol University publishes this Transparency Report to provide the university community with information about how BUSRS operates, how data is handled, and any significant incidents or changes to the System. This report covers the academic year 2024–2025.
+                    Bicol University publishes this Transparency Report to provide the university community with information about how iBUConnect operates, how data is handled, and any significant incidents or changes to the System. This report covers the academic year 2024–2025.
                 </p>
             </section>
 
@@ -48,7 +48,7 @@
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">System Availability</h2>
                 <p class="mt-3 leading-relaxed">
-                    BUSRS targets 99.5% monthly uptime during the academic year. Planned maintenance windows are scheduled outside of regular university hours (typically Friday evenings or weekends) and announced at least 24 hours in advance via the System.
+                    iBUConnect targets 99.5% monthly uptime during the academic year. Planned maintenance windows are scheduled outside of regular university hours (typically Friday evenings or weekends) and announced at least 24 hours in advance via the System.
                 </p>
                 <div class="mt-4 overflow-x-auto rounded-lg border border-gray-200">
                     <table class="w-full text-sm">
@@ -115,7 +115,7 @@
 
             <section>
                 <h2 class="text-lg font-semibold text-gray-900">Policy Changes</h2>
-                <p class="mt-3 leading-relaxed">The following changes to BUSRS policies were made during the reporting period:</p>
+                <p class="mt-3 leading-relaxed">The following changes to iBUConnect policies were made during the reporting period:</p>
                 <ul class="mt-3 list-disc space-y-1 pl-6 leading-relaxed">
                     <li><strong>May 2025</strong> — Terms of Use, Privacy Policy, Cookie Policy, Data Protection notice, and Transparency Report published for the first time.</li>
                 </ul>

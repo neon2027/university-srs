@@ -74,13 +74,14 @@
                         </span>
                     </div>
 
-                    <div class="flex-1 min-h-0 flex flex-col gap-2.5 overflow-y-auto pr-2 [scrollbar-width:thin] [scrollbar-color:theme(colors.slate.300)_transparent] dark:[scrollbar-color:theme(colors.zinc.600)_transparent] max-[820px]:flex max-[820px]:min-h-0 max-[820px]:max-h-[22rem]"
+                    <div class="flex-1 min-h-0 space-y-3 overflow-y-auto pr-2 pb-3 [scrollbar-width:thin] [scrollbar-color:theme(colors.slate.300)_transparent] dark:[scrollbar-color:theme(colors.zinc.600)_transparent] max-[820px]:min-h-[18rem] max-[820px]:max-h-[24rem]"
                          x-data
                          x-init="$el.scrollTop = $el.scrollHeight"
                          x-on:message-sent.window="$nextTick(() => $el.scrollTop = $el.scrollHeight)">
                         @forelse ($messages as $message)
                             @php
-                                $senderInitials = \Illuminate\Support\Str::of($message->sender->name)
+                                $senderName = $message->sender?->name ?? $message->guest_name ?? 'Requester';
+                                $senderInitials = \Illuminate\Support\Str::of($senderName)
                                     ->explode(' ')
                                     ->take(2)
                                     ->map(fn ($word) => \Illuminate\Support\Str::substr($word, 0, 1))
@@ -88,24 +89,29 @@
                                 $isMine = $message->sender_id === auth()->id();
                             @endphp
 
-                            <article class="flex items-end gap-2 max-w-[78%] {{ $isMine ? 'self-end flex-row-reverse' : 'self-start' }}">
-                                <div class="w-[30px] h-[30px] grid place-items-center rounded-full text-[11px] font-black shrink-0 {{ $isMine ? 'bg-blue-100 text-blue-600 dark:bg-blue-950/40 dark:text-blue-300' : 'bg-slate-200 text-slate-500 dark:bg-zinc-700 dark:text-zinc-300' }}">
-                                    {{ $senderInitials }}
-                                </div>
-                                <div class="min-w-0">
-                                    <div class="px-3.5 py-2.5 whitespace-pre-wrap [overflow-wrap:anywhere] text-sm leading-relaxed shadow-sm {{ $isMine ? 'rounded-[18px_18px_6px_18px] bg-blue-600 text-white' : 'rounded-[18px_18px_18px_6px] bg-slate-100 text-slate-900 dark:bg-zinc-800 dark:text-zinc-100' }}">
-                                        {{ $message->body }}
+                            <article class="flex w-full {{ $isMine ? 'justify-end' : 'justify-start' }}">
+                                <div class="flex w-fit max-w-[82%] items-end gap-2 sm:max-w-[34rem] {{ $isMine ? 'flex-row-reverse' : '' }}">
+                                    <div class="grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full text-[11px] font-black {{ $isMine ? 'bg-blue-100 text-blue-600 dark:bg-blue-950/40 dark:text-blue-300' : 'bg-slate-200 text-slate-500 dark:bg-zinc-700 dark:text-zinc-300' }}">
+                                        {{ $senderInitials }}
                                     </div>
-                                    <div class="mt-1 text-slate-500 text-[11px] dark:text-zinc-400 {{ $isMine ? 'text-right' : '' }}">
-                                        {{ $isMine ? 'You' : $message->sender->name }} · {{ $message->created_at->format('M j, g:ia') }}
-                                        @if ($isMine && $message->seen_at)
-                                            · Seen
-                                        @endif
+
+                                    <div class="flex min-w-0 max-w-full flex-col {{ $isMine ? 'items-end' : 'items-start' }}">
+                                        <div class="w-fit max-w-full min-w-10 px-3.5 py-2.5 whitespace-pre-wrap [overflow-wrap:anywhere] text-sm leading-relaxed shadow-sm {{ $isMine ? 'rounded-[18px_18px_6px_18px] bg-blue-600 text-white' : 'rounded-[18px_18px_18px_6px] bg-slate-100 text-slate-900 dark:bg-zinc-800 dark:text-zinc-100' }}">
+                                            {{ $message->body }}
+                                        </div>
+                                        <div class="mt-1 max-w-full truncate text-slate-500 text-[11px] dark:text-zinc-400 {{ $isMine ? 'text-right' : '' }}">
+                                            {{ $isMine ? 'You' : $senderName }} · {{ $message->created_at->format('M j, g:ia') }}
+                                            @if ($isMine && $message->seen_at)
+                                                · Seen
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </article>
                         @empty
-                            <p class="text-slate-500 text-sm dark:text-zinc-400">No messages yet. Send a reply below to start the conversation.</p>
+                            <div class="flex min-h-[14rem] items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50 text-center text-slate-500 text-sm dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-400">
+                                No messages yet. Send a reply below to start the conversation.
+                            </div>
                         @endforelse
                     </div>
 
