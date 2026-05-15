@@ -1,7 +1,10 @@
 @php
     use Illuminate\Support\Str;
 
-    $initials = Str::of($record->requester->name)
+    $requesterName = $record->requester?->name ?? 'Unknown requester';
+    $requesterEmail = $record->requester?->email ?? 'No email available';
+
+    $initials = Str::of($requesterName)
         ->explode(' ')
         ->take(2)
         ->map(fn ($word) => Str::substr($word, 0, 1))
@@ -84,20 +87,21 @@
 
     .btw-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 320px 288px;
-        min-height: 680px;
+        grid-template-columns: minmax(230px, .72fr) minmax(420px, 1.45fr) minmax(280px, .86fr);
+        min-height: 720px;
         gap: 1px;
         background: #d8dee8;
     }
 
     .btw-main,
-    .btw-side,
-    .btw-contact {
+    .btw-conversation,
+    .btw-details {
+        min-width: 0;
         background: #f8fafc;
         padding: 18px;
     }
 
-    .btw-side {
+    .btw-details {
         background: #ffffff;
     }
 
@@ -110,11 +114,9 @@
     }
 
     .btw-card-head {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+        display: grid;
         gap: 16px;
-        padding: 22px;
+        padding: 20px;
         border-bottom: 1px solid #dbe3ee;
     }
 
@@ -144,8 +146,9 @@
     .btw-subject {
         margin: 0;
         color: #0f172a;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
+        line-height: 1.25;
     }
 
     .btw-muted {
@@ -155,12 +158,12 @@
     }
 
     .btw-service-box {
-        min-width: 118px;
+        min-width: 0;
         border: 1px solid #dbe3ee;
         border-radius: 8px;
         background: #f8fafc;
         padding: 12px;
-        text-align: center;
+        text-align: left;
     }
 
     .btw-service-label,
@@ -180,8 +183,7 @@
     }
 
     .btw-request {
-        padding: 20px 22px;
-        border-bottom: 1px solid #dbe3ee;
+        padding: 20px;
         background: #e8f3ff;
     }
 
@@ -219,7 +221,18 @@
     }
 
     .btw-messaging-wrap {
-        padding: 20px 22px;
+        height: 100%;
+    }
+
+    .btw-conversation-card {
+        height: 100%;
+        min-height: 640px;
+        overflow: hidden;
+        border: 1px solid #dbe3ee;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 18px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
     }
 
     .btw-panel {
@@ -303,13 +316,21 @@
         line-height: 1.45;
     }
 
-    @media (max-width: 1280px) {
+    @media (max-width: 1100px) {
         .btw-grid {
-            grid-template-columns: minmax(0, 1fr) 320px;
+            grid-template-columns: minmax(230px, .75fr) minmax(0, 1.25fr);
         }
 
-        .btw-contact {
+        .btw-details {
             grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .btw-details .btw-panel {
+            border-bottom: 0;
+            padding: 0;
         }
     }
 
@@ -327,6 +348,23 @@
         .btw-grid {
             grid-template-columns: 1fr;
         }
+
+        .btw-details {
+            display: block;
+        }
+
+        .btw-details .btw-panel {
+            padding: 18px 0;
+            border-bottom: 1px solid #dbe3ee;
+        }
+
+        .btw-details .btw-panel:last-child {
+            border-bottom: 0;
+        }
+
+        .btw-conversation-card {
+            min-height: auto;
+        }
     }
 
     .dark .busrs-ticket-workspace {
@@ -337,9 +375,9 @@
     }
 
     .dark .btw-topbar,
-    .dark .btw-side,
     .dark .btw-card,
-    .dark .btw-contact,
+    .dark .btw-details,
+    .dark .btw-conversation-card,
     .dark .btw-form-surface {
         border-color: #27272a;
         background: #09090b;
@@ -351,6 +389,10 @@
 
     .dark .btw-main {
         background: #0f0f12;
+    }
+
+    .dark .btw-conversation {
+        background: #101014;
     }
 
     .dark .btw-title,
@@ -434,14 +476,14 @@
     </div>
 
     <div class="btw-grid">
-        <main class="btw-main">
+        <aside class="btw-main">
             <div class="btw-card">
                 <div class="btw-card-head">
                     <div class="btw-subject-row">
-                            <div class="btw-icon"><x-heroicon-o-phone /></div>
+                        <div class="btw-icon"><x-heroicon-o-phone /></div>
                         <div>
                             <h3 class="btw-subject">{{ $record->subject }}</h3>
-                            <p class="btw-muted">{{ $record->requester->name }} created a request {{ $record->created_at->diffForHumans() }}</p>
+                            <p class="btw-muted">{{ $requesterName }} created a request {{ $record->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
 
@@ -455,21 +497,39 @@
                     <div class="btw-author">
                         <div class="btw-avatar">{{ $initials }}</div>
                         <div>
-                            <p class="btw-author-name">{{ $record->requester->name }} submitted this request</p>
+                            <p class="btw-author-name">{{ $requesterName }} submitted this request</p>
                             <p class="btw-muted">{{ $record->created_at->format('M j, Y g:ia') }}</p>
                         </div>
                     </div>
 
                     <div class="btw-description">{{ $record->description }}</div>
                 </section>
+            </div>
+        </aside>
 
+        <main class="btw-conversation" aria-label="Ticket conversation">
+            <div class="btw-conversation-card">
                 <section class="btw-messaging-wrap">
-                    @livewire('admin.ticket-messaging', ['ticket' => $record], key('admin-ticket-messaging-'.$record->id))
+                    @livewire('admin.ticket-messaging', ['ticket' => $record], key('admin-ticket-messaging-' . $record->id))
                 </section>
             </div>
         </main>
 
-        <aside class="btw-side">
+        <aside class="btw-details">
+            <section class="btw-panel">
+                <h3 class="btw-panel-title">Contact Details</h3>
+                <div class="btw-contact-card">
+                    <div class="btw-avatar">{{ $initials }}</div>
+                    <div>
+                        <div class="btw-linkish">{{ $requesterName }}</div>
+                        <p class="btw-muted">Requester</p>
+                    </div>
+                </div>
+                <dl class="btw-dl">
+                    <div><dt>Email</dt><dd>{{ $requesterEmail }}</dd></div>
+                </dl>
+            </section>
+
             <section class="btw-panel">
                 <h3 class="btw-panel-title">Properties</h3>
                 <dl class="btw-dl">
@@ -479,6 +539,16 @@
                     <div><dt>Assigned to</dt><dd>{{ $record->assignee?->name ?? 'Unassigned' }}</dd></div>
                     <div><dt>Submitted</dt><dd>{{ $record->created_at->format('M j, Y g:ia') }}</dd></div>
                     <div><dt>Resolved</dt><dd>{{ $record->resolved_at?->format('M j, Y g:ia') ?? 'Not yet resolved' }}</dd></div>
+                </dl>
+            </section>
+
+            <section class="btw-panel">
+                <h3 class="btw-panel-title">Service Task</h3>
+                <dl class="btw-dl">
+                    <div><dt>Office</dt><dd>{{ $record->office->name }}</dd></div>
+                    <div><dt>Service</dt><dd>{{ $record->serviceType->name }}</dd></div>
+                    <div><dt>Agent</dt><dd>{{ $record->assignee?->name ?? 'Unassigned' }}</dd></div>
+                    <div><dt>Created</dt><dd>{{ $record->created_at->diffForHumans() }}</dd></div>
                 </dl>
             </section>
 
@@ -513,46 +583,6 @@
                         </div>
                     @empty
                         <p class="btw-muted">No activity yet.</p>
-                    @endforelse
-                </div>
-            </section>
-        </aside>
-
-        <aside class="btw-contact">
-            <section class="btw-panel">
-                <h3 class="btw-panel-title">Contact Details</h3>
-                <div class="btw-contact-card">
-                    <div class="btw-avatar">{{ $initials }}</div>
-                    <div>
-                        <div class="btw-linkish">{{ $record->requester->name }}</div>
-                        <p class="btw-muted">Requester</p>
-                    </div>
-                </div>
-                <dl class="btw-dl">
-                    <div><dt>Email</dt><dd>{{ $record->requester->email }}</dd></div>
-                </dl>
-            </section>
-
-            <section class="btw-panel">
-                <h3 class="btw-panel-title">Service Task</h3>
-                <dl class="btw-dl">
-                    <div><dt>Office</dt><dd>{{ $record->office->name }}</dd></div>
-                    <div><dt>Service</dt><dd>{{ $record->serviceType->name }}</dd></div>
-                    <div><dt>Agent</dt><dd>{{ $record->assignee?->name ?? 'Unassigned' }}</dd></div>
-                    <div><dt>Created</dt><dd>{{ $record->created_at->diffForHumans() }}</dd></div>
-                </dl>
-            </section>
-
-            <section class="btw-panel">
-                <h3 class="btw-panel-title">Recent Messages</h3>
-                <div class="btw-timeline">
-                    @forelse ($record->messages->where('is_internal_note', false)->take(-3) as $message)
-                        <div class="btw-recent-message">
-                            {{ Str::limit($message->body, 90) }}
-                            <p class="btw-muted">{{ $message->created_at->diffForHumans() }}</p>
-                        </div>
-                    @empty
-                        <p class="btw-muted">No public messages yet.</p>
                     @endforelse
                 </div>
             </section>

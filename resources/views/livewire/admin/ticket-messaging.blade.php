@@ -5,10 +5,12 @@
             box-sizing: border-box;
         }
 
-    .busrs-admin-messages {
-        display: grid;
-        gap: 16px;
-    }
+        .busrs-admin-messages {
+            display: grid;
+            height: 100%;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            gap: 16px;
+        }
 
     .bam-head {
         display: flex;
@@ -33,15 +35,20 @@
         font-weight: 700;
     }
 
-    .bam-list {
-        display: grid;
-        gap: 12px;
-    }
+        .bam-list {
+            display: grid;
+            align-content: start;
+            gap: 12px;
+            min-height: 0;
+            max-height: 54vh;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
 
     .bam-message {
         overflow: hidden;
         border: 1px solid #bfdbfe;
-        border-radius: 9px;
+        border-radius: 12px;
         background: #eff6ff;
         box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
     }
@@ -119,7 +126,7 @@
 
     .bam-empty {
         border: 1px dashed #cbd5e1;
-        border-radius: 9px;
+        border-radius: 12px;
         background: #f8fafc;
         padding: 32px 16px;
         color: #64748b;
@@ -129,7 +136,7 @@
 
     .bam-form {
         border: 1px solid #dbe3ee;
-        border-radius: 9px;
+        border-radius: 12px;
         background: #ffffff;
         padding: 16px;
         box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
@@ -265,13 +272,13 @@
         }
 
         .dark .bam-message {
-            border-color: #1d4ed8;
-            background: rgba(30, 64, 175, .22);
+            border-color: rgba(59, 130, 246, .45);
+            background: rgba(30, 41, 59, .72);
         }
 
         .dark .bam-message-note {
-            border-color: #92400e;
-            background: rgba(146, 64, 14, .18);
+            border-color: rgba(251, 191, 36, .45);
+            background: rgba(69, 45, 14, .46);
         }
 
         .dark .bam-message-head {
