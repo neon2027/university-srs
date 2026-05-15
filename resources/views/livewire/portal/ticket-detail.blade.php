@@ -14,8 +14,11 @@
         }
 
         .portal-thread {
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            min-height: 760px;
+            height: calc(100dvh - 120px);
+            min-height: 640px;
             border: 1px solid #dbe3ee;
             border-radius: 18px;
             background: #f8fafc;
@@ -61,11 +64,13 @@
         }
 
         .pt-grid {
+            flex: 1;
+            min-height: 0;
             display: grid;
             grid-template-columns: 310px minmax(0, 1fr) 310px;
-            min-height: 706px;
             gap: 1px;
             background: #dbe3ee;
+            overflow: hidden;
         }
 
         .pt-rail,
@@ -74,12 +79,21 @@
             background: #ffffff;
         }
 
+        .pt-rail {
+            overflow-y: auto;
+        }
+
         .pt-center {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
             background: #f8fafc;
             padding: 18px;
         }
 
         .pt-side {
+            overflow-y: auto;
             padding: 18px;
         }
 
@@ -133,7 +147,11 @@
         }
 
         .pt-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
+            min-height: 0;
             border: 1px solid #dbe3ee;
             border-radius: 12px;
             background: #ffffff;
@@ -229,7 +247,32 @@
             line-height: 1.65;
         }
 
+        .pt-description-clamped {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .pt-see-more {
+            display: inline-block;
+            margin-top: 8px;
+            background: none;
+            border: none;
+            padding: 0;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
         .pt-messages {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
             padding: 20px;
         }
 
@@ -257,10 +300,11 @@
         }
 
         .pt-message-list {
+            flex: 1;
+            min-height: 0;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 28rem;
             overflow-y: auto;
             padding: 4px 8px 4px 0;
             scrollbar-width: thin;
@@ -568,6 +612,10 @@
             color: #e4e4e7;
         }
 
+        .dark .pt-see-more {
+            color: #60a5fa;
+        }
+
         .dark .pt-bubble-avatar {
             background: #27272a;
             color: #d4d4d8;
@@ -681,7 +729,9 @@
                     </div>
                 </div>
 
-                <div class="pt-request">
+                <div class="pt-request"
+                     x-data="{ expanded: false, truncated: false }"
+                     x-init="truncated = $refs.desc.scrollHeight > $refs.desc.clientHeight">
                     <div class="pt-author">
                         <div class="pt-avatar">{{ $initials }}</div>
                         <div>
@@ -689,7 +739,14 @@
                             <p class="pt-subtitle">{{ $ticket->created_at->format('M j, Y g:ia') }}</p>
                         </div>
                     </div>
-                    <div class="pt-description">{{ $ticket->description }}</div>
+                    <div x-ref="desc" class="pt-description" :class="{ 'pt-description-clamped': !expanded }">{{ $ticket->description }}</div>
+                    <button type="button"
+                            x-show="truncated || expanded"
+                            x-cloak
+                            @click="expanded = !expanded"
+                            class="pt-see-more"
+                            x-text="expanded ? 'See less' : 'See more'">
+                    </button>
                 </div>
 
                 <div class="pt-messages">
@@ -698,7 +755,10 @@
                         <span class="pt-count">{{ $messages->count() }} {{ \Illuminate\Support\Str::plural('message', $messages->count()) }}</span>
                     </div>
 
-                    <div class="pt-message-list">
+                    <div class="pt-message-list"
+                         x-data
+                         x-init="$el.scrollTop = $el.scrollHeight"
+                         x-on:message-sent.window="$nextTick(() => $el.scrollTop = $el.scrollHeight)">
                         @forelse ($messages as $message)
                             @php
                                 $senderInitials = \Illuminate\Support\Str::of($message->sender->name)

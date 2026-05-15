@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('forwarding_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_id')->constrained()->cascadeOnDelete()->index();
+            $table->foreignId('ticket_id')->constrained()->cascadeOnDelete();
             $table->foreignId('from_office_id')->constrained('offices')->cascadeOnDelete();
             $table->foreignId('to_office_id')->constrained('offices')->cascadeOnDelete();
             $table->foreignId('forwarded_by')->constrained('users')->cascadeOnDelete();

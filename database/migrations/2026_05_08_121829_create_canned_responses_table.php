@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('canned_responses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('office_id')->nullable()->constrained()->nullOnDelete()->index();
+            $table->foreignId('office_id')->nullable()->constrained()->nullOnDelete();
             $table->string('title');
             $table->text('body');
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();

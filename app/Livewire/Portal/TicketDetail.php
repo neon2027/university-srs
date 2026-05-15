@@ -41,6 +41,7 @@ class TicketDetail extends Component
         ]);
 
         $this->messageBody = '';
+        $this->dispatch('message-sent');
     }
 
     public function render(): View
