@@ -5,6 +5,8 @@ use App\Livewire\Portal\CreateTicket;
 use App\Livewire\Portal\Onboarding;
 use App\Livewire\Portal\TicketDetail;
 use App\Livewire\Portal\TicketList;
+use App\Livewire\Public\OfficeDetail;
+use App\Livewire\Public\OfficeList;
 use App\Models\Office;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,9 @@ Route::get('/', function () {
 
     return view('welcome', compact('offices'));
 })->name('home');
+
+Route::get('/offices', OfficeList::class)->name('offices.index');
+Route::get('/offices/{slug}', OfficeDetail::class)->name('offices.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
