@@ -18,6 +18,8 @@ class TicketMessaging extends Component
 
     public bool $isInternalNote = false;
 
+    public bool $requestsAttachment = false;
+
     public ?string $errorMessage = null;
 
     public function applyCannedResponse(string $body): void
@@ -52,10 +54,12 @@ class TicketMessaging extends Component
             'body' => $this->body,
             'is_internal_note' => $this->isInternalNote,
             'is_canned_response' => false,
+            'requests_attachment' => $this->requestsAttachment,
         ]);
 
         $this->body = '';
         $this->isInternalNote = false;
+        $this->requestsAttachment = false;
         $this->errorMessage = null;
     }
 

@@ -344,7 +344,8 @@
     <div class="bam-list">
         @forelse ($messages as $message)
             @php
-                $initials = \Illuminate\Support\Str::of($message->sender->name)
+                $senderName = $message->sender?->name ?? $message->guest_name ?? 'Unknown';
+                $initials = \Illuminate\Support\Str::of($senderName)
                     ->explode(' ')
                     ->take(2)
                     ->map(fn ($word) => \Illuminate\Support\Str::substr($word, 0, 1))
@@ -356,9 +357,12 @@
                     <div class="bam-author">
                         <div class="bam-avatar">{{ $initials }}</div>
                         <div>
-                            <p class="bam-name">{{ $message->sender->name }}</p>
+                            <p class="bam-name">{{ $senderName }}</p>
                             <p class="bam-meta">
                                 {{ $message->is_internal_note ? 'added an internal note' : 'added a public reply' }}
+                                @if ($message->sender === null)
+                                    <span class="bam-chip" style="font-size:10px;padding:2px 7px;">Via public tracker</span>
+                                @endif
                                 {{ $message->created_at->diffForHumans() }}
                             </p>
                         </div>
@@ -380,10 +384,18 @@
         <div class="bam-form-top">
             <h4 class="bam-form-title">{{ $isInternalNote ? 'Add Internal Note' : 'Reply to Requester' }}</h4>
 
-            <label class="bam-checkbox">
-                <input type="checkbox" wire:model.live="isInternalNote">
-                <span>Internal note</span>
-            </label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <label class="bam-checkbox">
+                    <input type="checkbox" wire:model.live="isInternalNote">
+                    <span>Internal note</span>
+                </label>
+                @unless ($isInternalNote)
+                    <label class="bam-checkbox">
+                        <input type="checkbox" wire:model.live="requestsAttachment">
+                        <span>Request attachment</span>
+                    </label>
+                @endunless
+            </div>
         </div>
 
         @if ($cannedResponses->isNotEmpty())
