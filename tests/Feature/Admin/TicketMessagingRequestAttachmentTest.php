@@ -61,6 +61,26 @@ test('requests_attachment resets to false after send', function () {
         ->assertSet('requestsAttachment', false);
 });
 
+test('requests_attachment is forced false when sending an internal note', function () {
+    ['staff' => $staff, 'ticket' => $ticket] = makeAdminTicket();
+
+    Livewire::actingAs($staff)
+        ->test(TicketMessaging::class, ['ticket' => $ticket])
+        ->set('body', 'Staff-only note.')
+        ->set('isInternalNote', true)
+        ->set('requestsAttachment', true)
+        ->call('send')
+        ->assertHasNoErrors();
+
+    expect(
+        TicketMessage::where('ticket_id', $ticket->id)
+            ->where('is_internal_note', true)
+            ->where('requests_attachment', false)
+            ->where('body', 'Staff-only note.')
+            ->exists()
+    )->toBeTrue();
+});
+
 test('guest messages are displayed with guest_name and via-public-tracker badge', function () {
     ['staff' => $staff, 'ticket' => $ticket] = makeAdminTicket();
 

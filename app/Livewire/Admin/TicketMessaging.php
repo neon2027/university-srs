@@ -42,6 +42,10 @@ class TicketMessaging extends Component
             $this->isInternalNote = false;
         }
 
+        if ($this->isInternalNote) {
+            $this->requestsAttachment = false;
+        }
+
         $this->body = trim($this->body);
 
         $this->validate([
