@@ -265,6 +265,11 @@
             </a>
 
             <div class="portal-actions" aria-label="Primary navigation">
+                <a href="{{ route('offices.index') }}"
+                   class="portal-link {{ request()->routeIs('offices.*') ? 'portal-link-active' : '' }}">
+                    <span class="portal-icon"><x-heroicon-o-building-office-2 /></span>
+                    <span>Offices</span>
+                </a>
                 <a href="{{ route('portal.tickets.index') }}" wire:navigate
                    class="portal-link {{ request()->routeIs('portal.tickets.index') || request()->routeIs('portal.tickets.show') ? 'portal-link-active' : '' }}">
                     <span class="portal-icon"><x-heroicon-o-inbox-stack /></span>
@@ -301,6 +306,12 @@
                             <span>Student portal</span>
                         </span>
                     </div>
+
+                    <a href="{{ route('offices.index') }}"
+                       class="portal-link {{ request()->routeIs('offices.*') ? 'portal-link-active' : '' }}">
+                        <span class="portal-icon"><x-heroicon-o-building-office-2 /></span>
+                        <span>Offices</span>
+                    </a>
 
                     <a href="{{ route('portal.tickets.index') }}" wire:navigate
                        class="portal-link {{ request()->routeIs('portal.tickets.index') || request()->routeIs('portal.tickets.show') ? 'portal-link-active' : '' }}">

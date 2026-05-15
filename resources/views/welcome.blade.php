@@ -76,7 +76,7 @@
                             @foreach ($offices as $office)
                             <li>
                                 <a
-                                    href="{{ route('login') }}"
+                                    href="{{ route('offices.show', $office->slug) }}"
                                     class="flex items-center gap-3 rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
                                 >
                                     <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white shadow-sm">
@@ -90,7 +90,7 @@
                             @endforeach
                         </ul>
                         <div class="border-t border-gray-100 px-4 py-2.5">
-                            <a href="{{ route('login') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-[#0089CB] hover:underline">
+                            <a href="{{ route('offices.index') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-[#0089CB] hover:underline">
                                 View all offices
                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -143,7 +143,7 @@
                     <p class="mb-1 px-3 text-xs font-semibold uppercase tracking-widest text-gray-400">Offices</p>
                     @foreach ($offices as $office)
                     <a
-                        href="{{ route('login') }}"
+                        href="{{ route('offices.show', $office->slug) }}"
                         class="flex items-center gap-3 rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-50"
                     >
                         <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white shadow-sm">
@@ -154,7 +154,7 @@
                         <span class="text-sm font-medium">{{ $office->name }}</span>
                     </a>
                     @endforeach
-                    <a href="{{ route('login') }}" class="inline-flex items-center gap-1 px-3 py-2 text-xs font-semibold text-[#0089CB] hover:underline">
+                    <a href="{{ route('offices.index') }}" class="inline-flex items-center gap-1 px-3 py-2 text-xs font-semibold text-[#0089CB] hover:underline">
                         View all offices
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
