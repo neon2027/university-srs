@@ -39,6 +39,26 @@ class CreateTicket extends Component
 
     public array $fileUploads = [];
 
+    public function mount(?int $prefillServiceTypeId = null): void
+    {
+        if ($prefillServiceTypeId === null) {
+            return;
+        }
+
+        $service = ServiceType::with('serviceCategory')
+            ->where('is_active', true)
+            ->find($prefillServiceTypeId);
+
+        if ($service === null) {
+            return;
+        }
+
+        $this->serviceTypeId = $service->id;
+        $this->serviceCategoryId = $service->service_category_id;
+        $this->officeId = $service->serviceCategory->office_id;
+        $this->step = 4;
+    }
+
     public function updatedOfficeId(): void
     {
         $this->serviceCategoryId = null;
