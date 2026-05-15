@@ -7,6 +7,7 @@ use App\Models\ServiceType;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -47,6 +48,13 @@ class ServiceTypeResource extends Resource
                 ->maxLength(255),
             Textarea::make('description')
                 ->nullable()
+                ->columnSpanFull(),
+            FileUpload::make('work_instruction')
+                ->label('Work Instruction')
+                ->disk('public')
+                ->directory('work-instructions')
+                ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                ->maxSize(10240)
                 ->columnSpanFull(),
             TextInput::make('sla_days')
                 ->numeric()

@@ -8,6 +8,7 @@ use App\Models\Office;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -45,6 +46,13 @@ class OfficeResource extends Resource
                 ->nullable(),
             Textarea::make('description')
                 ->nullable()
+                ->columnSpanFull(),
+            FileUpload::make('citizen_charter')
+                ->label('Citizen Charter')
+                ->disk('public')
+                ->directory('citizen-charters')
+                ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                ->maxSize(10240)
                 ->columnSpanFull(),
             TextInput::make('sort_order')
                 ->numeric()
