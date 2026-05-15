@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\LegalController;
 use App\Livewire\Portal\CreateTicket;
 use App\Livewire\Portal\Onboarding;
 use App\Livewire\Portal\TicketDetail;
@@ -12,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+
+Route::prefix('legal')->name('legal.')->group(function (): void {
+    Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
+    Route::get('/privacy', [LegalController::class, 'privacy'])->name('privacy');
+    Route::get('/cookies', [LegalController::class, 'cookies'])->name('cookies');
+    Route::get('/data-protection', [LegalController::class, 'dataProtection'])->name('data-protection');
+    Route::get('/transparency', [LegalController::class, 'transparency'])->name('transparency');
+});
 
 Route::get('/', function () {
     $offices = Office::active()

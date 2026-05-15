@@ -649,11 +649,11 @@
                 <div>
                     <h3 class="mb-4 text-xs font-semibold text-gray-900">Legal</h3>
                     <ul class="space-y-2 text-sm text-gray-500">
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Privacy Policy</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Terms of Use</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Cookie Policy</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Data Protection</a></li>
-                        <li><a href="#" class="transition-colors hover:text-gray-900">Transparency Report</a></li>
+                        <li><a href="{{ route('legal.privacy') }}" class="transition-colors hover:text-gray-900">Privacy Policy</a></li>
+                        <li><a href="{{ route('legal.terms') }}" class="transition-colors hover:text-gray-900">Terms of Use</a></li>
+                        <li><a href="{{ route('legal.cookies') }}" class="transition-colors hover:text-gray-900">Cookie Policy</a></li>
+                        <li><a href="{{ route('legal.data-protection') }}" class="transition-colors hover:text-gray-900">Data Protection</a></li>
+                        <li><a href="{{ route('legal.transparency') }}" class="transition-colors hover:text-gray-900">Transparency Report</a></li>
                     </ul>
                 </div>
             </div>
