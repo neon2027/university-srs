@@ -9,7 +9,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <button wire:click="chooseStudent"
                     class="flex flex-col items-center gap-3 rounded-xl border border-zinc-700 bg-zinc-800 p-8 text-center hover:border-zinc-500 hover:bg-zinc-700 transition-colors">
-                    <span class="text-4xl">🎓</span>
+                    <x-heroicon-o-academic-cap class="h-10 w-10 text-[#0089CB]" />
                     <div>
                         <div class="font-semibold text-white">Student</div>
                         <div class="text-xs text-zinc-400 mt-1">Enrolled at BU</div>
@@ -18,7 +18,7 @@
 
                 <button wire:click="showEmployeePicker"
                     class="flex flex-col items-center gap-3 rounded-xl border border-zinc-700 bg-zinc-800 p-8 text-center hover:border-zinc-500 hover:bg-zinc-700 transition-colors">
-                    <span class="text-4xl">🏢</span>
+                    <x-heroicon-o-building-office class="h-10 w-10 text-[#FE8926]" />
                     <div>
                         <div class="font-semibold text-white">Employee</div>
                         <div class="text-xs text-zinc-400 mt-1">Faculty or Staff</div>
@@ -50,8 +50,9 @@
                 </button>
 
                 <button wire:click="$set('step', 1)"
-                    class="mt-3 w-full text-center text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
-                    ← Back
+                    class="mt-3 inline-flex w-full items-center justify-center gap-2 text-center text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+                    <x-heroicon-o-arrow-left class="h-4 w-4" />
+                    <span>Back</span>
                 </button>
             </div>
         @endif

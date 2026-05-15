@@ -31,6 +31,42 @@ test('admin can send a message to student', function () {
         ->exists())->toBeTrue();
 });
 
+test('assigned staff can send a message even when outside ticket office', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('staff');
+    $ticket = Ticket::factory()->create(['assigned_to' => $admin->id]);
+
+    $this->actingAs($admin);
+
+    Livewire::test(TicketMessaging::class, ['ticket' => $ticket])
+        ->set('body', 'I am handling this request')
+        ->call('send')
+        ->assertSet('errorMessage', null)
+        ->assertSet('body', '');
+
+    expect(TicketMessage::where('ticket_id', $ticket->id)
+        ->where('sender_id', $admin->id)
+        ->where('body', 'I am handling this request')
+        ->exists())->toBeTrue();
+});
+
+test('unauthorized staff sees an error when sending outside assigned or office tickets', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('staff');
+    $ticket = Ticket::factory()->create();
+
+    $this->actingAs($admin);
+
+    Livewire::test(TicketMessaging::class, ['ticket' => $ticket])
+        ->set('body', 'This should not send')
+        ->call('send')
+        ->assertSet('errorMessage', 'You can only reply to tickets assigned to you or tickets from your office.');
+
+    expect(TicketMessage::where('ticket_id', $ticket->id)
+        ->where('body', 'This should not send')
+        ->exists())->toBeFalse();
+});
+
 test('admin can send an internal note invisible to student', function () {
     $admin = User::factory()->create();
     $admin->assignRole('staff');

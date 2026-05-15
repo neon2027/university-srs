@@ -103,9 +103,6 @@
 
             {{-- Right: Auth buttons (desktop) --}}
             <div class="hidden items-center gap-2 md:flex">
-                <a href="{{ route('login') }}" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50">
-                    Log In
-                </a>
                 <a href="{{ route('auth.google') }}" class="rounded-md bg-[#0089CB] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#0077b3]">
                     Sign In with Google
                 </a>

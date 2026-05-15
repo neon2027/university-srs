@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\CannedResponse;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -17,25 +18,29 @@ class TicketMessaging extends Component
 
     public bool $isInternalNote = false;
 
+    public ?string $errorMessage = null;
+
     public function applyCannedResponse(string $body): void
     {
         $this->body = $body;
+        $this->errorMessage = null;
     }
 
     public function send(): void
     {
         $user = auth()->user();
 
-        if (! $user->hasRole('super_admin') && $user->hasAnyRole(['staff', 'office_admin'])) {
-            $officeIds = $user->offices()->pluck('offices.id');
-            if (! $officeIds->contains($this->ticket->office_id)) {
-                return;
-            }
+        if (! $this->canReply($user)) {
+            $this->errorMessage = 'You can only reply to tickets assigned to you or tickets from your office.';
+
+            return;
         }
 
         if ($this->isInternalNote && ! $user->hasAnyRole(['staff', 'office_admin', 'super_admin'])) {
             $this->isInternalNote = false;
         }
+
+        $this->body = trim($this->body);
 
         $this->validate([
             'body' => 'required|string|max:5000',
@@ -51,6 +56,7 @@ class TicketMessaging extends Component
 
         $this->body = '';
         $this->isInternalNote = false;
+        $this->errorMessage = null;
     }
 
     public function render(): View
@@ -80,5 +86,24 @@ class TicketMessaging extends Component
             ->forOffice($this->ticket->office_id ?? 0)
             ->orderBy('title')
             ->get();
+    }
+
+    private function canReply(User $user): bool
+    {
+        if ($user->hasRole('super_admin')) {
+            return true;
+        }
+
+        if ($this->ticket->assigned_to === $user->id) {
+            return true;
+        }
+
+        if (! $user->hasAnyRole(['staff', 'office_admin'])) {
+            return false;
+        }
+
+        return $user->offices()
+            ->whereKey($this->ticket->office_id)
+            ->exists();
     }
 }

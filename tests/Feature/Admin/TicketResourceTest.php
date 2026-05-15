@@ -2,6 +2,7 @@
 
 use App\Enums\TicketStatus;
 use App\Filament\Resources\TicketResource\Pages\ListTickets;
+use App\Filament\Resources\TicketResource\Pages\ViewTicket;
 use App\Models\Office;
 use App\Models\Ticket;
 use App\Models\User;
@@ -47,4 +48,18 @@ test('ticket table shows status badge', function () {
 
     Livewire::test(ListTickets::class)
         ->assertSee('Pending');
+});
+
+test('ticket view renders workspace layout', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('super_admin');
+    $ticket = Ticket::factory()->create(['subject' => 'Payment Posting Concern']);
+
+    $this->actingAs($admin);
+
+    Livewire::test(ViewTicket::class, ['record' => $ticket->ulid])
+        ->assertSee('All tickets')
+        ->assertSee('Payment Posting Concern')
+        ->assertSee('Contact Details')
+        ->assertSee('Service Task');
 });

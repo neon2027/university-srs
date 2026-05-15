@@ -22,7 +22,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', function () {
+        return to_route('portal.tickets.index');
+    })->name('dashboard');
 });
 
 require __DIR__.'/settings.php';

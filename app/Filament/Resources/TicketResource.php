@@ -13,10 +13,8 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -143,45 +141,10 @@ class TicketResource extends Resource
     {
         return $schema
             ->components([
-                Section::make('Ticket Details')
-                    ->columns(2)
-                    ->schema([
-                        TextEntry::make('ulid')
-                            ->label('Ticket ID')
-                            ->fontFamily('mono')
-                            ->copyable(),
-                        TextEntry::make('status')
-                            ->badge()
-                            ->color(fn (TicketStatus $state) => $state->color())
-                            ->formatStateUsing(fn (TicketStatus $state) => $state->label()),
-                        TextEntry::make('requester.name')
-                            ->label('Requester'),
-                        TextEntry::make('office.name')
-                            ->label('Office'),
-                        TextEntry::make('serviceType.name')
-                            ->label('Service Type'),
-                        TextEntry::make('priority')
-                            ->formatStateUsing(fn (TicketPriority $state) => $state->label())
-                            ->badge()
-                            ->color(fn (TicketPriority $state) => $state->color()),
-                        TextEntry::make('assignee.name')
-                            ->label('Assigned To')
-                            ->default('Unassigned'),
-                        TextEntry::make('created_at')
-                            ->label('Submitted')
-                            ->since(),
-                        TextEntry::make('resolved_at')
-                            ->label('Resolved')
-                            ->since()
-                            ->placeholder('Not yet resolved'),
-                    ]),
-                Section::make('Messages')
-                    ->schema([
-                        ViewEntry::make('messaging')
-                            ->label('')
-                            ->view('livewire.admin.ticket-messaging-wrapper'),
-                    ]),
-            ]);
+                ViewEntry::make('ticket_workspace')
+                    ->label('')
+                    ->view('filament.resources.ticket-resource.ticket-workspace'),
+            ])->columns(1);
     }
 
     public static function getPages(): array

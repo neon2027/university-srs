@@ -23,10 +23,16 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        $panel = $panel
             ->id('admin')
             ->path('admin')
-            ->default()
+            ->default();
+
+        if ($this->adminThemeIsBuilt()) {
+            $panel->viteTheme('resources/css/filament/admin/theme.css');
+        }
+
+        return $panel
             ->login(GoogleLogin::class)
             ->colors(['primary' => Color::Sky])
             ->brandName('BUSRS Admin')
@@ -54,5 +60,19 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([Authenticate::class]);
+    }
+
+    private function adminThemeIsBuilt(): bool
+    {
+        $manifestPath = public_path('build/manifest.json');
+
+        if (! file_exists($manifestPath)) {
+            return false;
+        }
+
+        $manifest = json_decode((string) file_get_contents($manifestPath), true);
+
+        return is_array($manifest)
+            && array_key_exists('resources/css/filament/admin/theme.css', $manifest);
     }
 }
