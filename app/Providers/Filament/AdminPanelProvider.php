@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\GoogleLogin;
 use App\Filament\Widgets\TicketStatsOverview;
+use Filament\Enums\UserMenuPosition;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,6 +27,8 @@ class AdminPanelProvider extends PanelProvider
         $panel = $panel
             ->id('admin')
             ->path('admin')
+            ->sidebarCollapsibleOnDesktop()
+            ->userMenu(position: UserMenuPosition::Sidebar)
             ->default();
 
         if ($this->adminThemeIsBuilt()) {

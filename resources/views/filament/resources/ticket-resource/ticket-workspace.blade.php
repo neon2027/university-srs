@@ -1,4 +1,5 @@
 @php
+    use App\Enums\TicketStatus;
     use Illuminate\Support\Str;
 
     $requesterName = $record->requester?->name ?? 'Unknown requester';
@@ -12,6 +13,15 @@
 
     $customFieldAnswers = collect($record->custom_fields ?? [])
         ->mapWithKeys(fn ($value, $fieldId) => [(string) $fieldId => $value]);
+
+    $statusBadgeClass = match ($record->status) {
+        TicketStatus::Pending                               => 'btw-badge-warning',
+        TicketStatus::Assigned, TicketStatus::InProgress   => 'btw-badge-info',
+        TicketStatus::Resolved, TicketStatus::Closed       => 'btw-badge-success',
+        TicketStatus::OnHold                               => 'btw-badge-gray',
+        TicketStatus::Forwarded                            => 'btw-badge-primary',
+        TicketStatus::Cancelled                            => 'btw-badge-danger',
+    };
 @endphp
 
 <style>
@@ -83,6 +93,24 @@
         background: #fff7ed;
         color: #c2410c;
         border-color: #fed7aa;
+    }
+
+    .btw-badge-warning  { background:#fefce8; color:#a16207; border-color:#fde047; }
+    .btw-badge-info     { background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
+    .btw-badge-success  { background:#f0fdf4; color:#15803d; border-color:#bbf7d0; }
+    .btw-badge-gray     { background:#f8fafc; color:#475569; border-color:#cbd5e1; }
+    .btw-badge-danger   { background:#fef2f2; color:#b91c1c; border-color:#fecaca; }
+    .btw-badge-primary  { background:#f5f3ff; color:#6d28d9; border-color:#ddd6fe; }
+
+    .btw-status-inline {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border-radius: 6px;
+        padding: 3px 9px;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid;
     }
 
     .btw-grid {
@@ -470,7 +498,7 @@
         </div>
 
         <div class="btw-badges">
-            <span class="btw-badge">{{ $record->status->label() }}</span>
+            <span class="btw-badge {{ $statusBadgeClass }}">{{ $record->status->label() }}</span>
             <span class="btw-badge btw-badge-priority">{{ $record->priority->label() }} priority</span>
         </div>
     </div>
@@ -534,7 +562,10 @@
                 <h3 class="btw-panel-title">Properties</h3>
                 <dl class="btw-dl">
                     <div><dt>Ticket ID</dt><dd>{{ $record->ulid }}</dd></div>
-                    <div><dt>Status</dt><dd>{{ $record->status->label() }}</dd></div>
+                    <div>
+                        <dt>Status</dt>
+                        <dd><span class="btw-status-inline {{ $statusBadgeClass }}">{{ $record->status->label() }}</span></dd>
+                    </div>
                     <div><dt>Priority</dt><dd>{{ $record->priority->label() }}</dd></div>
                     <div><dt>Assigned to</dt><dd>{{ $record->assignee?->name ?? 'Unassigned' }}</dd></div>
                     <div><dt>Submitted</dt><dd>{{ $record->created_at->format('M j, Y g:ia') }}</dd></div>

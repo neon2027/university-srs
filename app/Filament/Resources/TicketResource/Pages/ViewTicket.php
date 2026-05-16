@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\TicketResource\Pages;
 
 use App\Filament\Actions\AssignTicketAction;
+use App\Filament\Actions\ChangeStatusAction;
 use App\Filament\Actions\ForwardTicketAction;
 use App\Filament\Resources\TicketResource;
 use Filament\Actions\EditAction;
@@ -15,6 +16,7 @@ class ViewTicket extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            ChangeStatusAction::make(),
             AssignTicketAction::make(),
             ForwardTicketAction::make(),
             EditAction::make(),

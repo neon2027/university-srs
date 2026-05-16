@@ -285,6 +285,170 @@
         </div>
     </section>
 
+    <section class="border-b border-gray-200 bg-[#0f172a] py-14 text-white">
+        <div class="mx-auto max-w-6xl px-4 lg:px-6">
+            <div class="mb-8">
+                <p class="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">Database Schema</p>
+                <h2 class="mt-2 text-2xl font-black">Entity Relationship Diagram</h2>
+                <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-300">All 13 application tables and their foreign key relationships. Scroll horizontally if needed.</p>
+            </div>
+
+            <div class="overflow-x-auto rounded-lg border border-white/10 bg-white p-4">
+                <pre class="mermaid">
+erDiagram
+    users {
+        bigint id PK
+        string name
+        string email UK
+        string google_id UK
+        string onboarding_status
+        bigint pending_office_id FK
+        timestamp onboarding_completed_at
+    }
+    offices {
+        bigint id PK
+        string name
+        string slug UK
+        string citizen_charter
+        boolean is_active
+        int sort_order
+    }
+    office_user {
+        bigint id PK
+        bigint office_id FK
+        bigint user_id FK
+        boolean is_primary
+    }
+    service_categories {
+        bigint id PK
+        bigint office_id FK
+        string name
+        string slug UK
+        boolean is_active
+        int sort_order
+    }
+    service_types {
+        bigint id PK
+        bigint service_category_id FK
+        string name
+        string slug UK
+        string work_instruction
+        int sla_days
+        boolean is_active
+    }
+    service_type_fields {
+        bigint id PK
+        bigint service_type_id FK
+        string label
+        string field_type
+        json options
+        boolean is_required
+        int sort_order
+    }
+    tickets {
+        bigint id PK
+        string ulid UK
+        bigint requester_id FK
+        bigint office_id FK
+        bigint service_type_id FK
+        bigint assigned_to FK
+        string status
+        string priority
+        string subject
+        json custom_fields
+        timestamp resolved_at
+        timestamp deleted_at
+    }
+    ticket_history {
+        bigint id PK
+        bigint ticket_id FK
+        bigint actor_id FK
+        string event_type
+        string from_status
+        string to_status
+        text note
+        json meta
+    }
+    ticket_messages {
+        bigint id PK
+        bigint ticket_id FK
+        bigint sender_id FK
+        string guest_name
+        text body
+        boolean is_internal_note
+        boolean requests_attachment
+        timestamp seen_at
+    }
+    ticket_attachments {
+        bigint id PK
+        bigint ticket_id FK
+        bigint ticket_message_id FK
+        bigint uploader_id FK
+        string path
+        string original_filename
+        string mime_type
+        bigint size_bytes
+    }
+    forwarding_logs {
+        bigint id PK
+        bigint ticket_id FK
+        bigint from_office_id FK
+        bigint to_office_id FK
+        bigint forwarded_by FK
+        bigint accepted_by FK
+        string credit_type
+        text note
+        timestamp forwarded_at
+    }
+    ticket_ratings {
+        bigint id PK
+        bigint ticket_id FK
+        bigint rater_id FK
+        tinyint overall_rating
+        tinyint service_rating
+        tinyint staff_rating
+        text comment
+    }
+    canned_responses {
+        bigint id PK
+        bigint office_id FK
+        bigint created_by FK
+        string title
+        text body
+        boolean is_active
+    }
+
+    users ||--o{ tickets : "requester"
+    users ||--o{ tickets : "assignee"
+    users ||--o{ office_user : "member"
+    users ||--o{ ticket_history : "actor"
+    users ||--o{ ticket_messages : "sender"
+    users ||--o{ ticket_attachments : "uploader"
+    users ||--o{ forwarding_logs : "forwarded_by"
+    users ||--o{ forwarding_logs : "accepted_by"
+    users ||--o{ ticket_ratings : "rater"
+    users ||--o{ canned_responses : "created_by"
+    users }o--o| offices : "pending_office"
+    offices ||--o{ office_user : "members"
+    offices ||--o{ service_categories : "owns"
+    offices ||--o{ tickets : "handles"
+    offices ||--o{ forwarding_logs : "from"
+    offices ||--o{ forwarding_logs : "to"
+    offices ||--o{ canned_responses : "scoped_to"
+    service_categories ||--o{ service_types : "contains"
+    service_types ||--o{ service_type_fields : "fields"
+    service_types ||--o{ tickets : "requested_as"
+    tickets ||--o{ ticket_history : "timeline"
+    tickets ||--o{ ticket_messages : "thread"
+    tickets ||--o{ ticket_attachments : "files"
+    tickets ||--o{ forwarding_logs : "routed_via"
+    tickets ||--o| ticket_ratings : "rated_as"
+    ticket_messages ||--o{ ticket_attachments : "linked_file"
+                </pre>
+            </div>
+        </div>
+    </section>
+
     <section class="bg-white py-14">
         <div class="mx-auto max-w-6xl px-4 lg:px-6">
             <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
@@ -319,4 +483,9 @@
             </div>
         </div>
     </section>
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'neutral', er: { layoutDirection: 'LR', fontSize: 12 } });</script>
+@endpush
 </x-layouts.public>
