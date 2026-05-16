@@ -4,19 +4,27 @@ namespace App\Livewire\Portal;
 
 use App\Enums\TicketStatus;
 use App\Models\Ticket;
+use App\Models\TicketAttachment;
+use Illuminate\Http\UploadedFile;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('components.layouts.portal')]
 class TicketDetail extends Component
 {
+    use WithFileUploads;
+
     #[Locked]
     public string $ulid = '';
 
     public string $messageBody = '';
+
+    /** @var UploadedFile|null */
+    public $messageAttachment = null;
 
     #[Rule('required|integer|min:1|max:5')]
     public int $overallRating = 0;
@@ -49,16 +57,36 @@ class TicketDetail extends Component
 
     public function sendMessage(): void
     {
-        $this->validate(['messageBody' => 'required|string|max:5000']);
+        $this->validate([
+            'messageBody' => 'required|string|max:5000',
+            'messageAttachment' => 'nullable|file|max:10240|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx,zip',
+        ]);
 
-        $this->findTicket()->messages()->create([
+        $ticket = $this->findTicket();
+
+        $message = $ticket->messages()->create([
             'sender_id' => auth()->id(),
             'body' => $this->messageBody,
             'is_internal_note' => false,
             'is_canned_response' => false,
         ]);
 
+        if ($this->messageAttachment) {
+            $path = $this->messageAttachment->store("attachments/{$ticket->ulid}", 'public');
+            TicketAttachment::create([
+                'ticket_id' => $ticket->id,
+                'ticket_message_id' => $message->id,
+                'uploader_id' => auth()->id(),
+                'disk' => 'public',
+                'path' => $path,
+                'original_filename' => $this->messageAttachment->getClientOriginalName(),
+                'mime_type' => $this->messageAttachment->getMimeType(),
+                'size_bytes' => $this->messageAttachment->getSize(),
+            ]);
+        }
+
         $this->messageBody = '';
+        $this->messageAttachment = null;
         $this->dispatch('message-sent');
     }
 
@@ -97,7 +125,7 @@ class TicketDetail extends Component
         $ticket = $this->findTicket()->load(['office', 'serviceType', 'history.actor', 'rating']);
         $messages = $ticket->messages()
             ->where('is_internal_note', false)
-            ->with('sender')
+            ->with(['sender', 'attachments'])
             ->oldest()
             ->get();
         $recentTickets = Ticket::with(['office', 'serviceType'])

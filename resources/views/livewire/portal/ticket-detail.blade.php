@@ -99,6 +99,28 @@
                                         <div class="w-fit max-w-full min-w-10 px-3.5 py-2.5 whitespace-pre-wrap [overflow-wrap:anywhere] text-sm leading-relaxed shadow-sm {{ $isMine ? 'rounded-[18px_18px_6px_18px] bg-blue-600 text-white' : 'rounded-[18px_18px_18px_6px] bg-slate-100 text-slate-900 dark:bg-zinc-800 dark:text-zinc-100' }}">
                                             {{ $message->body }}
                                         </div>
+
+                                        @if ($message->attachments->isNotEmpty())
+                                            <div class="mt-1.5 flex flex-wrap gap-1.5 {{ $isMine ? 'justify-end' : '' }}">
+                                                @foreach ($message->attachments as $file)
+                                                    <a href="{{ \Illuminate\Support\Facades\Storage::url($file->path) }}"
+                                                       target="_blank"
+                                                       download="{{ $file->original_filename }}"
+                                                       class="inline-flex items-center gap-1.5 border border-slate-300 rounded-lg bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 no-underline hover:bg-slate-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700">
+                                                        <x-heroicon-o-paper-clip class="w-3.5 h-3.5 shrink-0" />
+                                                        {{ $file->original_filename }}
+                                                        <span class="text-slate-400 font-normal dark:text-zinc-500">({{ number_format($file->size_bytes / 1024, 1) }} KB)</span>
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @endif
+
+                                        @if (!$isMine && $message->requests_attachment)
+                                            <div class="mt-1.5 rounded-lg border border-dashed border-yellow-400 bg-yellow-50 px-3 py-2 text-xs font-semibold text-yellow-800 dark:border-yellow-600 dark:bg-yellow-950/30 dark:text-yellow-300">
+                                                📎 Staff is requesting a file attachment in your reply.
+                                            </div>
+                                        @endif
+
                                         <div class="mt-1 max-w-full truncate text-slate-500 text-[11px] dark:text-zinc-400 {{ $isMine ? 'text-right' : '' }}">
                                             {{ $isMine ? 'You' : $senderName }} · {{ $message->created_at->format('M j, g:ia') }}
                                             @if ($isMine && $message->seen_at)
@@ -118,6 +140,17 @@
                     {{-- Compose --}}
                     <form wire:submit.prevent="sendMessage"
                           class="mt-4 shrink-0 border border-slate-200 rounded-[10px] bg-white p-3.5 dark:border-zinc-700 dark:bg-zinc-950">
+                        @php
+                            $lastMessage = $messages->last();
+                            $attachmentRequested = $lastMessage && $lastMessage->sender_id !== auth()->id() && $lastMessage->requests_attachment;
+                        @endphp
+
+                        @if ($attachmentRequested)
+                            <div class="mb-2 rounded-lg border border-dashed border-yellow-400 bg-yellow-50 px-3 py-2 text-xs font-semibold text-yellow-800 dark:border-yellow-600 dark:bg-yellow-950/30 dark:text-yellow-300">
+                                📎 The support team has requested a file attachment. Please attach your file below.
+                            </div>
+                        @endif
+
                         <textarea wire:model="messageBody"
                                   wire:keydown.ctrl.enter="sendMessage"
                                   placeholder="Type a reply..."
@@ -125,6 +158,20 @@
                         @error('messageBody')
                             <p class="mt-2 text-red-700 text-sm font-bold dark:text-red-400">{{ $message }}</p>
                         @enderror
+
+                        <div class="mt-2">
+                            <label class="block text-xs font-semibold text-slate-500 mb-1 dark:text-zinc-400">
+                                Attach file <span class="font-normal">(optional — PDF, image, Word, Excel, ZIP · max 10 MB)</span>
+                            </label>
+                            <input type="file" wire:model="messageAttachment"
+                                   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xlsx,.zip"
+                                   class="block w-full border border-slate-300 rounded-[9px] px-3 py-2 text-sm text-slate-700 bg-white cursor-pointer focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 {{ $attachmentRequested ? 'border-yellow-400 ring-2 ring-yellow-400/20' : '' }}">
+                            @error('messageAttachment') <p class="mt-1 text-red-700 text-xs font-bold dark:text-red-400">{{ $message }}</p> @enderror
+                            @if ($messageAttachment)
+                                <p class="mt-1 text-xs font-semibold text-green-600 dark:text-green-400">✓ {{ $messageAttachment->getClientOriginalName() }}</p>
+                            @endif
+                        </div>
+
                         <div class="flex items-center justify-between gap-3 mt-3 max-[820px]:flex-col max-[820px]:items-start">
                             <span class="text-slate-500 text-xs dark:text-zinc-400">Press Ctrl+Enter to send</span>
                             <button type="submit"

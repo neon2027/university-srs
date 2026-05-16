@@ -13,6 +13,7 @@ use App\Models\ServiceTypeField;
 use App\Models\Ticket;
 use App\Models\TicketAttachment;
 use App\Models\TicketHistory;
+use App\Notifications\TicketSubmittedNotification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -230,6 +231,8 @@ class CreateTicket extends Component
                     ]);
                 }
             }
+
+            auth()->user()->notify(new TicketSubmittedNotification($ticket));
 
             $this->redirect(route('portal.tickets.show', $ticket->ulid), navigate: true);
         });

@@ -6,6 +6,7 @@ use App\Enums\EventType;
 use App\Enums\TicketStatus;
 use App\Models\Ticket;
 use App\Models\TicketHistory;
+use App\Notifications\TicketResolvedNotification;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
@@ -98,6 +99,10 @@ class ChangeStatusAction extends Action
                         'note' => $data['note'] ?: null,
                     ]);
                 });
+
+                if ($newStatus === TicketStatus::Resolved) {
+                    $record->requester->notify(new TicketResolvedNotification($record));
+                }
             })
             ->successNotificationTitle('Status updated');
     }

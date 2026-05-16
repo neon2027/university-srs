@@ -381,6 +381,29 @@
                 </header>
 
                 <div class="bam-body">{{ $message->body }}</div>
+
+                @if ($message->attachments->isNotEmpty())
+                    <div style="padding:10px 14px 14px;display:flex;flex-wrap:wrap;gap:8px;">
+                        @foreach ($message->attachments as $file)
+                            <a href="{{ \Illuminate\Support\Facades\Storage::url($file->path) }}"
+                               target="_blank"
+                               download="{{ $file->original_filename }}"
+                               style="display:inline-flex;align-items:center;gap:6px;border:1px solid #cbd5e1;border-radius:7px;background:#f8fafc;padding:6px 10px;font-size:12px;font-weight:700;color:#334155;text-decoration:none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                                {{ $file->original_filename }}
+                                <span style="color:#94a3b8;font-weight:400;">({{ number_format($file->size_bytes / 1024, 1) }} KB)</span>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+
+                @if ($message->requests_attachment)
+                    <div style="padding:8px 14px 12px;">
+                        <span style="display:inline-flex;align-items:center;gap:5px;border:1px dashed #f59e0b;border-radius:6px;background:#fffbeb;padding:5px 10px;font-size:11px;font-weight:700;color:#92400e;">
+                            📎 Attachment requested from client
+                        </span>
+                    </div>
+                @endif
             </article>
         @empty
             <div class="bam-empty">Start the thread with a public reply or internal staff note.</div>
@@ -427,6 +450,17 @@
         @error('body')
             <p class="bam-error">{{ $message }}</p>
         @enderror
+
+        <div style="margin-top:10px;">
+            <label class="bam-label">Attach file <span style="font-weight:400;color:#94a3b8;">(optional — PDF, image, Word, Excel, ZIP · max 10 MB)</span></label>
+            <input type="file" wire:model="attachment"
+                   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xlsx,.zip"
+                   style="display:block;width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:7px 10px;font-size:13px;background:#fff;color:#334155;cursor:pointer;">
+            @error('attachment') <p class="bam-error" style="margin-top:4px;">{{ $message }}</p> @enderror
+            @if ($attachment)
+                <p style="margin-top:4px;font-size:12px;color:#16a34a;font-weight:700;">✓ {{ $attachment->getClientOriginalName() }}</p>
+            @endif
+        </div>
 
         <div class="bam-actions">
             <button type="submit" class="bam-submit" wire:loading.attr="disabled" wire:target="send">

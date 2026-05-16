@@ -4,14 +4,20 @@ namespace App\Livewire\Admin;
 
 use App\Models\CannedResponse;
 use App\Models\Ticket;
+use App\Models\TicketAttachment;
 use App\Models\TicketMessage;
 use App\Models\User;
+use App\Notifications\TicketReplyNotification;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\View\View;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class TicketMessaging extends Component
 {
+    use WithFileUploads;
+
     public Ticket $ticket;
 
     public string $body = '';
@@ -21,6 +27,9 @@ class TicketMessaging extends Component
     public bool $requestsAttachment = false;
 
     public ?string $errorMessage = null;
+
+    /** @var UploadedFile|null */
+    public $attachment = null;
 
     public function applyCannedResponse(string $body): void
     {
@@ -50,9 +59,10 @@ class TicketMessaging extends Component
 
         $this->validate([
             'body' => 'required|string|max:5000',
+            'attachment' => 'nullable|file|max:10240|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx,zip',
         ]);
 
-        TicketMessage::create([
+        $message = TicketMessage::create([
             'ticket_id' => $this->ticket->id,
             'sender_id' => auth()->id(),
             'body' => $this->body,
@@ -61,9 +71,28 @@ class TicketMessaging extends Component
             'requests_attachment' => $this->requestsAttachment,
         ]);
 
+        if ($this->attachment) {
+            $path = $this->attachment->store("attachments/{$this->ticket->ulid}", 'public');
+            TicketAttachment::create([
+                'ticket_id' => $this->ticket->id,
+                'ticket_message_id' => $message->id,
+                'uploader_id' => auth()->id(),
+                'disk' => 'public',
+                'path' => $path,
+                'original_filename' => $this->attachment->getClientOriginalName(),
+                'mime_type' => $this->attachment->getMimeType(),
+                'size_bytes' => $this->attachment->getSize(),
+            ]);
+        }
+
+        if (! $this->isInternalNote) {
+            $this->ticket->requester->notify(new TicketReplyNotification($this->ticket, $message));
+        }
+
         $this->body = '';
         $this->isInternalNote = false;
         $this->requestsAttachment = false;
+        $this->attachment = null;
         $this->errorMessage = null;
     }
 
@@ -77,7 +106,7 @@ class TicketMessaging extends Component
 
     private function loadMessages(): Collection
     {
-        return TicketMessage::with('sender')
+        return TicketMessage::with(['sender', 'attachments'])
             ->where('ticket_id', $this->ticket->id)
             ->where(function ($q) {
                 if (! auth()->user()->hasAnyRole(['staff', 'office_admin', 'super_admin'])) {
