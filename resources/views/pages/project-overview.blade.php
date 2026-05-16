@@ -206,6 +206,74 @@
         </div>
     </section>
 
+    <section class="border-b border-gray-200 bg-white py-14">
+        <div class="mx-auto max-w-6xl px-4 lg:px-6">
+            <div class="mb-10">
+                <p class="text-xs font-bold uppercase tracking-[0.24em] text-orange-600">Research Objectives</p>
+                <h2 class="mt-2 text-2xl font-black text-gray-950">What this system is designed to achieve</h2>
+                <p class="mt-3 max-w-2xl text-sm leading-7 text-gray-600">The following specific objectives guide the design, development, and deployment of iBUConnect as an institutional service request management platform.</p>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-1">
+                @php
+                    $objectives = [
+                        [
+                            'number' => '01',
+                            'tone' => 'orange',
+                            'title' => 'Role-Based Service Request Management',
+                            'body' => 'Design and implement a role-based service request management system that supports full CRUD operations on service requests submitted, processed, and resolved to various user roles: Admin, Staff, Faculty, and Student.',
+                        ],
+                        [
+                            'number' => '02',
+                            'tone' => 'sky',
+                            'title' => 'Secure Authentication and Authorization',
+                            'body' => 'Develop a secure authentication and authorization system with role-based access control (RBAC) to protect user data and ensure compliance with the Data Privacy Act of 2012 (RA 10173) and other related laws.',
+                        ],
+                        [
+                            'number' => '03',
+                            'tone' => 'violet',
+                            'title' => 'Administrative Dashboard with Real-Time Analytics',
+                            'body' => 'Develop an administrative dashboard that supports real-time analytics to enable office administrators and office heads to view service requests submitted to their offices, the number of requests resolved, the average time taken to resolve requests, and other related statistics.',
+                        ],
+                        [
+                            'number' => '04',
+                            'tone' => 'emerald',
+                            'title' => 'Real-Time Service Request Tracking and Notifications',
+                            'body' => 'Develop a real-time service request tracking system that sends notifications to the end user on the status of their service requests submitted to the system, through in-app notifications and email notifications at each stage of the service request lifecycle.',
+                        ],
+                        [
+                            'number' => '05',
+                            'tone' => 'slate',
+                            'title' => 'Governance and Sustainability Model',
+                            'body' => 'Develop a governance and sustainability model that addresses the following aspects: system administration policies, data stewardship, audit trails, and a plan to ensure the long-term operational viability of the system.',
+                        ],
+                    ];
+
+                    $objectiveTones = [
+                        'orange' => ['border' => 'border-orange-300', 'num' => 'bg-orange-500 text-white', 'title' => 'text-orange-800', 'body' => 'text-gray-600', 'bg' => 'bg-orange-50'],
+                        'sky'    => ['border' => 'border-sky-300',    'num' => 'bg-sky-500 text-white',    'title' => 'text-sky-800',    'body' => 'text-gray-600', 'bg' => 'bg-sky-50'],
+                        'violet' => ['border' => 'border-violet-300', 'num' => 'bg-violet-500 text-white', 'title' => 'text-violet-800', 'body' => 'text-gray-600', 'bg' => 'bg-violet-50'],
+                        'emerald'=> ['border' => 'border-emerald-300','num' => 'bg-emerald-500 text-white','title' => 'text-emerald-800','body' => 'text-gray-600', 'bg' => 'bg-emerald-50'],
+                        'slate'  => ['border' => 'border-slate-300',  'num' => 'bg-slate-600 text-white',  'title' => 'text-slate-800',  'body' => 'text-gray-600', 'bg' => 'bg-slate-50'],
+                    ];
+                @endphp
+
+                @foreach ($objectives as $obj)
+                    @php $t = $objectiveTones[$obj['tone']]; @endphp
+                    <div class="flex gap-5 border {{ $t['border'] }} {{ $t['bg'] }} p-5">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center text-sm font-black {{ $t['num'] }}">
+                            {{ $obj['number'] }}
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-black {{ $t['title'] }}">{{ $obj['title'] }}</h3>
+                            <p class="mt-2 text-sm leading-7 {{ $t['body'] }}">{{ $obj['body'] }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <section class="bg-white py-14" x-data="{ active: 'submission' }">
         <div class="mx-auto max-w-6xl px-4 lg:px-6">
             <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -479,6 +547,23 @@ erDiagram
                         <div class="bg-violet-500 px-4 py-3 text-sm font-black text-white">forwarding_logs</div>
                         <div class="border border-gray-200 px-4 py-3 text-sm text-gray-600">Inter-office transfers with reason, sender, receiver, and credit attribution.</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="border-t border-gray-200 bg-[#0f172a] py-10 text-white">
+        <div class="mx-auto max-w-6xl px-4 lg:px-6">
+            <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.24em] text-orange-300">Prepared By</p>
+                    <h2 class="mt-3 text-xl font-black">Exequiel Lustan</h2>
+                    <p class="mt-1 text-sm text-slate-400">Developer &amp; System Architect</p>
+                    <p class="mt-1 text-sm text-slate-400">Bicol University</p>
+                </div>
+                <div class="border border-white/10 bg-white/[0.04] px-6 py-5 text-sm text-slate-300 sm:max-w-sm">
+                    <p class="font-bold text-white">iBUConnect</p>
+                    <p class="mt-2 leading-7">Institutional Service Request Management System for Bicol University — designed to streamline, track, and govern service delivery across all university offices.</p>
                 </div>
             </div>
         </div>
