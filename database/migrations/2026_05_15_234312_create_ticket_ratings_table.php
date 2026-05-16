@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('ticket_ratings', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('ticket_id')->unique()->constrained()->cascadeOnDelete();
+            $table->foreignId('rater_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->unsignedTinyInteger('overall_rating');
+            $table->unsignedTinyInteger('service_rating');
+            $table->unsignedTinyInteger('staff_rating')->nullable();
+            $table->text('comment')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('ticket_ratings');
+    }
+};

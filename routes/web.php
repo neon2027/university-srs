@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\ReportPrintController;
+use App\Http\Controllers\Auth\DevLoginController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\LegalController;
 use App\Livewire\Portal\CreateTicket;
@@ -14,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+
+if (app()->environment(['local', 'testing'])) {
+    Route::get('/dev/login', fn () => redirect()->route('login'))->name('dev.login.redirect');
+    Route::post('/dev/login', DevLoginController::class)->name('dev.login');
+}
 
 Route::prefix('legal')->name('legal.')->group(function (): void {
     Route::get('/terms', [LegalController::class, 'terms'])->name('terms');
@@ -48,6 +55,13 @@ require __DIR__.'/settings.php';
 
 // 'verified' is consistent with the existing dashboard route group.
 // Google OAuth guarantees email validity; MustVerifyEmail is intentionally not implemented.
+Route::middleware(['auth', 'verified', 'role:super_admin|office_admin|staff'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function (): void {
+        Route::get('/reports/print', ReportPrintController::class)->name('reports.print');
+    });
+
 Route::middleware(['auth', 'verified', 'role:student'])
     ->prefix('portal')
     ->name('portal.')

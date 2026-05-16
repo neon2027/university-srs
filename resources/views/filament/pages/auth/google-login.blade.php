@@ -22,6 +22,10 @@
                     {{ session('error') }}
                 </div>
             @endif
+
+            @if (app()->environment('local'))
+                @livewire('dev.login-panel')
+            @endif
         </div>
     </x-filament::section>
 </x-filament-panels::page.simple>

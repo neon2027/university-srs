@@ -208,6 +208,125 @@
                 @endforelse
             </section>
 
+            {{-- Rating Form --}}
+            @if ($canRate)
+                <section class="py-[18px] border-b border-slate-200 dark:border-zinc-800">
+                    <h3 class="m-0 mb-1 text-xs font-black tracking-[.04em] uppercase text-slate-500 dark:text-zinc-400">Rate this service</h3>
+                    <p class="m-0 mb-3.5 text-slate-500 text-xs dark:text-zinc-400">Your feedback helps us improve.</p>
+
+                    @php
+                        $starField = function(string $field, string $label, string $prop) use ($ticket) {
+                            return [$field, $label, $prop];
+                        };
+                    @endphp
+
+                    <form wire:submit.prevent="submitRating" class="space-y-4">
+                        {{-- Overall Rating --}}
+                        <div>
+                            <p class="m-0 mb-1.5 text-xs font-extrabold text-slate-700 dark:text-zinc-300">Overall experience <span class="text-red-500">*</span></p>
+                            <div class="flex gap-1" x-data="{ hovered: 0, selected: $wire.entangle('overallRating') }">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <button type="button"
+                                            @click="selected = {{ $i }}"
+                                            @mouseenter="hovered = {{ $i }}"
+                                            @mouseleave="hovered = 0"
+                                            class="text-2xl leading-none transition-transform hover:scale-110 focus:outline-none"
+                                            :class="(hovered || selected) >= {{ $i }} ? 'text-yellow-400' : 'text-slate-300 dark:text-zinc-600'">★</button>
+                                @endfor
+                            </div>
+                            @error('overallRating') <p class="mt-1 text-red-600 text-xs font-bold dark:text-red-400">{{ $message }}</p> @enderror
+                        </div>
+
+                        {{-- Service Rating --}}
+                        <div>
+                            <p class="m-0 mb-1.5 text-xs font-extrabold text-slate-700 dark:text-zinc-300">Service quality <span class="text-red-500">*</span></p>
+                            <div class="flex gap-1" x-data="{ hovered: 0, selected: $wire.entangle('serviceRating') }">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <button type="button"
+                                            @click="selected = {{ $i }}"
+                                            @mouseenter="hovered = {{ $i }}"
+                                            @mouseleave="hovered = 0"
+                                            class="text-2xl leading-none transition-transform hover:scale-110 focus:outline-none"
+                                            :class="(hovered || selected) >= {{ $i }} ? 'text-yellow-400' : 'text-slate-300 dark:text-zinc-600'">★</button>
+                                @endfor
+                            </div>
+                            @error('serviceRating') <p class="mt-1 text-red-600 text-xs font-bold dark:text-red-400">{{ $message }}</p> @enderror
+                        </div>
+
+                        {{-- Staff Rating (only if ticket was assigned) --}}
+                        @if ($ticket->assigned_to)
+                            <div>
+                                <p class="m-0 mb-1.5 text-xs font-extrabold text-slate-700 dark:text-zinc-300">Staff helpfulness</p>
+                                <div class="flex gap-1" x-data="{ hovered: 0, selected: $wire.entangle('staffRating') }">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <button type="button"
+                                                @click="selected = selected === {{ $i }} ? null : {{ $i }}"
+                                                @mouseenter="hovered = {{ $i }}"
+                                                @mouseleave="hovered = 0"
+                                                class="text-2xl leading-none transition-transform hover:scale-110 focus:outline-none"
+                                                :class="(hovered || selected) >= {{ $i }} ? 'text-yellow-400' : 'text-slate-300 dark:text-zinc-600'">★</button>
+                                    @endfor
+                                </div>
+                                @error('staffRating') <p class="mt-1 text-red-600 text-xs font-bold dark:text-red-400">{{ $message }}</p> @enderror
+                            </div>
+                        @endif
+
+                        {{-- Comment --}}
+                        <div>
+                            <p class="m-0 mb-1.5 text-xs font-extrabold text-slate-700 dark:text-zinc-300">Comments <span class="text-slate-400">(optional)</span></p>
+                            <textarea wire:model="ratingComment"
+                                      placeholder="Tell us more about your experience..."
+                                      class="block w-full min-h-[72px] resize-y border border-slate-300 rounded-[9px] bg-white text-slate-900 px-3 py-2 text-sm leading-relaxed outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500"></textarea>
+                            @error('ratingComment') <p class="mt-1 text-red-600 text-xs font-bold dark:text-red-400">{{ $message }}</p> @enderror
+                        </div>
+
+                        <button type="submit"
+                                class="w-full border-0 rounded-[9px] bg-green-600 text-white px-3.5 py-2.5 text-sm font-extrabold cursor-pointer hover:bg-green-700 transition-colors">
+                            Submit Rating
+                        </button>
+                    </form>
+                </section>
+            @elseif ($ticket->rating)
+                <section class="py-[18px] border-b border-slate-200 dark:border-zinc-800">
+                    <h3 class="m-0 mb-3 text-xs font-black tracking-[.04em] uppercase text-slate-500 dark:text-zinc-400">Your Rating</h3>
+                    <dl class="grid gap-2.5">
+                        <div>
+                            <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Overall</dt>
+                            <dd class="mt-0.5 m-0 text-yellow-400 text-lg leading-none">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    {{ $i <= $ticket->rating->overall_rating ? '★' : '☆' }}
+                                @endfor
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Service Quality</dt>
+                            <dd class="mt-0.5 m-0 text-yellow-400 text-lg leading-none">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    {{ $i <= $ticket->rating->service_rating ? '★' : '☆' }}
+                                @endfor
+                            </dd>
+                        </div>
+                        @if ($ticket->rating->staff_rating)
+                            <div>
+                                <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Staff Helpfulness</dt>
+                                <dd class="mt-0.5 m-0 text-yellow-400 text-lg leading-none">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        {{ $i <= $ticket->rating->staff_rating ? '★' : '☆' }}
+                                    @endfor
+                                </dd>
+                            </div>
+                        @endif
+                        @if ($ticket->rating->comment)
+                            <div>
+                                <dt class="text-xs font-extrabold text-slate-500 dark:text-zinc-400">Comment</dt>
+                                <dd class="mt-0.5 m-0 text-sm text-slate-700 dark:text-zinc-300">{{ $ticket->rating->comment }}</dd>
+                            </div>
+                        @endif
+                        <p class="m-0 text-xs text-green-600 font-bold dark:text-green-400">✓ Rating submitted. Thank you!</p>
+                    </dl>
+                </section>
+            @endif
+
             {{-- Knowledge Base --}}
             <section class="pt-[18px]">
                 <h3 class="m-0 mb-3.5 text-xs font-black tracking-[.04em] uppercase text-slate-500 dark:text-zinc-400">Knowledge base</h3>

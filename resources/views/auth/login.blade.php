@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sign In — {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 <body class="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
     <div class="w-full max-w-md px-4">
@@ -39,9 +40,15 @@
             </p>
         </div>
 
+        @if (app()->environment('local'))
+            @livewire('dev.login-panel')
+        @endif
+
         <p class="mt-6 text-center text-sm text-gray-500">
             Are you staff? <a href="/admin" class="font-medium text-sky-600 hover:underline">Go to Admin Panel</a>
         </p>
     </div>
+
+    @livewireScripts
 </body>
 </html>

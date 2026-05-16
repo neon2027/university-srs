@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Portal;
 
+use App\Enums\TicketStatus;
 use App\Models\Ticket;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 #[Layout('components.layouts.portal')]
@@ -15,6 +17,20 @@ class TicketDetail extends Component
     public string $ulid = '';
 
     public string $messageBody = '';
+
+    #[Rule('required|integer|min:1|max:5')]
+    public int $overallRating = 0;
+
+    #[Rule('required|integer|min:1|max:5')]
+    public int $serviceRating = 0;
+
+    #[Rule('nullable|integer|min:1|max:5')]
+    public ?int $staffRating = null;
+
+    #[Rule('nullable|string|max:1000')]
+    public string $ratingComment = '';
+
+    public bool $ratingSubmitted = false;
 
     public function mount(string $ulid): void
     {
@@ -27,6 +43,8 @@ class TicketDetail extends Component
             ->where('is_internal_note', false)
             ->whereNull('seen_at')
             ->update(['seen_at' => now()]);
+
+        $this->ratingSubmitted = $ticket->rating()->exists();
     }
 
     public function sendMessage(): void
@@ -44,9 +62,39 @@ class TicketDetail extends Component
         $this->dispatch('message-sent');
     }
 
+    public function submitRating(): void
+    {
+        $ticket = $this->findTicket();
+
+        if ($ticket->rating()->exists()) {
+            return;
+        }
+
+        if (! in_array($ticket->status, [TicketStatus::Resolved, TicketStatus::Closed])) {
+            return;
+        }
+
+        $validated = $this->validate([
+            'overallRating' => 'required|integer|min:1|max:5',
+            'serviceRating' => 'required|integer|min:1|max:5',
+            'staffRating' => 'nullable|integer|min:1|max:5',
+            'ratingComment' => 'nullable|string|max:1000',
+        ]);
+
+        $ticket->rating()->create([
+            'rater_id' => auth()->id(),
+            'overall_rating' => $validated['overallRating'],
+            'service_rating' => $validated['serviceRating'],
+            'staff_rating' => $ticket->assigned_to ? $validated['staffRating'] : null,
+            'comment' => $validated['ratingComment'] ?: null,
+        ]);
+
+        $this->ratingSubmitted = true;
+    }
+
     public function render(): View
     {
-        $ticket = $this->findTicket()->load(['office', 'serviceType', 'history.actor']);
+        $ticket = $this->findTicket()->load(['office', 'serviceType', 'history.actor', 'rating']);
         $messages = $ticket->messages()
             ->where('is_internal_note', false)
             ->with('sender')
@@ -58,7 +106,10 @@ class TicketDetail extends Component
             ->limit(12)
             ->get();
 
-        return view('livewire.portal.ticket-detail', compact('ticket', 'messages', 'recentTickets'));
+        $canRate = in_array($ticket->status, [TicketStatus::Resolved, TicketStatus::Closed])
+            && ! $this->ratingSubmitted;
+
+        return view('livewire.portal.ticket-detail', compact('ticket', 'messages', 'recentTickets', 'canRate'));
     }
 
     private function findTicket(): Ticket
