@@ -8,6 +8,7 @@ use App\Models\Ticket;
 use App\Models\TicketHistory;
 use Filament\Actions\Action;
 use Filament\Forms;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 
 class ChangeStatusAction extends Action
@@ -34,6 +35,10 @@ class ChangeStatusAction extends Action
                     )
                     ->default(fn (Ticket $record) => $record->status->value)
                     ->required(),
+                Forms\Components\Placeholder::make('assignment_warning')
+                    ->label('')
+                    ->content('⚠ This ticket has no assigned staff. "In Progress" will be blocked until a staff member is assigned.')
+                    ->visible(fn (Ticket $record) => $record->assigned_to === null),
                 Forms\Components\Textarea::make('note')
                     ->label('Note (optional)')
                     ->placeholder('Reason for status change...')
@@ -44,6 +49,17 @@ class ChangeStatusAction extends Action
                 $newStatus = TicketStatus::from($data['status']);
 
                 if ($newStatus === $record->status) {
+                    return;
+                }
+
+                if ($newStatus === TicketStatus::InProgress && $record->assigned_to === null) {
+                    Notification::make()
+                        ->title('Staff assignment required')
+                        ->body('Please assign a staff member to this ticket before setting it to In Progress.')
+                        ->danger()
+                        ->send();
+                    $this->halt();
+
                     return;
                 }
 

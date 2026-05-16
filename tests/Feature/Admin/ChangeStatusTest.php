@@ -14,7 +14,9 @@ beforeEach(fn () => $this->seed(RoleSeeder::class));
 test('admin can change ticket status', function () {
     $admin = User::factory()->create();
     $admin->assignRole('super_admin');
-    $ticket = Ticket::factory()->create(['status' => TicketStatus::Pending]);
+    $staff = User::factory()->create();
+    $staff->assignRole('staff');
+    $ticket = Ticket::factory()->create(['status' => TicketStatus::Pending, 'assigned_to' => $staff->id]);
 
     $this->actingAs($admin);
 
@@ -28,7 +30,9 @@ test('admin can change ticket status', function () {
 test('changing status creates a history entry', function () {
     $admin = User::factory()->create();
     $admin->assignRole('super_admin');
-    $ticket = Ticket::factory()->create(['status' => TicketStatus::Pending]);
+    $staff = User::factory()->create();
+    $staff->assignRole('staff');
+    $ticket = Ticket::factory()->create(['status' => TicketStatus::Pending, 'assigned_to' => $staff->id]);
 
     $this->actingAs($admin);
 
@@ -82,9 +86,12 @@ test('changing status to resolved creates resolved history event', function () {
 test('re-opening a ticket clears resolved_at', function () {
     $admin = User::factory()->create();
     $admin->assignRole('super_admin');
+    $staff = User::factory()->create();
+    $staff->assignRole('staff');
     $ticket = Ticket::factory()->create([
         'status' => TicketStatus::Resolved,
         'resolved_at' => now(),
+        'assigned_to' => $staff->id,
     ]);
 
     $this->actingAs($admin);
@@ -96,6 +103,40 @@ test('re-opening a ticket clears resolved_at', function () {
     $ticket->refresh();
     expect($ticket->status)->toBe(TicketStatus::InProgress);
     expect($ticket->resolved_at)->toBeNull();
+});
+
+test('cannot set in progress without an assigned staff', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('super_admin');
+    $ticket = Ticket::factory()->create(['status' => TicketStatus::Pending, 'assigned_to' => null]);
+
+    $this->actingAs($admin);
+
+    Livewire::test(ViewTicket::class, ['record' => $ticket->ulid])
+        ->callAction('change_status', data: ['status' => TicketStatus::InProgress->value])
+        ->assertHasNoActionErrors();
+
+    expect($ticket->fresh()->status)->toBe(TicketStatus::Pending);
+    expect(TicketHistory::where('ticket_id', $ticket->id)->count())->toBe(0);
+});
+
+test('can set in progress when staff is assigned', function () {
+    $admin = User::factory()->create();
+    $admin->assignRole('super_admin');
+    $staff = User::factory()->create();
+    $staff->assignRole('staff');
+    $ticket = Ticket::factory()->create([
+        'status' => TicketStatus::Pending,
+        'assigned_to' => $staff->id,
+    ]);
+
+    $this->actingAs($admin);
+
+    Livewire::test(ViewTicket::class, ['record' => $ticket->ulid])
+        ->callAction('change_status', data: ['status' => TicketStatus::InProgress->value])
+        ->assertHasNoActionErrors();
+
+    expect($ticket->fresh()->status)->toBe(TicketStatus::InProgress);
 });
 
 test('same status change is a no-op', function () {
